@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>Settings\Testura.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,6 +46,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UiAutomator\Search\AttributeSearch.cs" />
+    <Compile Include="UiAutomator\Search\NodeSearch.cs" />
+    <Compile Include="UiAutomator\By.cs" />
+    <Compile Include="UiAutomator\IScreenDumper.cs" />
+    <Compile Include="UiAutomator\IUiAutomatorServer.cs" />
+    <Compile Include="UiAutomator\NodeChecker.cs" />
+    <Compile Include="UiAutomator\ScreenDumper.cs" />
+    <Compile Include="UiAutomator\UiAutomatorServer.cs" />
+    <Compile Include="UiAutomator\UiNode.cs" />
+    <Compile Include="Util\Enums.cs" />
+    <Compile Include="Util\Exceptions\UiAutomatorServerException.cs" />
+    <Compile Include="Util\Exceptions\UiNodeNotFoundException.cs" />
+    <Compile Include="Util\ITerminal.cs" />
+    <Compile Include="Util\WindowsTerminal.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Apk\bundle.jar" />
+    <Content Include="Apk\uiautomator-stub.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
