@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Threading;
 using System.Xml.Linq;
-using Testura.Android.UiAutomator.Search;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.UiAutomator
 {
-    public class NodeChecker
+    public class NodeChecker : INodeChecker
     {
         private const string NotEqualTo = "!";
         private const string WildCard = "**";
@@ -22,53 +18,24 @@ namespace Testura.Android.UiAutomator
             this.screenDumper = screenDumper;
         }
 
-        public UiNode GetUiNode(IList<NodeSearch> by, int timeout = 2)
-        {
-            return GetUiNodes(by, timeout).First();
-        }
-
-        public IList<UiNode> GetUiNodes(IList<NodeSearch> by, int timeout = 2)
-        {
-            var startTime = DateTime.Now;
-            while ((DateTime.Now - startTime).Seconds < timeout)
-            {
-                try
-                {
-                    var nodes = GetNodesBy(by);
-                    var uiNodes = new List<UiNode>();
-                    foreach (var node in nodes)
-                    {
-                        uiNodes.Add(new UiNode(node));
-                    }
-
-                    return uiNodes;
-                }
-                catch (UiNodeNotFoundException)
-                {
-                    Thread.Sleep(500);
-                }
-            }
-
-            throw new UiNodeNotFoundException(by);
-        }
-
-        public XElement GetNodeBy(IList<NodeSearch> by)
+        public XElement GetNodeBy(By by)
         {
             var nodes = GetNodesBy(by);
             if (nodes.Any())
             {
                 return nodes.First();
             }
+
             throw new UiNodeNotFoundException(by);
         }
 
-        public IList<XElement> GetNodesBy(IList<NodeSearch> by)
+        public IList<XElement> GetNodesBy(By by)
         {
             var dump = screenDumper.DumpUi();
             var approvedNodes = new List<XElement>();
-            foreach (var nodeSearch in by)
+            foreach (var nodeSearch in by.NodeSearches)
             {
-                foreach (var node in dump.Result.Descendants("node"))
+                foreach (var node in dump.Descendants("node"))
                 {
                     var nodeOk = true;
                     foreach (var attributeSearch in nodeSearch.AttributeSearches)

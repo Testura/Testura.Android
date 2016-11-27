@@ -45,7 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Device\AndroidDevice.cs" />
+    <Compile Include="Device\IDeviceServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AdbService.cs" />
+    <Compile Include="Services\IAdbService.cs" />
+    <Compile Include="Services\IUiService.cs" />
+    <Compile Include="Services\Service.cs" />
+    <Compile Include="Services\UiService.cs" />
+    <Compile Include="UiAutomator\INodeChecker.cs" />
     <Compile Include="UiAutomator\Search\AttributeSearch.cs" />
     <Compile Include="UiAutomator\Search\NodeSearch.cs" />
     <Compile Include="UiAutomator\By.cs" />
@@ -54,21 +62,18 @@
     <Compile Include="UiAutomator\NodeChecker.cs" />
     <Compile Include="UiAutomator\ScreenDumper.cs" />
     <Compile Include="UiAutomator\UiAutomatorServer.cs" />
-    <Compile Include="UiAutomator\UiNode.cs" />
+    <Compile Include="UiAutomator\Node.cs" />
+    <Compile Include="UiAutomator\UiObject.cs" />
+    <Compile Include="Util\Coordinate.cs" />
     <Compile Include="Util\Enums.cs" />
     <Compile Include="Util\Exceptions\UiAutomatorServerException.cs" />
     <Compile Include="Util\Exceptions\UiNodeNotFoundException.cs" />
     <Compile Include="Util\ITerminal.cs" />
     <Compile Include="Util\WindowsTerminal.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Service\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Apk\bundle.jar" />
-    <Content Include="Apk\uiautomator-stub.jar" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Apk\Server.apk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

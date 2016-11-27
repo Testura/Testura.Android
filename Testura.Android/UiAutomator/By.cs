@@ -4,16 +4,23 @@ using Testura.Android.Util;
 
 namespace Testura.Android.UiAutomator
 {
-    public static class By
+    public class By
     {
-        public static IList<NodeSearch> Text(string text)
+        private By(List<NodeSearch> nodeSearches)
         {
-            return new List<NodeSearch> { new NodeSearch(new AttributeSearch(AttributeTags.Text, text)) };
+            NodeSearches = nodeSearches;
         }
 
-        public static IList<NodeSearch> ContainsText(string text)
+        public List<NodeSearch> NodeSearches { get; private set; }
+
+        public static By Text(string text)
         {
-            return new List<NodeSearch> { new NodeSearch(new AttributeSearch(AttributeTags.TextContains, text)) };
+            return new By(new List<NodeSearch> {new NodeSearch(new AttributeSearch(AttributeTags.Text, text))});
+        }
+
+        public static By ContainsText(string text)
+        {
+            return new By(new List<NodeSearch> {new NodeSearch(new AttributeSearch(AttributeTags.TextContains, text))});
         }
     }
 }

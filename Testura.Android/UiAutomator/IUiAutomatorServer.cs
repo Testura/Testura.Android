@@ -6,9 +6,9 @@ namespace Testura.Android.UiAutomator
     {
         int LocalPort { get; }
 
-        Task Start();
+        void Start();
 
-        Task<bool> Alive();
+        bool Alive(int timeout);
 
         string DumpUi();
     }

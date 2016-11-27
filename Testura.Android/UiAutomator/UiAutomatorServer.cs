@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Testura.Android.Util;
@@ -26,24 +26,25 @@ namespace Testura.Android.UiAutomator
 
         public int LocalPort { get; private set; }
 
-        public async Task Start()
+        public void Start()
         {
             SetLocalPort();
-            currentServerProcess = _terminal.StartTerminalProcess(
-                "adb shell uiautomator runtest bundle.jar uiautomator-stub.jar -c com.github.uiautomatorstub.Stub");
+            currentServerProcess =
+                _terminal.StartTerminalProcess(
+                    "adb shell am instrument -w -r -e debug false -e class com.testura.testuraandroidserver.Start#RunServer com.testura.testuraandroidserver.test/android.support.test.runner.AndroidJUnitRunner");
             ForwardPorts();
-            if (!await Alive())
+            if (!Alive(10))
             {
                 throw new UiAutomatorServerException("Could not start server");
             }
         }
 
-        public async Task<bool> Alive()
+        public bool Alive(int timeout)
         {
             var time = DateTime.Now;
-            while ((DateTime.Now - time).Seconds < 40)
+            while ((DateTime.Now - time).Seconds < timeout)
             {
-                var result = await Ping();
+                var result = Ping();
                 if (result)
                 {
                     return true;
@@ -55,7 +56,7 @@ namespace Testura.Android.UiAutomator
 
         public string DumpUi()
         {
-            return SendCommand("dumpWindowHierarchy", false, null).Result;
+            return SendCommand("dumpWindowHierarchy");
         }
 
         private void SetLocalPort()
@@ -78,13 +79,20 @@ namespace Testura.Android.UiAutomator
             _terminal.ExecuteCommand($"adb forward tcp:{LocalPort} tcp:{DevicePort}");
         }
 
-        private async Task<bool> Ping()
+        private bool Ping()
         {
-            var result = await SendCommand("ping");
-            return result == "pong";
+            try
+            {
+                var result = SendCommand("ping");
+                return result == "hello";
+            }
+            catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
+            {
+                return false;
+            }
         }
 
-        private async Task<string> SendCommand(string methodName, params object[] args)
+        private string SendCommand(string methodName, params object[] args)
         {
             var data = JsonConvert.SerializeObject(
                 new
@@ -95,8 +103,10 @@ namespace Testura.Android.UiAutomator
                     @params = args
                 });
             var httpClient = new HttpClient();
-            var response = await httpClient.PostAsync($"http://localhost:{LocalPort}/jsonrpc/0", new StringContent(data, Encoding.UTF8, "application/json"));
-            var result = await response.Content.ReadAsStringAsync();
+            var response =
+                httpClient.PostAsync($"http://localhost:{LocalPort}/jsonrpc/0",
+                    new StringContent(data, Encoding.UTF8, "application/json")).Result;
+            var result = response.Content.ReadAsStringAsync().Result;
             dynamic parsedResult = JObject.Parse(result);
             return parsedResult.result;
         }

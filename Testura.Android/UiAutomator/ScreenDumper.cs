@@ -12,13 +12,14 @@ namespace Testura.Android.UiAutomator
             this.server = server;
         }
 
-        public async Task<XDocument> DumpUi()
+        public XDocument DumpUi()
         {
-            var alive = await server.Alive();
+            var alive = server.Alive(2);
             if (!alive)
             {
-                await server.Start();
+                server.Start();
             }
+
             return XDocument.Parse(server.DumpUi());
         }
     }

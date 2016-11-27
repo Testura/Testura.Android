@@ -17,15 +17,15 @@ namespace Testura.Android.Tests.UiAutomator
         }
 
         [Test]
-        public async Task UiAutomatorServer_WhenStartingServer_ShouldNotThrowException()
+        public void UiAutomatorServer_WhenStartingServer_ShouldNotThrowException()
         {
-            await server.Start();
+            server.Start();
         }
 
         [Test]
-        public async Task UiAUtomatorServer_WhenDumpingUi_ShouldGetContentBack()
+        public void UiAUtomatorServer_WhenDumpingUi_ShouldGetContentBack()
         {
-            await server.Start();
+            server.Start();
             var ui = server.DumpUi();
             Assert.IsNotNull(ui);
             Assert.IsNotEmpty(ui);

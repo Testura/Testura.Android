@@ -64,10 +64,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Integration\UiIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\UiServiceTests.cs" />
     <Compile Include="UiAutomator\NodeCheckerTests.cs" />
     <Compile Include="UiAutomator\ScreenDumperTests.cs" />
     <Compile Include="UiAutomator\UiAutomatorServerTests.cs" />
+    <Compile Include="UiAutomator\UiObjectTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

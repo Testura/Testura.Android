@@ -24,16 +24,16 @@ namespace Testura.Android.Tests.UiAutomator
         public void SetUp()
         {
            screenDumper = new Mock<IScreenDumper>();
-            screenDumper.Setup(s => s.DumpUi()).ReturnsAsync(XDocument.Parse(Page));
+            screenDumper.Setup(s => s.DumpUi()).Returns(XDocument.Parse(Page));
            nodeChecker = new NodeChecker(screenDumper.Object);
         }
 
 
         [Test]
-        public void Do()
+        public void NodeChecker_WhenGettingNodeThatExist_ShouldReturnNode()
         {
-            var nodes = nodeChecker.GetUiNodes(By.Text("Kalkylator"));
-            var i = 1;
+            var node = nodeChecker.GetNodeBy(By.Text("Kalkylator"));
+            Assert.IsNotNull(node);
         }
     }
 }
