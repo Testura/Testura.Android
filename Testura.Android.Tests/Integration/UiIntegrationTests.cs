@@ -12,13 +12,15 @@ namespace Testura.Android.Tests.Integration
         private AdbService adbService;
         private UiService uiService;
         private AndroidDevice device;
+        private WifiService wifiService;
 
         [SetUp]
         public void SetUp()
         {
             adbService = new AdbService(new WindowsTerminal());
             uiService = new UiService(new NodeChecker(new ScreenDumper(new UiAutomatorServer(new WindowsTerminal()))));
-            device = new AndroidDevice(adbService, uiService);
+            wifiService = new WifiService();
+            device = new AndroidDevice(adbService, uiService, wifiService);
         }
 
         [Test]

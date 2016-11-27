@@ -5,16 +5,19 @@ namespace Testura.Android.Device
 {
     public class AndroidDevice : IDeviceServices
     {
-        public AndroidDevice(IAdbService adb, IUiService ui)
+        public AndroidDevice(IAdbService adb, IUiService ui, IWifiService wifiService)
         {
             Adb = adb;
             Ui = ui;
+            Wifi = wifiService;
             InitializeServices();
         }
 
         public IAdbService Adb { get; }
 
         public IUiService Ui { get; }
+
+        public IWifiService Wifi { get; }
 
         private void InitializeServices()
         {

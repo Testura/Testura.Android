@@ -51,8 +51,10 @@
     <Compile Include="Services\AdbService.cs" />
     <Compile Include="Services\IAdbService.cs" />
     <Compile Include="Services\IUiService.cs" />
+    <Compile Include="Services\IWifiService.cs" />
     <Compile Include="Services\Service.cs" />
     <Compile Include="Services\UiService.cs" />
+    <Compile Include="Services\WifiService.cs" />
     <Compile Include="UiAutomator\INodeChecker.cs" />
     <Compile Include="UiAutomator\Search\AttributeSearch.cs" />
     <Compile Include="UiAutomator\Search\NodeSearch.cs" />
