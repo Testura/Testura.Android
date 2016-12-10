@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3B7023C4-A593-4F29-AB0C-EA07992FE1BC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Testura.Android</RootNamespace>
+    <AssemblyName>Testura.Android</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>Settings\Testura.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Device\AndroidDevice.cs" />
+    <Compile Include="Device\Extensions\ExceptionUiExtension.cs" />
+    <Compile Include="Device\Extensions\IUiExtension.cs" />
+    <Compile Include="Device\ServiceLoader\ServiceLoader.cs" />
+    <Compile Include="Device\ServiceLoader\IServiceLoader.cs" />
+    <Compile Include="Device\Services\Default\ActivityService.cs" />
+    <Compile Include="Device\Services\Default\InteractionService.cs" />
+    <Compile Include="Device\Services\IActivityService.cs" />
+    <Compile Include="Device\Services\IInteractionService.cs" />
+    <Compile Include="Device\Configurations\DeviceConfiguration.cs" />
+    <Compile Include="Device\Configurations\JsonConfigurationLoader.cs" />
+    <Compile Include="Device\Configurations\IConfigurationLoader.cs" />
+    <Compile Include="Device\IAndroidDevice.cs" />
+    <Compile Include="Device\UiAutomator\Ui\Bounds.cs" />
+    <Compile Include="Device\UiAutomator\Ui\UiObject.cs" />
+    <Compile Include="Device\UiAutomator\Ui\UiObjects.cs" />
+    <Compile Include="Device\UiAutomator\Ui\Util\INodeFinder.cs" />
+    <Compile Include="Device\UiAutomator\Ui\Util\NodeFinder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Device\Services\Default\AdbService.cs" />
+    <Compile Include="Device\Services\IAdbService.cs" />
+    <Compile Include="Device\Services\IUiService.cs" />
+    <Compile Include="Device\Services\ISettingsService.cs" />
+    <Compile Include="Device\Services\Service.cs" />
+    <Compile Include="Device\Services\Default\UiService.cs" />
+    <Compile Include="Device\Services\Default\SettingsService.cs" />
+    <Compile Include="Device\UiAutomator\Ui\Util\INodeParser.cs" />
+    <Compile Include="Device\UiAutomator\Ui\Search\With.cs" />
+    <Compile Include="Device\UiAutomator\Ui\Util\IScreenDumper.cs" />
+    <Compile Include="Device\UiAutomator\Server\IUiAutomatorServer.cs" />
+    <Compile Include="Device\UiAutomator\Ui\Util\NodeParser.cs" />
+    <Compile Include="Device\UiAutomator\Ui\Util\ScreenDumper.cs" />
+    <Compile Include="Device\UiAutomator\Server\UiAutomatorServer.cs" />
+    <Compile Include="Device\UiAutomator\Ui\Node.cs" />
+    <Compile Include="Device\UiAutomator\Ui\BaseUiObject.cs" />
+    <Compile Include="Util\Coordinate.cs" />
+    <Compile Include="Util\Enums.cs" />
+    <Compile Include="Util\Exceptions\AdbException.cs" />
+    <Compile Include="Util\Exceptions\TerminalException.cs" />
+    <Compile Include="Util\Exceptions\UiAutomatorServerException.cs" />
+    <Compile Include="Util\Exceptions\UiNodeNotFoundException.cs" />
+    <Compile Include="Util\Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Util\Terminal\ITerminal.cs" />
+    <Compile Include="Util\Terminal\WindowsTerminal.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Apk\testura.android.server.a.apk" />
+    <None Include="Apk\testura.android.server.b.apk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
