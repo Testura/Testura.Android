@@ -38,7 +38,7 @@ namespace Testura.Android.Tests.Device
 
         public ExampleView()
         {
-            _androidDevice = new AndroidDevice();
+            _androidDevice = new AndroidDevice(new DeviceConfiguration());
 
             // The device won't look for the node/UI object before we interact with it,
             // so it's perfectly safe to set up everything inside the constructor.
