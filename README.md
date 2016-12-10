@@ -114,22 +114,6 @@ uiObject.SendKeys("..");
 var node = uiObject.Values();
 ```
 
-## Configuration
-
-It's possible to override the default settings by adding a configuration file in the location of your executable (normally the bin/debug or bin/release directory). The file must be called "`testura.configuration.json`".
-
-Here are all possible settings:
-
-```json
-{
-	"AdbPath": "path/to/adb",
-	"Serial": "serialOfDevice",
-	"ShouldInstallApk": true,
-	"ServerApkPath": "path/to/server/apk",
-	"HelperApkPath": "path/to/helper/apk"
-}
-```
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE.md](LICENSE.md) file for details.
