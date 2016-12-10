@@ -11,11 +11,11 @@ Testura.Android is a lightweight test automation framework for Android built in 
 - Visual Studio
 
 
-## NuGet
+## NuGet [![NuGet Status](https://img.shields.io/nuget/v/Testura.Android.svg?style=flat)](https://www.nuget.org/packages/Testura.Android)
 
-```
-nuget
-```
+[https://www.nuget.org/packages/Testura.Android](https://www.nuget.org/packages/Testura.Android)
+    
+    PM> Install-Package Testura.Android
 
 ## Usage
 
