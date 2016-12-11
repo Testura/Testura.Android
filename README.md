@@ -23,6 +23,7 @@ Testura.Android has been designed for the page object pattern. Here is a short e
 
 ```c#
 using Testura.Android.Device;
+using Testura.Android.Device.Configurations;
 using Testura.Android.Device.UiAutomator.Ui;
 using Testura.Android.Device.UiAutomator.Ui.Search;
 
@@ -105,7 +106,7 @@ device.Settings.Wifi(State.Enable);
 `UiObject` is one of the core components of Testura.Android. It wraps a node with all the necessary functions:
 
 ```c#
-var device = new AndroidDevice();
+var device = new AndroidDevice(new DeviceConfiguration());
 var uiObject = device.Ui.CreateUiObject(With.ContentDesc(".."));
 uiObject.Click();
 uiObject.Visible();
