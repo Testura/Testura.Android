@@ -9,5 +9,10 @@ namespace Testura.Android.Util.Exceptions
             : base("Could not find node.")
         {
         }
+
+        public UiNodeNotFoundException(string message)
+            : base(message)
+        {
+        }
     }
 }

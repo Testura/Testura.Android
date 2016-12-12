@@ -78,7 +78,7 @@ namespace Testura.Android.Device.UiAutomator.Ui
                             return false;
                         }
 
-                        throw new UiNodeNotFoundException(null);
+                        throw new UiNodeNotFoundException(with: null);
                     }
                 }
                 catch (UiNodeNotFoundException)

@@ -87,6 +87,7 @@
     <Compile Include="Util\Exceptions\UiAutomatorServerException.cs" />
     <Compile Include="Util\Exceptions\UiNodeNotFoundException.cs" />
     <Compile Include="Util\Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Util\Helpers\UiWait.cs" />
     <Compile Include="Util\Terminal\ITerminal.cs" />
     <Compile Include="Util\Terminal\WindowsTerminal.cs" />
   </ItemGroup>
