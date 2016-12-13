@@ -1,7 +1,9 @@
 ﻿using System;
+using Testura.Android.Device.Ui.Nodes;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Util;
 
-namespace Testura.Android.Device.UiAutomator.Ui.Search
+namespace Testura.Android.Device.Ui.Search
 {
     public class With
     {

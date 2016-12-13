@@ -73,6 +73,7 @@
     <Compile Include="Device\UiAutomator\Ui\Util\NodeFinderTests.cs" />
     <Compile Include="Device\UiAutomator\Ui\Util\ScreenDumperTests.cs" />
     <Compile Include="Integration\Device\UiAutomator\Server\UiAutomatorServerTests.cs" />
+    <Compile Include="Util\Helpers\UiWaitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Testura.Android\Testura.Android.csproj">

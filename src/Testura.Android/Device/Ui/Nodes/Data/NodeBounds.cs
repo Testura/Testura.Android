@@ -1,8 +1,8 @@
-﻿namespace Testura.Android.Device.UiAutomator.Ui
+﻿namespace Testura.Android.Device.Ui.Nodes.Data
 {
-    public class Bounds
+    public class NodeBounds
     {
-        public Bounds(int width, int height)
+        public NodeBounds(int width, int height)
         {
             Height = height;
             Width = width;

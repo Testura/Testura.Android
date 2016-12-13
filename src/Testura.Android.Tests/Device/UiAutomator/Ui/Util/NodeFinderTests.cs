@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Testura.Android.Device.UiAutomator.Ui;
-using Testura.Android.Device.UiAutomator.Ui.Search;
-using Testura.Android.Device.UiAutomator.Ui.Util;
+using Testura.Android.Device.Ui.Nodes;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
 {

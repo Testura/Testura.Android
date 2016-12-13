@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Testura.Android.Device.Extensions;
-using Testura.Android.Device.UiAutomator.Ui;
-using Testura.Android.Device.UiAutomator.Ui.Search;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Objects;
+using Testura.Android.Device.Ui.Search;
 #pragma warning disable IDE0005 // Using directive is unnecessary.
 using Testura.Android.Util.Exceptions;
 #pragma warning restore IDE0005 // Using directive is unnecessary.

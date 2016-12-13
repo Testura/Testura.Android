@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Testura.Android.Device.UiAutomator.Ui.Util;
+using Testura.Android.Device.Ui.Nodes;
 
 namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
 {

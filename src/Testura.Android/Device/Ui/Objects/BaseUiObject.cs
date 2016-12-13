@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Testura.Android.Device.UiAutomator.Ui.Search;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Search;
 using Testura.Android.Util.Exceptions;
 
-namespace Testura.Android.Device.UiAutomator.Ui
+namespace Testura.Android.Device.Ui.Objects
 {
     public abstract class BaseUiObject
     {
@@ -37,9 +38,8 @@ namespace Testura.Android.Device.UiAutomator.Ui
         /// Wait for the node(s) to be visible
         /// </summary>
         /// <param name="timeout">Timeout in seconds</param>
-        /// <param name="continueIfFalse">If true we continue and return false even if we can't find object, otherwise we throw exception</param>
-        /// <returns>True if we can find object, otherwise false (if continueIfFalse is true)</returns>
-        public bool IsVisible(int timeout = 10, bool continueIfFalse = false)
+        /// <returns>True if object is visible, otherwise false.</returns>
+        public bool IsVisible(int timeout = 10)
         {
             try
             {
@@ -48,12 +48,7 @@ namespace Testura.Android.Device.UiAutomator.Ui
             }
             catch (UiNodeNotFoundException)
             {
-                if (continueIfFalse)
-                {
-                    return false;
-                }
-
-                throw;
+                return false;
             }
         }
 
@@ -61,9 +56,8 @@ namespace Testura.Android.Device.UiAutomator.Ui
         /// Wait for the node(s) to be hidden
         /// </summary>
         /// <param name="timeout">Timeout in seconds</param>
-        /// <param name="continueIfFalse">If true we continue and return false even if we can find object, otherwise we throw exception</param>
-        /// <returns>True if we can't find object, otherwise false (if continueIfFalse is true)</returns>
-        public bool IsHidden(int timeout = 10, bool continueIfFalse = false)
+        /// <returns>True if object is hidden, otherwise false</returns>
+        public bool IsHidden(int timeout = 10)
         {
             var startTime = DateTime.Now;
             while (true)
@@ -73,12 +67,7 @@ namespace Testura.Android.Device.UiAutomator.Ui
                     TryFindNode(1);
                     if ((DateTime.Now - startTime).Seconds > timeout)
                     {
-                        if (continueIfFalse)
-                        {
-                            return false;
-                        }
-
-                        throw new UiNodeNotFoundException(null);
+                        return false;
                     }
                 }
                 catch (UiNodeNotFoundException)
