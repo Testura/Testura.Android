@@ -1,8 +1,8 @@
 ﻿using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Services;
 using Testura.Android.Device.Services.Default;
-using Testura.Android.Device.UiAutomator.Server;
-using Testura.Android.Device.UiAutomator.Ui.Util;
+using Testura.Android.Device.Ui.Nodes;
+using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device.ServiceLoader

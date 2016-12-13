@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Testura.Android.Device.Ui.Nodes.Data;
 
-namespace Testura.Android.Device.UiAutomator.Ui.Util
+namespace Testura.Android.Device.Ui.Nodes
 {
     public class NodeParser : INodeParser
     {

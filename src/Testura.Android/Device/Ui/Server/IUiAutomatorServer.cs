@@ -1,4 +1,4 @@
-﻿namespace Testura.Android.Device.UiAutomator.Server
+﻿namespace Testura.Android.Device.Ui.Server
 {
     public interface IUiAutomatorServer
     {

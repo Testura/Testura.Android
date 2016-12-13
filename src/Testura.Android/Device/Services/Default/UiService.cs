@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Testura.Android.Device.Extensions;
-using Testura.Android.Device.UiAutomator.Ui;
-using Testura.Android.Device.UiAutomator.Ui.Search;
-using Testura.Android.Device.UiAutomator.Ui.Util;
+using Testura.Android.Device.Ui.Nodes;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Objects;
+using Testura.Android.Device.Ui.Search;
 using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Device.Services.Default
@@ -17,6 +18,21 @@ namespace Testura.Android.Device.Services.Default
 
         public UiService(IScreenDumper screenDumper, INodeParser nodeParser, INodeFinder nodeFinder)
         {
+            if (screenDumper == null)
+            {
+                throw new ArgumentNullException(nameof(screenDumper));
+            }
+
+            if (nodeParser == null)
+            {
+                throw new ArgumentNullException(nameof(nodeParser));
+            }
+
+            if (nodeFinder == null)
+            {
+                throw new ArgumentNullException(nameof(nodeFinder));
+            }
+
             _screenDumper = screenDumper;
             _nodeParser = nodeParser;
             _nodeFinder = nodeFinder;

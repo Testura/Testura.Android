@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Testura.Android.Device.UiAutomator.Ui.Util
+namespace Testura.Android.Device.Ui.Nodes
 {
     public interface IScreenDumper
     {

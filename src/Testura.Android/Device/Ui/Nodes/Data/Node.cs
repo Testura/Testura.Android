@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Testura.Android.Util;
 
-namespace Testura.Android.Device.UiAutomator.Ui
+namespace Testura.Android.Device.Ui.Nodes.Data
 {
     public class Node
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Linq;
-using Testura.Android.Device.UiAutomator.Server;
+using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Exceptions;
 
-namespace Testura.Android.Device.UiAutomator.Ui.Util
+namespace Testura.Android.Device.Ui.Nodes
 {
     public class ScreenDumper : IScreenDumper
     {

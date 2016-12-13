@@ -26,8 +26,8 @@ Testura.Android has been designed for the page object pattern. Here is a short e
 ```c#
 using Testura.Android.Device;
 using Testura.Android.Device.Configurations;
-using Testura.Android.Device.UiAutomator.Ui;
-using Testura.Android.Device.UiAutomator.Ui.Search;
+using Testura.Android.Device.Ui.Objects;
+using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Tests.Device
 {
@@ -111,8 +111,8 @@ device.Settings.Wifi(State.Enable);
 var device = new AndroidDevice(new DeviceConfiguration());
 var uiObject = device.Ui.CreateUiObject(With.ContentDesc(".."));
 uiObject.Click();
-uiObject.Visible();
-uiObject.Hidden();
+uiObject.IsVisible();
+uiObject.IsHidden();
 uiObject.SendKeys("..");
 var node = uiObject.Values();
 ```
