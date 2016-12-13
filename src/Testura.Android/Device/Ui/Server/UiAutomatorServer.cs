@@ -5,7 +5,7 @@ using System.Net.Http;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Terminal;
 
-namespace Testura.Android.Device.UiAutomator.Server
+namespace Testura.Android.Device.Ui.Server
 {
     public class UiAutomatorServer : IUiAutomatorServer
     {

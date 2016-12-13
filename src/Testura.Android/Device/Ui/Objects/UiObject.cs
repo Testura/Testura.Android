@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using Testura.Android.Device.UiAutomator.Ui.Search;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Search;
 
-namespace Testura.Android.Device.UiAutomator.Ui
+namespace Testura.Android.Device.Ui.Objects
 {
     /// <summary>
     /// A wrapper for a single node on the screen
@@ -17,12 +18,10 @@ namespace Testura.Android.Device.UiAutomator.Ui
         /// Click in the center of a node
         /// </summary>
         /// <param name="timeout">Timeout in seconds</param>
-        /// <returns>The ui object</returns>
-        public BaseUiObject Click(int timeout = 20)
+        public void Click(int timeout = 20)
         {
             var node = Device.Ui.FindNode(timeout, With);
             Device.Interaction.Click(node);
-            return this;
         }
 
         /// <summary>
@@ -30,12 +29,10 @@ namespace Testura.Android.Device.UiAutomator.Ui
         /// </summary>
         /// <param name="text">Text to write</param>
         /// <param name="timeout">Timeout in seconds</param>
-        /// <returns>The ui object</returns>
-        public BaseUiObject SendKeys(string text, int timeout = 20)
+        public void SendKeys(string text, int timeout = 20)
         {
             Click(timeout);
             Device.Interaction.SendKeys(text);
-            return this;
         }
 
         /// <summary>

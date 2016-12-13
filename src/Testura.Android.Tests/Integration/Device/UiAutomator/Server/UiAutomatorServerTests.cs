@@ -4,9 +4,7 @@ using System.Threading;
 using NUnit.Framework;
 using Testura.Android.Device;
 using Testura.Android.Device.Configurations;
-using Testura.Android.Device.UiAutomator.Server;
-using Testura.Android.Device.UiAutomator.Ui.Search;
-using Testura.Android.Device.UiAutomator.Ui.Util;
+using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Terminal;
 using Assert = NUnit.Framework.Assert;
 

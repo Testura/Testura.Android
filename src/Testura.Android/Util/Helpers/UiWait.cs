@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Testura.Android.Device.UiAutomator.Ui;
+using Testura.Android.Device.Ui.Objects;
 using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Util.Helpers
@@ -21,8 +21,18 @@ namespace Testura.Android.Util.Helpers
         /// UiWait.ForAny(10, uiObjectOne.Visible, uiObjectTwo.Hidden)
         /// </code>
         /// <exception cref="UiNodeNotFoundException">Thrown If no ui objects are visible/hidden</exception>
-        public static BaseUiObject ForAny(int timeout, params Func<int, BaseUiObject>[] invokeMethods)
+        public static UiObject ForAny(int timeout, params Func<int, bool>[] invokeMethods)
         {
+            if (invokeMethods == null)
+            {
+                throw new ArgumentNullException(nameof(invokeMethods));
+            }
+
+            if (invokeMethods.Length == 0)
+            {
+                throw new ArgumentException("Argument is empty collection", nameof(invokeMethods));
+            }
+
             var tasks = invokeMethods.Select(executeMethod => Task.Run(() =>
             {
                 try
@@ -31,15 +41,17 @@ namespace Testura.Android.Util.Helpers
                 }
                 catch (UiNodeNotFoundException)
                 {
-                    return null;
+                    return false;
                 }
             })).ToArray();
-            var result = tasks[Task.WaitAny(tasks)].Result;
-            if (result == null)
+            var index = Task.WaitAny(tasks);
+            var task = tasks[index];
+            if (!task.Result || task.Exception != null)
             {
                 throw new UiNodeNotFoundException("Could not find any of the provided ui objects");
             }
-            return result;
+
+            return (UiObject)invokeMethods[index].Target;
         }
     }
 }

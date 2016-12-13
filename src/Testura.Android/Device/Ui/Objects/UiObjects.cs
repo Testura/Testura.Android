@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
-using Testura.Android.Device.UiAutomator.Ui.Search;
+using Testura.Android.Device.Ui.Nodes;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Search;
 
-namespace Testura.Android.Device.UiAutomator.Ui
+namespace Testura.Android.Device.Ui.Objects
 {
     /// <summary>
     /// A wrapper for multiple nodes on the screen

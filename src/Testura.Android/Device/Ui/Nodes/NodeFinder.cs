@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Testura.Android.Device.UiAutomator.Ui.Search;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Search;
 using Testura.Android.Util.Exceptions;
 
-namespace Testura.Android.Device.UiAutomator.Ui.Util
+namespace Testura.Android.Device.Ui.Nodes
 {
     public class NodeFinder : INodeFinder
     {
@@ -65,7 +66,7 @@ namespace Testura.Android.Device.UiAutomator.Ui.Util
 
             if (!approvedNodes.Any())
             {
-                throw new UiNodeNotFoundException(with);
+                throw new UiNodeNotFoundException();
             }
 
             return approvedNodes;

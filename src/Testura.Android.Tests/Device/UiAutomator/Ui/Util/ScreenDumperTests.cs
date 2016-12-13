@@ -1,7 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
-using Testura.Android.Device.UiAutomator.Server;
-using Testura.Android.Device.UiAutomator.Ui.Util;
+using Testura.Android.Device.Ui.Nodes;
+using Testura.Android.Device.Ui.Server;
 
 namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
 {
