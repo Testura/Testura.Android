@@ -40,7 +40,7 @@ namespace Testura.Android.Device.Services.Default
             }
 
             var result = Device.Adb.Shell(commandBuilder.ToString());
-            if (result.Contains("Error") || result.Contains("does not exist"))
+            if (result.Contains("Error") || result.Contains("does not exist") || result.Contains("Exception"))
             {
                 throw new AdbException(result);
             }
