@@ -32,7 +32,6 @@ namespace Testura.Android.Device.Configurations
         /// <summary>
         /// Gets or sets a value indicating whether we should install
         /// server and help apks at startup.
-        /// at startup.
         /// </summary>
         public bool ShouldInstallApk { get; set; }
 
