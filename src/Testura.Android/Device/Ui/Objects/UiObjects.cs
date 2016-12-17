@@ -22,7 +22,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns>A list of nodes that contain all values</returns>
         public IList<Node> Values(int timeout = 2)
         {
-            return TryFindNode(2);
+            return TryFindNode(timeout);
         }
 
         protected override IList<Node> TryFindNode(int timeout)

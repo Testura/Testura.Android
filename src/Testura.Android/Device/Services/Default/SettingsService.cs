@@ -16,6 +16,17 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
+        /// Enable or disable gps
+        /// </summary>
+        /// <param name="state">Wanted state of gps</param>
+        public void Gps(State state)
+        {
+            Device.Adb.Shell(state == State.Enable
+                ? "settings put secure location_providers_allowed +gps"
+                : "settings put secure location_providers_allowed -gps");
+        }
+
+        /// <summary>
         /// Enable or disable airplane mode
         /// </summary>
         /// <param name="state">Wanted state of airplane mode</param>
