@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Management;
 using System.Net;
 using System.Net.Http;
 using Testura.Android.Util.Exceptions;
@@ -50,10 +51,13 @@ namespace Testura.Android.Device.Ui.Server
         public void Start()
         {
             ForwardPorts();
-            _currentServerProcess =
-                _terminal.StartTerminalProcess(
-                    CreateAdbCommand(
-                        $"shell am instrument -w -r -e debug false -e port {DevicePort} -e class com.testura.testuraandroidserver.Start#RunServer com.testura.testuraandroidserver.test/android.support.test.runner.AndroidJUnitRunner"));
+            if (_currentServerProcess == null || _currentServerProcess.HasExited)
+            {
+                _currentServerProcess =
+                    _terminal.StartTerminalProcess(
+                        CreateAdbCommand(
+                            $"shell am instrument -w -r -e debug false -e port {DevicePort} -e class com.testura.testuraandroidserver.Start#RunServer com.testura.testuraandroidserver.test/android.support.test.runner.AndroidJUnitRunner"));
+            }
 
             if (!Alive(5))
             {
@@ -67,7 +71,10 @@ namespace Testura.Android.Device.Ui.Server
         public void Stop()
         {
             GetData(StopUrl);
-            _currentServerProcess?.Close();
+            if (_currentServerProcess != null)
+            {
+                KillProcessAndChildrens(_currentServerProcess.Id);
+            }
         }
 
         /// <summary>
@@ -144,6 +151,34 @@ namespace Testura.Android.Device.Ui.Server
             string adbPath = string.IsNullOrEmpty(_adbPath) ? "adb" : _adbPath;
             string serial = string.IsNullOrEmpty(_serial) ? string.Empty : $"-s {_serial}";
             return $"{adbPath} {serial} {command}";
+        }
+
+        private void KillProcessAndChildrens(int pid)
+        {
+            var processSearcher = new ManagementObjectSearcher
+              ("Select * From Win32_Process Where ParentProcessID=" + pid);
+            var processCollection = processSearcher.Get();
+
+            try
+            {
+                var proc = Process.GetProcessById(pid);
+                if (!proc.HasExited)
+                {
+                    proc.Kill();
+                }
+            }
+            catch (ArgumentException)
+            {
+                // Process already exited.
+            }
+
+            if (processCollection != null)
+            {
+                foreach (var mo in processCollection)
+                {
+                    KillProcessAndChildrens(Convert.ToInt32(mo["ProcessID"]));
+                }
+            }
         }
     }
 }
