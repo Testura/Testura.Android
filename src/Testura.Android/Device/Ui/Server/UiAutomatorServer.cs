@@ -148,8 +148,8 @@ namespace Testura.Android.Device.Ui.Server
 
         private string CreateAdbCommand(string command)
         {
-            string adbPath = string.IsNullOrEmpty(_adbPath) ? "adb" : _adbPath;
-            string serial = string.IsNullOrEmpty(_serial) ? string.Empty : $"-s {_serial}";
+            var adbPath = string.IsNullOrEmpty(_adbPath) ? "adb" : _adbPath;
+            var serial = string.IsNullOrEmpty(_serial) ? string.Empty : $"-s {_serial}";
             return $"{adbPath} {serial} {command}";
         }
 

@@ -48,7 +48,6 @@ namespace Testura.Android.Device.Ui.Nodes
                 }
 
                 _server.Start();
-                _server.Alive(2);
 
                 dump = _server.DumpUi();
                 if (string.IsNullOrEmpty(dump))
