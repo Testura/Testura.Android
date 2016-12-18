@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Xml.Linq;
 using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Exceptions;
@@ -8,8 +9,15 @@ namespace Testura.Android.Device.Ui.Nodes
     public class ScreenDumper : IScreenDumper
     {
         private readonly IUiAutomatorServer _server;
+        private readonly int _cooldownBetweenDump;
+        private DateTime _lastDump;
 
-        public ScreenDumper(IUiAutomatorServer server)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScreenDumper"/> class.
+        /// </summary>
+        /// <param name="server">The ui dump server</param>
+        /// <param name="cooldownBetweenDumps">Cooldown between dumps in miliseconds</param>
+        public ScreenDumper(IUiAutomatorServer server, int cooldownBetweenDumps)
         {
             if (server == null)
             {
@@ -17,6 +25,8 @@ namespace Testura.Android.Device.Ui.Nodes
             }
 
             _server = server;
+            _cooldownBetweenDump = cooldownBetweenDumps;
+            _lastDump = DateTime.Now;
         }
 
         /// <summary>
@@ -25,6 +35,7 @@ namespace Testura.Android.Device.Ui.Nodes
         /// <returns>An xmldocument contaning all information about the current android screen</returns>
         public XDocument DumpUi()
         {
+            Cooldown();
             var dump = _server.DumpUi();
             if (string.IsNullOrEmpty(dump))
             {
@@ -46,6 +57,17 @@ namespace Testura.Android.Device.Ui.Nodes
             }
 
             return XDocument.Parse(dump);
+        }
+
+        private void Cooldown()
+        {
+            var milisecondsSinceLastDump = (int) (DateTime.Now - _lastDump).TotalMilliseconds;
+            if (milisecondsSinceLastDump < _cooldownBetweenDump)
+            {
+                Thread.Sleep(_cooldownBetweenDump - milisecondsSinceLastDump);
+            }
+
+            _lastDump = DateTime.Now;
         }
     }
 }

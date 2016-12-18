@@ -17,6 +17,7 @@ namespace Testura.Android.Device.Configurations
             ServerApkPath = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Apk", ServerAApkName);
             HelperApkPath = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Apk", ServerBApkName);
             Port = 9008;
+            CooldownBetweenDumps = 750;
         }
 
         /// <summary>
@@ -49,5 +50,10 @@ namespace Testura.Android.Device.Configurations
         /// Gets or sets the local port to the device
         /// </summary>
         public int Port { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cooldown (in miliseconds) between screen dumps
+        /// </summary>
+        public int CooldownBetweenDumps { get; set; }
     }
 }
