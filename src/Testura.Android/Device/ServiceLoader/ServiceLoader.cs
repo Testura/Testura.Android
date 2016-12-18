@@ -50,7 +50,7 @@ namespace Testura.Android.Device.ServiceLoader
         public virtual IUiService LoadUiService(DeviceConfiguration configuration)
         {
             return new UiService(
-                new ScreenDumper(new UiAutomatorServer(new WindowsTerminal(), configuration.Port, configuration.AdbPath, configuration.Serial)),
+                new ScreenDumper(new UiAutomatorServer(new WindowsTerminal(), configuration.Port, configuration.AdbPath, configuration.Serial), configuration.CooldownBetweenDumps),
                 new NodeParser(),
                 new NodeFinder());
         }
