@@ -1,14 +1,15 @@
 ﻿using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Services;
+using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device
 {
     public interface IAndroidDevice
     {
         /// <summary>
-        /// Gets the current device DeviceConfiguration
+        /// Gets the current device Configuration
         /// </summary>
-        DeviceConfiguration DeviceConfiguration { get; }
+        DeviceConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets the adb service of an android device
@@ -34,5 +35,11 @@ namespace Testura.Android.Device
         /// Gets the interaction service of an android device
         /// </summary>
         IInteractionService Interaction { get; }
+
+        /// <summary>
+        /// Add new log listeners
+        /// </summary>
+        /// <param name="logListener">Log listener to add</param>
+        void AddLogListener(ILogListener logListener);
     }
 }

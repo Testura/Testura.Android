@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device.Services.Default
@@ -105,9 +106,12 @@ namespace Testura.Android.Device.Services.Default
         {
             var command = new List<string> { GetAdb(), GetSerial() };
             command.AddRange(arguments);
-            var result = _terminal.ExecuteCommand(string.Join(" ", command.Where(a => !string.IsNullOrEmpty(a))));
+            var finalCommand = string.Join(" ", command.Where(a => !string.IsNullOrEmpty(a)));
+            TesturaLogger.Log($"Sending adb command: {finalCommand}");
+            var result = _terminal.ExecuteCommand(finalCommand);
             if (result.Contains("error"))
             {
+                TesturaLogger.Log($"Result from command contains error: {result}");
                 throw new AdbException(result);
             }
 
@@ -116,19 +120,19 @@ namespace Testura.Android.Device.Services.Default
 
         private string GetAdb()
         {
-            if (string.IsNullOrEmpty(Device.DeviceConfiguration.AdbPath))
+            if (string.IsNullOrEmpty(Device.Configuration.AdbPath))
             {
                 return "adb";
             }
 
-            return Device.DeviceConfiguration.AdbPath;
+            return Device.Configuration.AdbPath;
         }
 
         private string GetSerial()
         {
-            if (!string.IsNullOrEmpty(Device.DeviceConfiguration.Serial))
+            if (!string.IsNullOrEmpty(Device.Configuration.Serial))
             {
-                return $"-s {Device.DeviceConfiguration.Serial}";
+                return $"-s {Device.Configuration.Serial}";
             }
 
             return string.Empty;

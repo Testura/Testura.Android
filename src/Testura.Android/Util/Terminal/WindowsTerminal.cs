@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Util.Terminal
 {
@@ -13,12 +14,15 @@ namespace Testura.Android.Util.Terminal
         /// <exception cref="TerminalException">Thrown if terminal output contains error</exception>
         public string ExecuteCommand(string command)
         {
+            TesturaLogger.Log($"Executing new terminal command: {command}");
             var cmd = StartTerminalProcess(command, false);
             cmd.WaitForExit();
             var output = cmd.StandardOutput.ReadToEnd();
+            TesturaLogger.Log($"Terminal output: {output}");
             var errorOutput = cmd.StandardError.ReadToEnd();
             if (!string.IsNullOrEmpty(errorOutput))
             {
+                TesturaLogger.Log($"Errors found in terminal output! - {errorOutput}");
                 throw new TerminalException(errorOutput);
             }
 

@@ -2,6 +2,7 @@
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device.Services.Default
 {
@@ -19,6 +20,7 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="duration">Duration of the swipe in miliseconds</param>
         public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
+            TesturaLogger.Log("Swiping..");
             Device.Adb.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
         }
 
@@ -75,6 +77,7 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="y">The y position</param>
         public void Click(int x, int y)
         {
+            TesturaLogger.Log($"Clicking on node at X: {x}, Y: {y}");
             Device.Adb.Shell($"input tap {x} {y}");
         }
 
@@ -89,11 +92,13 @@ namespace Testura.Android.Device.Services.Default
                 throw new ArgumentNullException(nameof(text));
             }
 
+            TesturaLogger.Log($"Sending keys: {text}");
             Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
         }
 
         private void SetScreenHeightAndWidth()
         {
+            TesturaLogger.Log("Getting width and height");
             var widthAndHeight = Device.Adb.Shell("wm size");
             if (string.IsNullOrEmpty(widthAndHeight))
             {
@@ -101,7 +106,8 @@ namespace Testura.Android.Device.Services.Default
             }
 
             var split = widthAndHeight.Replace(" ", string.Empty).Split(':', 'x');
-            _screenBounds = new NodeBounds(int.Parse(split[split.Length-2]), int.Parse(split[split.Length-1]));
+            TesturaLogger.Log($"Width: {split[split.Length - 2]}, Height: {split[split.Length - 1]}");
+            _screenBounds = new NodeBounds(int.Parse(split[split.Length-2]), int.Parse(split[split.Length - 1]));
         }
     }
 }

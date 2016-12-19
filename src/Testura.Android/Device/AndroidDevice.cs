@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Device.ServiceLoader;
 using Testura.Android.Device.Services;
+using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device
 {
@@ -10,16 +12,16 @@ namespace Testura.Android.Device
         /// <summary>
         /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
         /// </summary>
-        /// <param name="deviceConfiguration">Device DeviceConfiguration</param>
+        /// <param name="configuration">Device Configuration</param>
         /// <param name="serviceLoader">A custom service loader</param>
-        public AndroidDevice(DeviceConfiguration deviceConfiguration, IServiceLoader serviceLoader)
+        public AndroidDevice(DeviceConfiguration configuration, IServiceLoader serviceLoader)
         {
-            DeviceConfiguration = deviceConfiguration;
-            Adb = serviceLoader.LoadAdbService(DeviceConfiguration);
-            Ui = serviceLoader.LoadUiService(DeviceConfiguration);
-            Settings = serviceLoader.LoadSettingsService(DeviceConfiguration);
-            Activity = serviceLoader.LoadActivityService(DeviceConfiguration);
-            Interaction = serviceLoader.LoadInteractionService(DeviceConfiguration);
+            Configuration = configuration;
+            Adb = serviceLoader.LoadAdbService(Configuration);
+            Ui = serviceLoader.LoadUiService(Configuration);
+            Settings = serviceLoader.LoadSettingsService(Configuration);
+            Activity = serviceLoader.LoadActivityService(Configuration);
+            Interaction = serviceLoader.LoadInteractionService(Configuration);
             SetOwner();
             InstallHelperApks();
         }
@@ -27,16 +29,16 @@ namespace Testura.Android.Device
         /// <summary>
         /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
         /// </summary>
-        /// <param name="deviceConfiguration">Device DeviceConfiguration</param>
-        public AndroidDevice(DeviceConfiguration deviceConfiguration)
-            : this(deviceConfiguration, new ServiceLoader.ServiceLoader())
+        /// <param name="configuration">Device Configuration</param>
+        public AndroidDevice(DeviceConfiguration configuration)
+            : this(configuration, new ServiceLoader.ServiceLoader())
         {
         }
 
         /// <summary>
-        /// Gets the current device DeviceConfiguration
+        /// Gets the current device Configuration
         /// </summary>
-        public DeviceConfiguration DeviceConfiguration { get; }
+        public DeviceConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets the adb service of an android device
@@ -63,6 +65,11 @@ namespace Testura.Android.Device
         /// </summary>
         public IInteractionService Interaction { get; }
 
+        public void AddLogListener(ILogListener logListener)
+        {
+            TesturaLogger.AddListener(logListener);
+        }
+
         private void SetOwner()
         {
             var components = GetType().GetProperties().Where(p => p.PropertyType.IsInterface);
@@ -74,11 +81,16 @@ namespace Testura.Android.Device
 
         private void InstallHelperApks()
         {
-            if (DeviceConfiguration.ShouldInstallApk)
+            if (Configuration.ShouldInstallApk)
             {
-                Adb.InstallApp(DeviceConfiguration.ServerApkPath);
-                Adb.InstallApp(DeviceConfiguration.HelperApkPath);
+                Adb.InstallApp(Configuration.ServerApkPath);
+                Adb.InstallApp(Configuration.HelperApkPath);
             }
+        }
+
+        public void fgfdg()
+        {
+            TesturaLogger.Log("mm");
         }
     }
 }
