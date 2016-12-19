@@ -107,11 +107,11 @@ namespace Testura.Android.Device.Services.Default
             var command = new List<string> { GetAdb(), GetSerial() };
             command.AddRange(arguments);
             var finalCommand = string.Join(" ", command.Where(a => !string.IsNullOrEmpty(a)));
-            TesturaLogger.Log($"Sending adb command: {finalCommand}");
+            DeviceLogger.Log($"Sending adb command: {finalCommand}");
             var result = _terminal.ExecuteCommand(finalCommand);
             if (result.Contains("error"))
             {
-                TesturaLogger.Log($"Result from command contains error: {result}");
+                DeviceLogger.Log($"Result from command contains error: {result}");
                 throw new AdbException(result);
             }
 

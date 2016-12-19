@@ -65,11 +65,6 @@ namespace Testura.Android.Device
         /// </summary>
         public IInteractionService Interaction { get; }
 
-        public void AddLogListener(ILogListener logListener)
-        {
-            TesturaLogger.AddListener(logListener);
-        }
-
         private void SetOwner()
         {
             var components = GetType().GetProperties().Where(p => p.PropertyType.IsInterface);
@@ -86,11 +81,6 @@ namespace Testura.Android.Device
                 Adb.InstallApp(Configuration.ServerApkPath);
                 Adb.InstallApp(Configuration.HelperApkPath);
             }
-        }
-
-        public void fgfdg()
-        {
-            TesturaLogger.Log("mm");
         }
     }
 }

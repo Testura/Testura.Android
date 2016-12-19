@@ -29,7 +29,7 @@ namespace Testura.Android.Device.Services.Default
                 throw new ArgumentException("Argument is null or whitespace", nameof(activity));
             }
 
-            TesturaLogger.Log("Starting a new activity");
+            DeviceLogger.Log("Starting a new activity");
             var commandBuilder = new StringBuilder($"am start -W -n {packageName}/{activity}");
             if (forceStopActivity)
             {
@@ -54,7 +54,7 @@ namespace Testura.Android.Device.Services.Default
         /// <returns>Current open activity</returns>
         public string GetCurrent()
         {
-            TesturaLogger.Log("Getting current activity");
+            DeviceLogger.Log("Getting current activity");
             var activity = Device.Adb.Shell("dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp'");
             var regex = new Regex(@"(?<=\{)[^}]*(?=\})");
             var matches = regex.Matches(activity);

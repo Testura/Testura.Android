@@ -85,7 +85,7 @@
     <Compile Include="Util\Helpers\UiWait.cs" />
     <Compile Include="Util\Logging\ConsoleLogListener.cs" />
     <Compile Include="Util\Logging\ILogListener.cs" />
-    <Compile Include="Util\Logging\TesturaLogger.cs" />
+    <Compile Include="Util\Logging\DeviceLogger.cs" />
     <Compile Include="Util\Terminal\ITerminal.cs" />
     <Compile Include="Util\Terminal\WindowsTerminal.cs" />
   </ItemGroup>

@@ -35,11 +35,5 @@ namespace Testura.Android.Device
         /// Gets the interaction service of an android device
         /// </summary>
         IInteractionService Interaction { get; }
-
-        /// <summary>
-        /// Add new log listeners
-        /// </summary>
-        /// <param name="logListener">Log listener to add</param>
-        void AddLogListener(ILogListener logListener);
     }
 }

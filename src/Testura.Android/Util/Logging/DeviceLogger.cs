@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Testura.Android.Util.Logging
 {
-    internal static class TesturaLogger
+    public static class DeviceLogger
     {
         private static IList<ILogListener> _logListeners;
 
@@ -12,7 +12,7 @@ namespace Testura.Android.Util.Logging
         /// Add a new log listener to our log listener list
         /// </summary>
         /// <param name="logListener">Log listener to add</param>
-        internal static void AddListener(ILogListener logListener)
+        public static void AddListener(ILogListener logListener)
         {
             if (_logListeners == null)
             {
@@ -21,7 +21,6 @@ namespace Testura.Android.Util.Logging
 
             _logListeners.Add(logListener);
         }
-
 
         /// <summary>
         /// Write a new log message to all log listeners
