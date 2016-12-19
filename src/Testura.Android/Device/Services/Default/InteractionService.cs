@@ -1,8 +1,7 @@
 ﻿using System;
-using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Nodes.Data;
-using Testura.Android.Device.Ui.Search;
 using Testura.Android.Util;
+using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Device.Services.Default
 {
@@ -38,10 +37,10 @@ namespace Testura.Android.Device.Services.Default
             switch (swipeDirection)
             {
                 case SwipeDirections.Left:
-                    Swipe(_screenBounds.Width, _screenBounds.Height / 2, 0, _screenBounds.Height / 2, duration);
+                    Swipe((int)(_screenBounds.Width * 0.90), _screenBounds.Height / 2, 0, _screenBounds.Height / 2, duration);
                     break;
                 case SwipeDirections.Up:
-                    Swipe(_screenBounds.Width / 2, _screenBounds.Height, _screenBounds.Width / 2, 0, duration);
+                    Swipe(_screenBounds.Width / 2, (int)(_screenBounds.Height * 0.90), _screenBounds.Width / 2, 0, duration);
                     break;
                 case SwipeDirections.Right:
                     Swipe(0, _screenBounds.Height / 2, _screenBounds.Width, _screenBounds.Height / 2, duration);
@@ -95,9 +94,14 @@ namespace Testura.Android.Device.Services.Default
 
         private void SetScreenHeightAndWidth()
         {
-            var node = Device.Ui.FindNode(5, With.Index(0));
-            var bounds = node.GetNodeBounds();
-            _screenBounds = new NodeBounds(bounds[1].X - bounds[0].X, bounds[1].Y - bounds[0].Y);
+            var widthAndHeight = Device.Adb.Shell("wm size");
+            if (string.IsNullOrEmpty(widthAndHeight))
+            {
+                throw new AdbException("Could not get screen width and height");
+            }
+
+            var split = widthAndHeight.Replace(" ", string.Empty).Split(':', 'x');
+            _screenBounds = new NodeBounds(int.Parse(split[split.Length-2]), int.Parse(split[split.Length-1]));
         }
     }
 }
