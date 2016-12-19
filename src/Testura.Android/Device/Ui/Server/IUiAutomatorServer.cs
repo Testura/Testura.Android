@@ -1,10 +1,15 @@
-﻿namespace Testura.Android.Device.Ui.Server
+﻿#pragma warning disable IDE0005 // Using directive is unnecessary.
+using Testura.Android.Util.Exceptions;
+#pragma warning restore IDE0005 // Using directive is unnecessary.
+
+namespace Testura.Android.Device.Ui.Server
 {
     public interface IUiAutomatorServer
     {
         /// <summary>
         /// Start the ui automator server on the android device
         /// </summary>
+        /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
         void Start();
 
         /// <summary>

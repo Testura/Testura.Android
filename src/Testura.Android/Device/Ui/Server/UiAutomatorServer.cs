@@ -48,6 +48,7 @@ namespace Testura.Android.Device.Ui.Server
         /// <summary>
         /// Start the ui automator server on the android device
         /// </summary>
+        /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
         public void Start()
         {
             ForwardPorts();

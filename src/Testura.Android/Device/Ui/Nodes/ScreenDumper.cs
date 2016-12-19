@@ -60,6 +60,15 @@ namespace Testura.Android.Device.Ui.Nodes
         }
 
         /// <summary>
+        /// Start the UI server
+        /// </summary>
+        /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
+        public void StartUiServer()
+        {
+            _server.Start();
+        }
+
+        /// <summary>
         /// Stop the UI server
         /// </summary>
         public void StopUiServer()

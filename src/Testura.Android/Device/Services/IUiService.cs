@@ -49,6 +49,12 @@ namespace Testura.Android.Device.Services
         UiObjects CreateUiObjects(params With[] with);
 
         /// <summary>
+        /// Start the UI server
+        /// </summary>
+        /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
+        void StartUiServer();
+
+        /// <summary>
         /// Stop the UI server
         /// </summary>
         void StopUiServer();
