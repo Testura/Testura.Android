@@ -15,7 +15,7 @@ namespace Testura.Android.Device.ServiceLoader
         /// <summary>
         /// Load the activity service
         /// </summary>
-        /// <param name="deviceConfiguration">Current device DeviceConfiguration</param>
+        /// <param name="deviceConfiguration">Current device Configuration</param>
         /// <returns>The loaded activity service</returns>
         IActivityService LoadActivityService(DeviceConfiguration deviceConfiguration);
 

@@ -59,6 +59,23 @@ namespace Testura.Android.Device.Ui.Nodes
             return XDocument.Parse(dump);
         }
 
+        /// <summary>
+        /// Start the UI server
+        /// </summary>
+        /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
+        public void StartUiServer()
+        {
+            _server.Start();
+        }
+
+        /// <summary>
+        /// Stop the UI server
+        /// </summary>
+        public void StopUiServer()
+        {
+            _server.Stop();
+        }
+
         private void Cooldown()
         {
             var milisecondsSinceLastDump = (int) (DateTime.Now - _lastDump).TotalMilliseconds;

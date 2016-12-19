@@ -113,5 +113,22 @@ namespace Testura.Android.Device.Services.Default
         {
             return new UiObjects(Device, with.ToArray());
         }
+
+        /// <summary>
+        /// Start the UI server
+        /// </summary>
+        /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
+        public void StartUiServer()
+        {
+            _screenDumper.StartUiServer();
+        }
+
+        /// <summary>
+        /// Stop the UI server
+        /// </summary>
+        public void StopUiServer()
+        {
+            _screenDumper.StopUiServer();
+        }
     }
 }

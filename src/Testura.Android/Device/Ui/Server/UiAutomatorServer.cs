@@ -4,6 +4,7 @@ using System.Management;
 using System.Net;
 using System.Net.Http;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device.Ui.Server
@@ -48,15 +49,22 @@ namespace Testura.Android.Device.Ui.Server
         /// <summary>
         /// Start the ui automator server on the android device
         /// </summary>
+        /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
         public void Start()
         {
+            DeviceLogger.Log("Starting server..");
             ForwardPorts();
             if (_currentServerProcess == null || _currentServerProcess.HasExited)
             {
+                DeviceLogger.Log("Starting instrumental");
                 _currentServerProcess =
                     _terminal.StartTerminalProcess(
                         CreateAdbCommand(
                             $"shell am instrument -w -r -e debug false -e port {DevicePort} -e class com.testura.testuraandroidserver.Start#RunServer com.testura.testuraandroidserver.test/android.support.test.runner.AndroidJUnitRunner"));
+            }
+            else
+            {
+                DeviceLogger.Log("Server already started");
             }
 
             if (!Alive(5))
@@ -70,6 +78,7 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         public void Stop()
         {
+            DeviceLogger.Log("Stopping server");
             GetData(StopUrl);
             if (_currentServerProcess != null)
             {
@@ -84,16 +93,19 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>True if server is a alive, false otherwise.</returns>
         public bool Alive(int timeout)
         {
+            DeviceLogger.Log("Checking if server is alive");
             var time = DateTime.Now;
             while ((DateTime.Now - time).Seconds < timeout)
             {
                 var result = Ping();
                 if (result)
                 {
+                    DeviceLogger.Log("Server is alive!");
                     return true;
                 }
             }
 
+            DeviceLogger.Log("Server is not alive!");
             return false;
         }
 
@@ -103,7 +115,16 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>The screen content as a xml string</returns>
         public string DumpUi()
         {
-            return GetData(DumpUrl);
+            DeviceLogger.Log("Dumping ui");
+            var dump = GetData(DumpUrl);
+            if (string.IsNullOrEmpty(dump))
+            {
+                DeviceLogger.Log("Failed to dump!");
+                return string.Empty;
+            }
+
+            DeviceLogger.Log("Dump was successful");
+            return dump;
         }
 
         /// <summary>
@@ -111,6 +132,7 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         private void ForwardPorts()
         {
+            DeviceLogger.Log("Forwarding ports");
             _terminal.ExecuteCommand(CreateAdbCommand($"forward tcp:{_localPort} tcp:{DevicePort}"));
         }
 
