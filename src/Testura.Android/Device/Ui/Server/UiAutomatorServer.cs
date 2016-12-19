@@ -120,6 +120,7 @@ namespace Testura.Android.Device.Ui.Server
             if (string.IsNullOrEmpty(dump))
             {
                 DeviceLogger.Log("Failed to dump!");
+                return string.Empty;
             }
 
             DeviceLogger.Log("Dump was successful");
