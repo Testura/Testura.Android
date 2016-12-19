@@ -23,6 +23,37 @@ namespace Testura.Android.Util.Logging
         }
 
         /// <summary>
+        /// Get all current log listeners
+        /// </summary>
+        /// <returns>A list with all log listeners</returns>
+        public static IReadOnlyList<ILogListener> GetListeners()
+        {
+            if (_logListeners == null)
+            {
+                return new List<ILogListener>();
+            }
+
+            return new List<ILogListener>(_logListeners);
+        }
+
+        /// <summary>
+        /// Remove all log listeners
+        /// </summary>
+        /// <param name="logListener">Log listener to remove</param>
+        public static void RemoveListener(ILogListener logListener)
+        {
+            if (_logListeners == null)
+            {
+                return;
+            }
+
+            if (_logListeners.Contains(logListener))
+            {
+                _logListeners.Remove(logListener);
+            }
+        }
+
+        /// <summary>
         /// Write a new log message to all log listeners
         /// </summary>
         /// <param name="message">Message to log</param>
