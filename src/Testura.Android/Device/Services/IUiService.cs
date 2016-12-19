@@ -47,5 +47,10 @@ namespace Testura.Android.Device.Services
         /// <param name="with">Find nodes with</param>
         /// <returns>The mapped ui object</returns>
         UiObjects CreateUiObjects(params With[] with);
+
+        /// <summary>
+        /// Stop the UI server
+        /// </summary>
+        void StopUiServer();
     }
 }
