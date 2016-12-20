@@ -6,16 +6,16 @@ namespace Testura.Android.Device.Configurations
 {
     public class DeviceConfiguration
     {
-        private const string ServerAApkName = "testura.android.server.a.apk";
-        private const string ServerBApkName = "testura.android.server.b.apk";
+        private const string ServerApkName = "testura.android.server.a.apk";
+        private const string HelperApkName = "testura.android.server.b.apk";
 
         public DeviceConfiguration()
         {
             AdbPath = string.Empty;
             Serial = string.Empty;
             ShouldInstallApk = true;
-            ServerApkPath = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Apk", ServerAApkName);
-            HelperApkPath = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Apk", ServerBApkName);
+            ServerApkPath = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Apk", ServerApkName);
+            HelperApkPath = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Apk", HelperApkName);
             Port = 9008;
             CooldownBetweenDumps = 750;
         }

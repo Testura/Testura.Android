@@ -1,6 +1,5 @@
 ﻿using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Services;
-using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device
 {

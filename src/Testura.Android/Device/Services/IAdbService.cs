@@ -40,6 +40,7 @@ namespace Testura.Android.Device.Services
         /// </summary>
         /// <param name="path">Full path to apk</param>
         /// <param name="shouldReinstall">True if we should use the reinstall flag </param>
-        void InstallApp(string path, bool shouldReinstall = true);
+        /// <param name="shouldUsePm">True if we should use the package manager flag</param>
+        void InstallApp(string path, bool shouldReinstall = true, bool shouldUsePm = false);
     }
 }

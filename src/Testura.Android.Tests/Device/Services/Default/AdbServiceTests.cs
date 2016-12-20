@@ -27,7 +27,7 @@ namespace Testura.Android.Tests.Device.Services.Default
             _deviceConfiguration = new DeviceConfiguration();
             _terminalMock = new Mock<ITerminal>();
             _androidMock = new Mock<IAndroidDevice>();
-            _androidMock.Setup(a => a.DeviceConfiguration).Returns(_deviceConfiguration);
+            _androidMock.Setup(a => a.Configuration).Returns(_deviceConfiguration);
 
             _adbService = new AdbService(_terminalMock.Object);
             _adbService.InitializeServiceOwner(_androidMock.Object);
@@ -52,13 +52,6 @@ namespace Testura.Android.Tests.Device.Services.Default
         }
 
         [Test]
-        public void Push_WhenPushFileAndGettingError_ShouldThrowException()
-        {
-            _terminalMock.Setup(t => t.ExecuteCommand("adb push \"fake\" \"fake\"")).Returns("adb: error: remote object 'fake' does not exist");
-            Assert.Throws<AdbException>(() => _adbService.Push("fake", "fake"));
-        }
-
-        [Test]
         public void Pull_WhenLocalPathIsNull_ShouldThrowException()
         {
             Assert.Throws<ArgumentException>(() => _adbService.Push("path/mm", null));
@@ -71,50 +64,10 @@ namespace Testura.Android.Tests.Device.Services.Default
         }
 
         [Test]
-        public void Pull_WhenPullingFileAndGettingError_ShouldThrowException()
-        {
-            _terminalMock.Setup(t => t.ExecuteCommand("adb pull \"fake\" \"fake\"")).Returns("adb: error: remote object 'fake' does not exist");
-            Assert.Throws<AdbException>(() => _adbService.Pull("fake", "fake"));
-        }
-
-        [Test]
         public void InstallApp_WhenPathIsNull_ShouldThrowException()
         {
             Assert.Throws<ArgumentException>(() => _adbService.InstallApp(null));
         }
 
-        [Test]
-        public void InstallApp_WhenInstallingAppWithReinstallFlag_ShouldContainFlag()
-        {
-            _terminalMock.Setup(t => t.ExecuteCommand(It.IsAny<string>())).Returns("return");
-            _adbService.InstallApp("my/apk");
-            _terminalMock.Verify(t => t.ExecuteCommand("adb install -r \"my/apk\""), Times.Once());
-        }
-
-        [Test]
-        public void InstallApp_WhenInstallingAppWithoutReinstallFlag_ShouldNotContainFlag()
-        {
-            _terminalMock.Setup(t => t.ExecuteCommand(It.IsAny<string>())).Returns("return");
-            _adbService.InstallApp("my/apk", false);
-            _terminalMock.Verify(t => t.ExecuteCommand("adb install \"my/apk\""), Times.Once());
-        }
-
-        [Test]
-        public void Shell_WhenConfigurationContainsSerial_AbdCommandShouldUseSerialFlag()
-        {
-            _terminalMock.Setup(t => t.ExecuteCommand(It.IsAny<string>())).Returns("return");
-            _deviceConfiguration.Serial = "2324";
-            _adbService.Shell("command");
-            _terminalMock.Verify(t => t.ExecuteCommand("adb -s 2324 shell \"command\""));
-        }
-
-        [Test]
-        public void Shell_WhenConfigurationContainsAdbPath_AdbCommandShouldContainFullPathToAdb()
-        {
-            _terminalMock.Setup(t => t.ExecuteCommand(It.IsAny<string>())).Returns("return");
-            _deviceConfiguration.AdbPath = "my/adb.exe";
-            _adbService.Shell("command");
-            _terminalMock.Verify(t => t.ExecuteCommand("my/adb.exe shell \"command\""));
-        }
     }
 }

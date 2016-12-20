@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Device.ServiceLoader;
 using Testura.Android.Device.Services;
-using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device
 {
@@ -78,8 +76,11 @@ namespace Testura.Android.Device
         {
             if (Configuration.ShouldInstallApk)
             {
-                Adb.InstallApp(Configuration.ServerApkPath);
-                Adb.InstallApp(Configuration.HelperApkPath);
+                Adb.Push(Configuration.HelperApkPath, @"/data/local/tmp/com.testura.testuraandroidserver");
+                Adb.InstallApp(@"/data/local/tmp/com.testura.testuraandroidserver", shouldUsePm: true);
+
+                Adb.Push(Configuration.ServerApkPath, @"/data/local/tmp/com.testura.testuraandroidserver.test");
+                Adb.InstallApp(@"/data/local/tmp/com.testura.testuraandroidserver.test", shouldUsePm: true);
             }
         }
     }

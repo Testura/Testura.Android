@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MedallionShell, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MedallionShell.1.2.1\lib\net45\MedallionShell.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -87,7 +91,7 @@
     <Compile Include="Util\Logging\ILogListener.cs" />
     <Compile Include="Util\Logging\DeviceLogger.cs" />
     <Compile Include="Util\Terminal\ITerminal.cs" />
-    <Compile Include="Util\Terminal\WindowsTerminal.cs" />
+    <Compile Include="Util\Terminal\Terminal.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

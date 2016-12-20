@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+#pragma warning disable IDE0005 // Using directive is unnecessary.
 using Testura.Android.Util.Exceptions;
+#pragma warning restore IDE0005 // Using directive is unnecessary.
 using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
 
@@ -28,7 +29,7 @@ namespace Testura.Android.Device.Services.Default
                 throw new ArgumentException("Argument is null or empty", nameof(command));
             }
 
-            return ExecuteCommand("shell", $"\"{command}\"");
+            return ExecuteCommand("shell", command);
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Testura.Android.Device.Services.Default
                 throw new ArgumentException("Argument is null or empty", nameof(remotePath));
             }
 
-            ExecuteCommand("push", $"\"{localPath}\"", $"\"{remotePath}\"");
+            ExecuteCommand("push", localPath, remotePath);
         }
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace Testura.Android.Device.Services.Default
                 throw new ArgumentException("Argument is null or empty", nameof(localPath));
             }
 
-            ExecuteCommand("logcat", "-d ", ">",  $"\"{localPath}\"");
+            ExecuteCommand("logcat", "-d ", ">", localPath);
         }
 
         /// <summary>
@@ -92,50 +93,37 @@ namespace Testura.Android.Device.Services.Default
         /// </summary>
         /// <param name="path">Full path to apk</param>
         /// <param name="shouldReinstall">True if we should use the reinstall flag </param>
-        public void InstallApp(string path, bool shouldReinstall = true)
+        /// <param name="shouldUsePm">True if we should use the package manager flag</param>
+        public void InstallApp(string path, bool shouldReinstall = true, bool shouldUsePm = false)
         {
             if (string.IsNullOrEmpty(path))
             {
                 throw new ArgumentException("Argument is null or empty", nameof(path));
             }
 
-            ExecuteCommand("install", shouldReinstall ? "-r" : string.Empty, $"\"{path}\"");
+            var arguments = new List<string>();
+
+            if (shouldUsePm)
+            {
+                arguments.Add("shell");
+                arguments.Add("pm");
+            }
+
+            arguments.Add("install");
+
+            if (shouldReinstall)
+            {
+                arguments.Add("-r");
+            }
+
+            arguments.Add(path);
+
+            ExecuteCommand(arguments.ToArray());
         }
 
         private string ExecuteCommand(params string[] arguments)
         {
-            var command = new List<string> { GetAdb(), GetSerial() };
-            command.AddRange(arguments);
-            var finalCommand = string.Join(" ", command.Where(a => !string.IsNullOrEmpty(a)));
-            DeviceLogger.Log($"Sending adb command: {finalCommand}");
-            var result = _terminal.ExecuteCommand(finalCommand);
-            if (result.Contains("error"))
-            {
-                DeviceLogger.Log($"Result from command contains error: {result}");
-                throw new AdbException(result);
-            }
-
-            return result;
-        }
-
-        private string GetAdb()
-        {
-            if (string.IsNullOrEmpty(Device.Configuration.AdbPath))
-            {
-                return "adb";
-            }
-
-            return Device.Configuration.AdbPath;
-        }
-
-        private string GetSerial()
-        {
-            if (!string.IsNullOrEmpty(Device.Configuration.Serial))
-            {
-                return $"-s {Device.Configuration.Serial}";
-            }
-
-            return string.Empty;
+            return _terminal.ExecuteAdbCommand(arguments);
         }
     }
 }
