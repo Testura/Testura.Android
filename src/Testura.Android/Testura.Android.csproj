@@ -91,7 +91,7 @@
     <Compile Include="Util\Logging\ILogListener.cs" />
     <Compile Include="Util\Logging\DeviceLogger.cs" />
     <Compile Include="Util\Terminal\ITerminal.cs" />
-    <Compile Include="Util\Terminal\WindowsTerminal.cs" />
+    <Compile Include="Util\Terminal\Terminal.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

@@ -7,15 +7,20 @@ using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Util.Terminal
 {
-    public class WindowsTerminal : ITerminal
+    public class Terminal : ITerminal
     {
         private readonly DeviceConfiguration _deviceConfiguration;
 
-        public WindowsTerminal(DeviceConfiguration deviceConfiguration)
+        public Terminal(DeviceConfiguration deviceConfiguration)
         {
             _deviceConfiguration = deviceConfiguration;
         }
 
+        /// <summary>
+        /// Execute a new adb command
+        /// </summary>
+        /// <param name="arguments">Arguments to send to the adb</param>
+        /// <returns>Output from adb</returns>
         public string ExecuteAdbCommand(string[] arguments)
         {
             var allArguments = new List<string>();
@@ -38,14 +43,20 @@ namespace Testura.Android.Util.Terminal
 
                 if (!command.Result.Success)
                 {
-                    DeviceLogger.Log($"Error: {error}");
-                    throw new AdbException(error);
+                    var message = $"Output: {output}, Error: {error}";
+                    DeviceLogger.Log(message);
+                    throw new AdbException(message);
                 }
 
                 return output;
             }
         }
 
+        /// <summary>
+        /// Start the adb process and return the command
+        /// </summary>
+        /// <param name="arguments">Arguments that should be provided to adb</param>
+        /// <returns>The command that contains the started process</returns>
         public Command StartAdbProcess(string[] arguments)
         {
             var command = Command.Run(

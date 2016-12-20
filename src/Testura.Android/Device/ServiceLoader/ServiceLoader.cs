@@ -19,7 +19,7 @@ namespace Testura.Android.Device.ServiceLoader
         /// <returns>The loaded adb service</returns>
         public virtual IAdbService LoadAdbService(DeviceConfiguration configuration)
         {
-            return new AdbService(new WindowsTerminal(configuration));
+            return new AdbService(new Terminal(configuration));
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Testura.Android.Device.ServiceLoader
         public virtual IUiService LoadUiService(DeviceConfiguration configuration)
         {
             return new UiService(
-                new ScreenDumper(new UiAutomatorServer(new WindowsTerminal(configuration), configuration.Port), configuration.CooldownBetweenDumps),
+                new ScreenDumper(new UiAutomatorServer(new Terminal(configuration), configuration.Port), configuration.CooldownBetweenDumps),
                 new NodeParser(),
                 new NodeFinder());
         }

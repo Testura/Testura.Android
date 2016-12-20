@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 #pragma warning disable IDE0005 // Using directive is unnecessary.
 using Testura.Android.Util.Exceptions;
 #pragma warning restore IDE0005 // Using directive is unnecessary.
@@ -92,14 +93,32 @@ namespace Testura.Android.Device.Services.Default
         /// </summary>
         /// <param name="path">Full path to apk</param>
         /// <param name="shouldReinstall">True if we should use the reinstall flag </param>
-        public void InstallApp(string path, bool shouldReinstall = true)
+        /// <param name="shouldUsePm">True if we should use the package manager flag</param>
+        public void InstallApp(string path, bool shouldReinstall = true, bool shouldUsePm = false)
         {
             if (string.IsNullOrEmpty(path))
             {
                 throw new ArgumentException("Argument is null or empty", nameof(path));
             }
 
-            ExecuteCommand("install", shouldReinstall ? "-r" : string.Empty, $"{path}");
+            var arguments = new List<string>();
+
+            if (shouldUsePm)
+            {
+                arguments.Add("shell");
+                arguments.Add("pm");
+            }
+
+            arguments.Add("install");
+
+            if (shouldReinstall)
+            {
+                arguments.Add("-r");
+            }
+
+            arguments.Add(path);
+
+            ExecuteCommand(arguments.ToArray());
         }
 
         private string ExecuteCommand(params string[] arguments)
