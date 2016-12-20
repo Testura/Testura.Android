@@ -123,7 +123,6 @@ namespace Testura.Android.Device.Services.Default
 
         private string ExecuteCommand(params string[] arguments)
         {
-            DeviceLogger.Log($"Sending adb command: {arguments}");
             return _terminal.ExecuteAdbCommand(arguments);
         }
     }

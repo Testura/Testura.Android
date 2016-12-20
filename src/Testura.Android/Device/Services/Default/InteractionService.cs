@@ -20,7 +20,6 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="duration">Duration of the swipe in miliseconds</param>
         public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
-            DeviceLogger.Log("Swiping..");
             Device.Adb.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
         }
 
@@ -77,7 +76,6 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="y">The y position</param>
         public void Click(int x, int y)
         {
-            DeviceLogger.Log($"Clicking on node at X: {x}, Y: {y}");
             Device.Adb.Shell($"input tap {x} {y}");
         }
 
@@ -92,7 +90,6 @@ namespace Testura.Android.Device.Services.Default
                 throw new ArgumentNullException(nameof(text));
             }
 
-            DeviceLogger.Log($"Sending keys: {text}");
             Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
         }
 
