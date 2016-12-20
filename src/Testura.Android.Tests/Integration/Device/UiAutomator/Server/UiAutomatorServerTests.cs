@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Testura.Android.Device;
 using Testura.Android.Device.Configurations;
+using Testura.Android.Device.Ui.Search;
 using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Terminal;
 using Assert = NUnit.Framework.Assert;
@@ -11,7 +9,7 @@ using Assert = NUnit.Framework.Assert;
 namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
 {
     [TestFixture]
-    [Ignore("Integration")]
+    //[Ignore("Integration")]
     public class UiAutomatorServerTests
     {
         private UiAutomatorServer _server;
@@ -19,7 +17,7 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
         [SetUp]
         public void SetUp()
         {
-            _server = new UiAutomatorServer(new WindowsTerminal(), 9008, null, null);
+            _server = new UiAutomatorServer(new WindowsTerminal(new DeviceConfiguration()), 9008);
         }
 
         [Test]
@@ -31,10 +29,13 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
         [Test]
         public void UiAUtomatorServer_WhenDumpingUi_ShouldGetContentBack()
         {
-            _server.Start();
-            var ui = _server.DumpUi();
-            Assert.IsNotNull(ui);
-            Assert.IsNotEmpty(ui);
+            var device = new AndroidDevice(new DeviceConfiguration { ShouldInstallApk = false, Serial = "00a8f2cb968d4543" });
+            device.Adb.Push(@"C:\Users\Mille\Desktop\SuperTest\woo oh\mm1.txt", "/sdcard/");
+
+            //_server.Start();
+            //var ui = _server.DumpUi();
+            //Assert.IsNotNull(ui);
+            //Assert.IsNotEmpty(ui);
         }
     }
 }

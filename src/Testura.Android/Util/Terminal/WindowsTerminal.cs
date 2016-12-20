@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using Medallion.Shell;
+using Testura.Android.Device.Configurations;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
 
@@ -6,52 +9,71 @@ namespace Testura.Android.Util.Terminal
 {
     public class WindowsTerminal : ITerminal
     {
-        /// <summary>
-        /// Execute a terminal command and wait for it to finish.
-        /// </summary>
-        /// <param name="command">Command to execute</param>
-        /// <returns>Result back from terminal</returns>
-        /// <exception cref="TerminalException">Thrown if terminal output contains error</exception>
-        public string ExecuteCommand(string command)
-        {
-            DeviceLogger.Log($"Executing new terminal command: {command}");
-            var cmd = StartTerminalProcess(command, false);
-            cmd.WaitForExit();
-            var output = cmd.StandardOutput.ReadToEnd();
-            DeviceLogger.Log($"Terminal output: {output}");
-            var errorOutput = cmd.StandardError.ReadToEnd();
-            if (!string.IsNullOrEmpty(errorOutput))
-            {
-                DeviceLogger.Log($"Errors found in terminal output! - {errorOutput}");
-                throw new TerminalException(errorOutput);
-            }
+        private readonly DeviceConfiguration _deviceConfiguration;
 
-            return output;
+        public WindowsTerminal(DeviceConfiguration deviceConfiguration)
+        {
+            _deviceConfiguration = deviceConfiguration;
         }
 
-        /// <summary>
-        /// Execute a terminal command and return the process back
-        /// </summary>
-        /// <param name="command">Command to execute</param>
-        /// <param name="useShell">Set if we should use the operation system shell to start the process</param>
-        /// <returns>The started terminal process</returns>
-        public Process StartTerminalProcess(string command, bool useShell = true)
+        public string ExecuteAdbCommand(string[] arguments)
         {
-            var cmd = new Process
+            var allArguments = new List<string>();
+            if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
             {
-                StartInfo =
+                allArguments.Add("-s");
+                allArguments.Add(_deviceConfiguration.Serial);
+            }
+
+            allArguments.AddRange(arguments);
+
+            using (var command = Command.Run(
+                "adb.exe",
+                arguments,
+                options: o => o.Timeout(TimeSpan.FromMinutes(1))))
+            {
+
+                var output = command.StandardOutput.ReadToEnd();
+                var error = command.StandardOutput.ReadToEnd();
+
+                if (!command.Result.Success)
                 {
-                    FileName = "cmd.exe",
-                    RedirectStandardInput = !useShell,
-                    RedirectStandardOutput = !useShell,
-                    RedirectStandardError = !useShell,
-                    CreateNoWindow = true,
-                    UseShellExecute = useShell,
-                    Arguments = $"/C {command}"
+                    DeviceLogger.Log($"Error: {error}");
+                    throw new AdbException(error);
                 }
-            };
-            cmd.Start();
-            return cmd;
+
+                return output;
+            }
+        }
+
+        public Command StartAdbProcess(string[] arguments)
+        {
+            var command = Command.Run(
+                GetAdbExe(),
+                arguments,
+                o =>
+                {
+                    o.StartInfo(si =>
+                    {
+                        si.CreateNoWindow = false;
+                        si.UseShellExecute = true;
+                        si.RedirectStandardError = false;
+                        si.RedirectStandardInput = false;
+                        si.RedirectStandardOutput = false;
+                    });
+                    o.DisposeOnExit(false);
+                });
+            return command;
+        }
+
+        private string GetAdbExe()
+        {
+            if (string.IsNullOrEmpty(_deviceConfiguration.AdbPath))
+            {
+                return "adb.exe";
+            }
+
+            return _deviceConfiguration.AdbPath;
         }
     }
 }

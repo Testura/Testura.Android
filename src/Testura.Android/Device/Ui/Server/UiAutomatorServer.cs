@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Net.Http;
+using Medallion.Shell;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
@@ -14,13 +15,11 @@ namespace Testura.Android.Device.Ui.Server
         public const int DevicePort = 9030;
         private const int Timeout = 5;
 
-        private readonly string _adbPath;
-        private readonly string _serial;
         private readonly int _localPort;
         private readonly ITerminal _terminal;
-        private Process _currentServerProcess;
+        private Command _currentServerProcess;
 
-        public UiAutomatorServer(ITerminal terminal, int port, string adbPath, string serial)
+        public UiAutomatorServer(ITerminal terminal, int port)
         {
             if (terminal == null)
             {
@@ -28,14 +27,7 @@ namespace Testura.Android.Device.Ui.Server
             }
 
             _localPort = port;
-            _adbPath = adbPath;
-            _serial = serial;
             _terminal = terminal;
-        }
-
-        public UiAutomatorServer(ITerminal terminal, int port)
-            : this(terminal, port, string.Empty, string.Empty)
-        {
         }
 
         private string BaseUrl => $"http://localhost:{_localPort}";
@@ -54,13 +46,13 @@ namespace Testura.Android.Device.Ui.Server
         {
             DeviceLogger.Log("Starting server..");
             ForwardPorts();
-            if (_currentServerProcess == null || _currentServerProcess.HasExited)
+            if (_currentServerProcess == null || _currentServerProcess.Process.HasExited)
             {
                 DeviceLogger.Log("Starting instrumental");
-                _currentServerProcess =
-                    _terminal.StartTerminalProcess(
-                        CreateAdbCommand(
-                            $"shell am instrument -w -r -e debug false -e port {DevicePort} -e class com.testura.testuraandroidserver.Start#RunServer com.testura.testuraandroidserver.test/android.support.test.runner.AndroidJUnitRunner"));
+                _currentServerProcess = _terminal.StartAdbProcess("shell", "am", "instrument", "-w", "-r", "-e", "debug", "false", "-e", "port",
+                    DevicePort.ToString(),
+                    "-e", "class",
+                    "com.testura.testuraandroidserver.Start#RunServer com.testura.testuraandroidserver.test/android.support.test.runner.AndroidJUnitRunner");
             }
             else
             {
@@ -82,7 +74,7 @@ namespace Testura.Android.Device.Ui.Server
             GetData(StopUrl);
             if (_currentServerProcess != null)
             {
-                KillProcessAndChildrens(_currentServerProcess.Id);
+                KillProcessAndChildrens(_currentServerProcess.Process.Id);
             }
         }
 
@@ -115,15 +107,12 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>The screen content as a xml string</returns>
         public string DumpUi()
         {
-            DeviceLogger.Log("Dumping ui");
             var dump = GetData(DumpUrl);
             if (string.IsNullOrEmpty(dump))
             {
                 DeviceLogger.Log("Failed to dump!");
                 return string.Empty;
             }
-
-            DeviceLogger.Log("Dump was successful");
             return dump;
         }
 
@@ -133,7 +122,7 @@ namespace Testura.Android.Device.Ui.Server
         private void ForwardPorts()
         {
             DeviceLogger.Log("Forwarding ports");
-            _terminal.ExecuteCommand(CreateAdbCommand($"forward tcp:{_localPort} tcp:{DevicePort}"));
+            _terminal.ExecuteAdbCommand("forward", $"tcp:{_localPort}", $"tcp:{DevicePort}");
         }
 
         /// <summary>
@@ -166,13 +155,6 @@ namespace Testura.Android.Device.Ui.Server
             {
                 return string.Empty;
             }
-        }
-
-        private string CreateAdbCommand(string command)
-        {
-            var adbPath = string.IsNullOrEmpty(_adbPath) ? "adb" : _adbPath;
-            var serial = string.IsNullOrEmpty(_serial) ? string.Empty : $"-s {_serial}";
-            return $"{adbPath} {serial} {command}";
         }
 
         private void KillProcessAndChildrens(int pid)
