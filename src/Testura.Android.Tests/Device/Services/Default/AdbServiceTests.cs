@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Testura.Android.Device;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Services.Default;
+using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Tests.Device.Services.Default
