@@ -36,12 +36,12 @@ namespace Testura.Android.Util.Terminal
 
             using (var command = Command.Run(
                 "adb.exe",
-                arguments,
+                allArguments,
                 options: o => o.Timeout(TimeSpan.FromMinutes(1))))
             {
 
                 var output = command.StandardOutput.ReadToEnd();
-                var error = command.StandardOutput.ReadToEnd();
+                var error = command.StandardError.ReadToEnd();
 
                 if (!command.Result.Success)
                 {
@@ -61,9 +61,19 @@ namespace Testura.Android.Util.Terminal
         /// <returns>The command that contains the started process</returns>
         public Command StartAdbProcess(string[] arguments)
         {
+            var allArguments = new List<string> { "/c", GetAdbExe() };
+
+            if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
+            {
+                allArguments.Add("-s");
+                allArguments.Add(_deviceConfiguration.Serial);
+            }
+
+            allArguments.AddRange(arguments);
+
             var command = Command.Run(
-                GetAdbExe(),
-                arguments,
+                "cmd.exe",
+                allArguments.ToArray(),
                 o =>
                 {
                     o.StartInfo(si =>

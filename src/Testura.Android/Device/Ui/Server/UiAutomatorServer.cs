@@ -72,10 +72,6 @@ namespace Testura.Android.Device.Ui.Server
         {
             DeviceLogger.Log("Stopping server");
             GetData(StopUrl);
-            if (_currentServerProcess != null)
-            {
-                KillProcessAndChildrens(_currentServerProcess.Process.Id);
-            }
         }
 
         /// <summary>
