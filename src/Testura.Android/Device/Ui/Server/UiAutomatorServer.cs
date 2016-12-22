@@ -72,6 +72,7 @@ namespace Testura.Android.Device.Ui.Server
         {
             DeviceLogger.Log("Stopping server");
             GetData(StopUrl);
+            KillProcessAndChildrens(_currentServerProcess.Process.Id);
         }
 
         /// <summary>
@@ -109,6 +110,7 @@ namespace Testura.Android.Device.Ui.Server
                 DeviceLogger.Log("Failed to dump!");
                 return string.Empty;
             }
+
             return dump;
         }
 
