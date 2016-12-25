@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Xml;
 using System.Xml.Linq;
 using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Exceptions;
-using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device.Ui.Nodes
 {
@@ -50,37 +50,24 @@ namespace Testura.Android.Device.Ui.Nodes
         public XDocument DumpUi()
         {
             var dump = GetDump();
-            return XDocument.Parse(dump);
+            try
+            {
+                return XDocument.Parse(dump);
+            }
+            catch (XmlException ex)
+            {
+                throw new UiNodeNotFoundException("Could not parse nodes from dump", ex);
+            }
         }
 
         private string GetDump()
         {
-            var i = 1;
-            while (true)
+            if (!_server.Alive(2))
             {
-                try
-                {
-                    return _server.DumpUi();
-                }
-                catch (UiAutomatorServerException)
-                {
-                    if (i <= DumpTries)
-                    {
-                        i++;
-                        DeviceLogger.Log($"Failed to dump, trying {DumpTries - i} more times");
-                        if (_server.Alive(2))
-                        {
-                            _server.Stop();
-                        }
-
-                        _server.Start();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _server.Start();
             }
+
+            return _server.DumpUi();
         }
     }
 }
