@@ -1,7 +1,6 @@
-﻿using System.Diagnostics;
-using Medallion.Shell;
+﻿using Medallion.Shell;
 #pragma warning disable IDE0005 // Using directive is unnecessary.
-using Testura.Android.Util.Exceptions;
+
 #pragma warning restore IDE0005 // Using directive is unnecessary.
 
 namespace Testura.Android.Util.Terminal

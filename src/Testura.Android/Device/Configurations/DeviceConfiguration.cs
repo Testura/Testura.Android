@@ -6,18 +6,17 @@ namespace Testura.Android.Device.Configurations
 {
     public class DeviceConfiguration
     {
-        private const string ServerApkName = "testura.android.server.a.apk";
-        private const string HelperApkName = "testura.android.server.b.apk";
+        public const string UiAutomatorStub = "uiautomator-stub.jar";
+        public const string UiAutomatorStubBundle = "uiautomator-stub-bundle.jar";
+        public const string HelperApkName = "testura-helper.apk";
 
         public DeviceConfiguration()
         {
             AdbPath = string.Empty;
             Serial = string.Empty;
-            ShouldInstallApk = true;
-            ServerApkPath = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Apk", ServerApkName);
-            HelperApkPath = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Apk", HelperApkName);
+            ShouldInstallDependencies = true;
+            DependenciesDirectory = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Dependencies");
             Port = 9008;
-            CooldownBetweenDumps = 750;
         }
 
         /// <summary>
@@ -31,29 +30,19 @@ namespace Testura.Android.Device.Configurations
         public string Serial { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether we should install
-        /// server and help apks at startup.
+        /// Gets or sets a value indicating whether we should push and install
+        /// all required dependencies.
         /// </summary>
-        public bool ShouldInstallApk { get; set; }
+        public bool ShouldInstallDependencies { get; set; }
 
         /// <summary>
-        /// Gets or sets the path to the server apk
+        /// Gets or sets the directory to all dependencies (uiautomator stub, helper apk, etc)
         /// </summary>
-        public string ServerApkPath { get; set; }
-
-        /// <summary>
-        /// Gets or sets the path to the helper apk
-        /// </summary>
-        public string HelperApkPath { get; set; }
+        public string DependenciesDirectory { get; set; }
 
         /// <summary>
         /// Gets or sets the local port to the device
         /// </summary>
         public int Port { get; set; }
-
-        /// <summary>
-        /// Gets or sets the cooldown (in miliseconds) between screen dumps
-        /// </summary>
-        public int CooldownBetweenDumps { get; set; }
     }
 }

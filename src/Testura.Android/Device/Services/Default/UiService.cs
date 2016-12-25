@@ -115,16 +115,15 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Start the UI server
+        /// Start the ui server
         /// </summary>
-        /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
         public void StartUiServer()
         {
             _screenDumper.StartUiServer();
         }
 
         /// <summary>
-        /// Stop the UI server
+        /// Stop the ui server
         /// </summary>
         public void StopUiServer()
         {

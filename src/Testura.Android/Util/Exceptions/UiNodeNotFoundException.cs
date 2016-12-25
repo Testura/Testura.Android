@@ -13,5 +13,10 @@ namespace Testura.Android.Util.Exceptions
             : base(message)
         {
         }
+
+        public UiNodeNotFoundException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
     }
 }
