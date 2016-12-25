@@ -3,7 +3,6 @@ using System.Collections.Generic;
 #pragma warning disable IDE0005 // Using directive is unnecessary.
 using Testura.Android.Util.Exceptions;
 #pragma warning restore IDE0005 // Using directive is unnecessary.
-using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device.Services.Default

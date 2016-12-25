@@ -1,5 +1,4 @@
-﻿using System;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Server;
@@ -19,7 +18,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
         public void SetUp()
         {
             _uiAutomatorServerMock = new Mock<IUiAutomatorServer>();
-            _screenDumper = new ScreenDumper(_uiAutomatorServerMock.Object, 0);
+            _screenDumper = new ScreenDumper(_uiAutomatorServerMock.Object);
         }
 
         [Test]
@@ -32,18 +31,5 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
             Assert.AreEqual("test", result.Root.Name.LocalName);
             Assert.AreEqual("hej", result.Root.Value);           
         }
-
-        [Test]
-        public void ScreenDumper_WhenDumpingUi_ShouldHaveCooldown()
-        {
-            var screenDumper = new ScreenDumper(_uiAutomatorServerMock.Object, 700);
-            var xml = "<test>hej</test>";
-            _uiAutomatorServerMock.Setup(u => u.Alive(2)).Returns(true);
-            _uiAutomatorServerMock.Setup(u => u.DumpUi()).Returns(xml);
-            var now = DateTime.Now;
-            screenDumper.DumpUi();
-            Assert.LessOrEqual((now - DateTime.Now).TotalMilliseconds, 0);
-        }
-
     }
 }

@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Threading;
 using System.Xml.Linq;
 using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device.Ui.Nodes
 {
     public class ScreenDumper : IScreenDumper
     {
+        private const int DumpTries = 3;
+
         private readonly IUiAutomatorServer _server;
-        private readonly int _cooldownBetweenDump;
-        private DateTime _lastDump;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenDumper"/> class.
         /// </summary>
         /// <param name="server">The ui dump server</param>
-        /// <param name="cooldownBetweenDumps">Cooldown between dumps in miliseconds</param>
-        public ScreenDumper(IUiAutomatorServer server, int cooldownBetweenDumps)
+        public ScreenDumper(IUiAutomatorServer server)
         {
             if (server == null)
             {
@@ -25,38 +24,6 @@ namespace Testura.Android.Device.Ui.Nodes
             }
 
             _server = server;
-            _cooldownBetweenDump = cooldownBetweenDumps;
-            _lastDump = DateTime.Now;
-        }
-
-        /// <summary>
-        /// Dump the current screen of the android device/emulator
-        /// </summary>
-        /// <returns>An xmldocument contaning all information about the current android screen</returns>
-        public XDocument DumpUi()
-        {
-            Cooldown();
-            var dump = _server.DumpUi();
-            if (string.IsNullOrEmpty(dump))
-            {
-                if (_server.Alive(2))
-                {
-                    // If we still can ping the server it must mean
-                    // that the instrumentation has stopped
-                    // but the http server is still running.
-                    _server.Stop();
-                }
-
-                _server.Start();
-
-                dump = _server.DumpUi();
-                if (string.IsNullOrEmpty(dump))
-                {
-                    throw new UiAutomatorServerException("Could not dump screen");
-                }
-            }
-
-            return XDocument.Parse(dump);
         }
 
         /// <summary>
@@ -76,15 +43,44 @@ namespace Testura.Android.Device.Ui.Nodes
             _server.Stop();
         }
 
-        private void Cooldown()
+        /// <summary>
+        /// Dump the current screen of the android device/emulator
+        /// </summary>
+        /// <returns>An xmldocument contaning all information about the current android screen</returns>
+        public XDocument DumpUi()
         {
-            var milisecondsSinceLastDump = (int) (DateTime.Now - _lastDump).TotalMilliseconds;
-            if (milisecondsSinceLastDump < _cooldownBetweenDump)
-            {
-                Thread.Sleep(_cooldownBetweenDump - milisecondsSinceLastDump);
-            }
+            var dump = GetDump();
+            return XDocument.Parse(dump);
+        }
 
-            _lastDump = DateTime.Now;
+        private string GetDump()
+        {
+            var i = 1;
+            while (true)
+            {
+                try
+                {
+                    return _server.DumpUi();
+                }
+                catch (UiAutomatorServerException)
+                {
+                    if (i <= DumpTries)
+                    {
+                        i++;
+                        DeviceLogger.Log($"Failed to dump, trying {DumpTries - i} more times");
+                        if (_server.Alive(2))
+                        {
+                            _server.Stop();
+                        }
+
+                        _server.Start();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
         }
     }
 }

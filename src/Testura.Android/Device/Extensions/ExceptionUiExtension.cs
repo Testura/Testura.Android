@@ -30,7 +30,7 @@ namespace Testura.Android.Device.Extensions
                 var node = _nodeFinder.FindNode(nodes, With.Class("test.."));
                 device.Interaction.Click(node);
             }
-            catch (UiNodeNotFoundException ex)
+            catch (UiNodeNotFoundException)
             {
             }
         }

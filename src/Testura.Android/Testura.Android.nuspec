@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>0.6.2</version>
+    <title>$title$</title>
+    <authors>Mille Boström</authors>
+    <owners>Mille Boström</owners>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/Testura/Testura.Android</projectUrl>
+    <iconUrl>http://testura.net/Content/Images/logo128-new.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Testura.Android is a lightweight test automation framework for Android built in C#. It contains tools and help classes to test, validate and interact with your Android device or emulator.</description>
+    <releaseNotes>Release 0.6.2:
+	- Changed so we start the adb process through cmd
+	- Minor updates to the APKs for improved stability
+	</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Android Test Automation Ui</tags>
+	<contentFiles>
+		<files include="Apk\*.*" buildAction="None" copyToOutput="true" flatten="false" />  
+	</contentFiles>
+	    <dependencies>
+      <dependency id="MedallionShell" version="1.2.1" />
+    </dependencies>
+  </metadata>
+      <files>
+		<file src="..\..\README.md" target="" />
+		<file src="Build\**" target="build" />
+		<file src="Apk\*.apk" target="apk" />
+  </files>
+</package>

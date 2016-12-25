@@ -39,7 +39,6 @@ namespace Testura.Android.Util.Terminal
                 allArguments,
                 options: o => o.Timeout(TimeSpan.FromMinutes(1))))
             {
-
                 var output = command.StandardOutput.ReadToEnd();
                 var error = command.StandardError.ReadToEnd();
 

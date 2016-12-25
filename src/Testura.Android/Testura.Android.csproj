@@ -80,6 +80,7 @@
     <Compile Include="Device\Ui\Nodes\Data\Node.cs" />
     <Compile Include="Device\Ui\Objects\BaseUiObject.cs" />
     <Compile Include="Util\Coordinate.cs" />
+    <Compile Include="Util\DependencyInstaller.cs" />
     <Compile Include="Util\Enums.cs" />
     <Compile Include="Util\Exceptions\AdbException.cs" />
     <Compile Include="Util\Exceptions\TerminalException.cs" />
@@ -99,15 +100,25 @@
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Apk\testura.android.server.a.apk">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Apk\testura.android.server.b.apk">
+    <None Include="Dependencies\testura-helper.apk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dependencies\uiautomator-stub-bundle.jar">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Dependencies\uiautomator-stub.jar">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dependencies\LICENSE.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

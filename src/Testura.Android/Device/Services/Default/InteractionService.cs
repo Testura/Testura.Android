@@ -35,19 +35,22 @@ namespace Testura.Android.Device.Services.Default
                 SetScreenHeightAndWidth();
             }
 
+            var middleX = _screenBounds.Width / 2;
+            var middleY = _screenBounds.Height / 2;
+
             switch (swipeDirection)
             {
                 case SwipeDirections.Left:
-                    Swipe((int)(_screenBounds.Width * 0.90), _screenBounds.Height / 2, 0, _screenBounds.Height / 2, duration);
+                    Swipe(middleX, middleY, 0, middleY, duration);
                     break;
                 case SwipeDirections.Up:
-                    Swipe(_screenBounds.Width / 2, (int)(_screenBounds.Height * 0.90), _screenBounds.Width / 2, 0, duration);
+                    Swipe(middleX, middleY, middleX, 0, duration);
                     break;
                 case SwipeDirections.Right:
-                    Swipe(0, _screenBounds.Height / 2, _screenBounds.Width, _screenBounds.Height / 2, duration);
+                    Swipe(middleX, middleY, _screenBounds.Width, middleY, duration);
                     break;
                 case SwipeDirections.Down:
-                    Swipe(_screenBounds.Width / 2, 0, _screenBounds.Width / 2, _screenBounds.Height, duration);
+                    Swipe(middleX, middleY, middleX, _screenBounds.Height, duration);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(swipeDirection), swipeDirection, null);
@@ -104,7 +107,7 @@ namespace Testura.Android.Device.Services.Default
 
             var split = widthAndHeight.Replace(" ", string.Empty).Split(':', 'x');
             DeviceLogger.Log($"Width: {split[split.Length - 2]}, Height: {split[split.Length - 1]}");
-            _screenBounds = new NodeBounds(int.Parse(split[split.Length-2]), int.Parse(split[split.Length - 1]));
+            _screenBounds = new NodeBounds(int.Parse(split[split.Length - 2]), int.Parse(split[split.Length - 1]));
         }
     }
 }

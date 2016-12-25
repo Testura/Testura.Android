@@ -3,7 +3,10 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 using Medallion.Shell;
+using Testura.Android.Device.Configurations;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
@@ -12,7 +15,7 @@ namespace Testura.Android.Device.Ui.Server
 {
     public class UiAutomatorServer : IUiAutomatorServer
     {
-        public const int DevicePort = 9030;
+        public const int DevicePort = 9008;
         private const int Timeout = 5;
 
         private readonly int _localPort;
@@ -32,9 +35,7 @@ namespace Testura.Android.Device.Ui.Server
 
         private string BaseUrl => $"http://localhost:{_localPort}";
 
-        private string PingUrl => $"{BaseUrl}/ping";
-
-        private string DumpUrl => $"{BaseUrl}/dump";
+        private string RpcUrl => $"{BaseUrl}/jsonrpc/0";
 
         private string StopUrl => $"{BaseUrl}/stop";
 
@@ -49,10 +50,14 @@ namespace Testura.Android.Device.Ui.Server
             if (_currentServerProcess == null || _currentServerProcess.Process.HasExited)
             {
                 DeviceLogger.Log("Starting instrumental");
-                _currentServerProcess = _terminal.StartAdbProcess("shell", "am", "instrument", "-w", "-r", "-e", "debug", "false", "-e", "port",
-                    DevicePort.ToString(),
-                    "-e", "class",
-                    "com.testura.testuraandroidserver.Start#RunServer com.testura.testuraandroidserver.test/android.support.test.runner.AndroidJUnitRunner");
+                _currentServerProcess = _terminal.StartAdbProcess(
+                    "shell",
+                    "uiautomator",
+                    "runtest",
+                    DeviceConfiguration.UiAutomatorStubBundle,
+                    DeviceConfiguration.UiAutomatorStub,
+                    "-c",
+                    "com.github.uiautomatorstub.Stub");
             }
             else
             {
@@ -71,8 +76,22 @@ namespace Testura.Android.Device.Ui.Server
         public void Stop()
         {
             DeviceLogger.Log("Stopping server");
-            GetData(StopUrl);
-            KillProcessAndChildrens(_currentServerProcess.Process.Id);
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.GetAsync(StopUrl);
+                }
+                catch (Exception)
+                {
+                    // Because of the uiautomator stub this is normal response to a stop request
+                }
+            }
+
+            if (_currentServerProcess != null)
+            {
+                KillProcessAndChildrens(_currentServerProcess.Process.Id);
+            }
         }
 
         /// <summary>
@@ -104,14 +123,15 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>The screen content as a xml string</returns>
         public string DumpUi()
         {
-            var dump = GetData(DumpUrl);
-            if (string.IsNullOrEmpty(dump))
+            var response = SendRpc(RpcUrl, "{\"jsonrpc\":2.0,\"method\":\"dumpWindowHierarchy\",\"id\":1,\"params\":[\"false\",null]}");
+            if (string.IsNullOrEmpty(response))
             {
                 DeviceLogger.Log("Failed to dump!");
-                return string.Empty;
+                throw new UiAutomatorServerException("Could connect to server but the dumped ui was empty");
             }
 
-            return dump;
+            var dump = Regex.Match(response, "(<\\?xml)(.*)(</hierarchy>)");
+            return dump.Value.Replace("\\\"", "\"");
         }
 
         /// <summary>
@@ -129,36 +149,43 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>True if we got response, false otherwise</returns>
         private bool Ping()
         {
-            var response = GetData(PingUrl);
-            return response == "Hello human.";
+            try
+            {
+                var response = SendRpc(RpcUrl, "{\"jsonrpc\":2.0,\"method\":\"ping\",\"id\":1}");
+                return response.Contains("pong");
+            }
+            catch (UiAutomatorServerException)
+            {
+                return false;
+            }
         }
 
         /// <summary>
-        /// Send a get request to the servce
+        /// Send a rpc to the server
         /// </summary>
         /// <param name="url">The url</param>
+        /// <param name="data">The rpc command in json format</param>
         /// <returns>The response from the server, empty no response.</returns>
-        private string GetData(string url)
+        private string SendRpc(string url, string data)
         {
             try
             {
                 using (var httpClient = new HttpClient())
                 {
                     httpClient.Timeout = TimeSpan.FromSeconds(Timeout);
-                    var response = httpClient.GetAsync(url).Result;
-                    return response.Content.ReadAsStringAsync().Result;
+                    var response = httpClient.PostAsync(url, new StringContent(data, Encoding.UTF8, "application/json"));
+                    return response.Result.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
             {
-                return string.Empty;
+                throw new UiAutomatorServerException("Could not connect with server", ex);
             }
         }
 
         private void KillProcessAndChildrens(int pid)
         {
-            var processSearcher = new ManagementObjectSearcher
-              ("Select * From Win32_Process Where ParentProcessID=" + pid);
+            var processSearcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
             var processCollection = processSearcher.Get();
 
             try
