@@ -11,10 +11,10 @@ namespace Testura.Android.PageObject
     {
         protected Application()
         {
-            UnityContainer = new UnityContainer();
+            Container = new UnityContainer();
         }
 
-        protected UnityContainer UnityContainer { get; set; }
+        protected UnityContainer Container { get; set; }
 
         /// <summary>
         /// Go through all properties in the class that inherit from the view class
@@ -23,7 +23,7 @@ namespace Testura.Android.PageObject
         protected void RegisterViewDependencies()
         {
             var pages = GetType().GetProperties().Where(p => p.PropertyType.IsSubclassOf(typeof(View)));
-            pages.ForEach(p => UnityContainer.RegisterType(p.PropertyType));
+            pages.ForEach(p => Container.RegisterType(p.PropertyType));
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Testura.Android.PageObject
             var views = GetType().GetProperties().Where(p => p.PropertyType.IsSubclassOf(typeof(View)));
             foreach (var view in views)
             {
-                view.SetValue(this, UnityContainer.Resolve(view.PropertyType));
+                view.SetValue(this, Container.Resolve(view.PropertyType));
             }
         }
     }
