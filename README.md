@@ -16,6 +16,12 @@ Testura.Android is a lightweight test automation framework for Android built in 
 [https://www.nuget.org/packages/Testura.Android](https://www.nuget.org/packages/Testura.Android)
     
     PM> Install-Package Testura.Android
+   
+## Nuget with page object helpers (optional) [![NuGet Status](https://img.shields.io/nuget/v/Testura.Android.PageObject.svg?style=flat)]
+
+[https://www.nuget.org/packages/Testura.Android.PageObject](https://www.nuget.org/packages/Testura.Android.PageObject)
+    
+    PM> Install-Package Testura.Android.PageObject
 
 ## Usage
 
@@ -116,6 +122,10 @@ uiObject.IsHidden();
 uiObject.SendKeys("..");
 var node = uiObject.Values();
 ```
+
+## Page object helpers
+
+For more information about page object helpers, visit the wiki: https://github.com/Testura/Testura.Android/wiki/10.-Page-Object
 
 ## License
 
