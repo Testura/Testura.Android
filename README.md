@@ -17,7 +17,7 @@ Testura.Android is a lightweight test automation framework for Android built in 
     
     PM> Install-Package Testura.Android
    
-## Nuget with page object helpers (optional) [![NuGet Status](https://img.shields.io/nuget/v/Testura.Android.PageObject.svg?style=flat)]
+## Nuget with page object helpers (optional) [![NuGet Status](https://img.shields.io/nuget/v/Testura.Android.PageObject.svg?style=flat)](https://www.nuget.org/packages/Testura.Android.PageObject)
 
 [https://www.nuget.org/packages/Testura.Android.PageObject](https://www.nuget.org/packages/Testura.Android.PageObject)
     
