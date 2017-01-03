@@ -7,6 +7,7 @@
         ResourceId,
         ContentDesc,
         Class,
+        Package,
         Index
     }
 

@@ -22,6 +22,7 @@ namespace Testura.Android.Device.Ui.Nodes.Data
             ContentDesc = element.Attribute("content-desc")?.Value;
             Class = element.Attribute("class")?.Value;
             Index = element.Attribute("index")?.Value;
+            Package = element.Attribute("package")?.Value;
         }
 
         /// <summary>
@@ -63,6 +64,11 @@ namespace Testura.Android.Device.Ui.Nodes.Data
         /// Gets the index of a node
         /// </summary>
         public string Index { get; }
+
+        /// <summary>
+        /// Gets the package of the node
+        /// </summary>
+        public string Package { get; }
 
         /// <summary>
         /// Get coordinates of the node center point
