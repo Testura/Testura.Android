@@ -80,6 +80,7 @@ When mapping up a new UI object, you first have to decide how to find it, using 
 - `With.ContentDesc` - Find nodes that contains the exact content description
 - `With.Class` - Find nodes that contains the exact class
 - `With.Index` - Find nodes that have this index
+- `With.Package` - Find nodes that contains the exact package
 - `With.Lamba` - Find nodes with a lamba expression
 
 `With.Lamba` is a powerful method to find nodes, and you can access both the node's parent and children:
