@@ -99,6 +99,16 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
+        /// Find node with matching package
+        /// </summary>
+        /// <param name="package">The package of the node to be found</param>
+        /// <returns>An instance of the with objecting containg the search function</returns>
+        public static With Package(string package)
+        {
+            return Attribute(AttributeTags.Package, package);
+        }
+
+        /// <summary>
         /// Find node that match the lambda expression
         /// </summary>
         /// <param name="predicate">The lambda expression</param>
@@ -132,6 +142,8 @@ namespace Testura.Android.Device.Ui.Search
                     return new With(node => node.Class == value);
                 case AttributeTags.Index:
                     return new With(node => node.Index == value);
+                case AttributeTags.Package:
+                    return new With(node => node.Package == value);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null);
             }

@@ -101,14 +101,12 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>True if server is a alive, false otherwise.</returns>
         public bool Alive(int timeout)
         {
-            DeviceLogger.Log("Checking if server is alive");
             var time = DateTime.Now;
             while ((DateTime.Now - time).Seconds < timeout)
             {
                 var result = Ping();
                 if (result)
                 {
-                    DeviceLogger.Log("Server is alive!");
                     return true;
                 }
             }

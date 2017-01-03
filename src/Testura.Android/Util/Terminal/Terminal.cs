@@ -32,7 +32,7 @@ namespace Testura.Android.Util.Terminal
 
             allArguments.AddRange(arguments);
 
-            DeviceLogger.Log($"Sending adb command with: {string.Join(" ", allArguments)}");
+            DeviceLogger.Log($"Sending adb command: {string.Join(" ", allArguments)}");
 
             using (var command = Command.Run(
                 "adb.exe",
