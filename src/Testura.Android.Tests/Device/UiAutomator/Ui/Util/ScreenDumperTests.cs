@@ -18,7 +18,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
         public void SetUp()
         {
             _uiAutomatorServerMock = new Mock<IUiAutomatorServer>();
-            _screenDumper = new ScreenDumper(_uiAutomatorServerMock.Object);
+            _screenDumper = new ScreenDumper(_uiAutomatorServerMock.Object, 1);
         }
 
         [Test]

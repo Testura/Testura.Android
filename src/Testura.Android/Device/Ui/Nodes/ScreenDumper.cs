@@ -1,22 +1,23 @@
 ﻿using System;
+using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device.Ui.Nodes
 {
     public class ScreenDumper : IScreenDumper
     {
-        private const int DumpTries = 3;
-
         private readonly IUiAutomatorServer _server;
+        private readonly int _dumpTries;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenDumper"/> class.
         /// </summary>
         /// <param name="server">The ui dump server</param>
-        public ScreenDumper(IUiAutomatorServer server)
+        public ScreenDumper(IUiAutomatorServer server, int dumpTries)
         {
             if (server == null)
             {
@@ -24,6 +25,7 @@ namespace Testura.Android.Device.Ui.Nodes
             }
 
             _server = server;
+            _dumpTries = dumpTries;
         }
 
         /// <summary>
@@ -62,12 +64,32 @@ namespace Testura.Android.Device.Ui.Nodes
 
         private string GetDump()
         {
-            if (!_server.Alive(2))
+            int tries = _dumpTries;
+            while (true)
             {
-                _server.Start();
-            }
+                try
+                {
+                    if (!_server.Alive(2))
+                    {
+                        _server.Start();
+                    }
 
-            return _server.DumpUi();
+                    return _server.DumpUi();
+                }
+                catch (UiAutomatorServerException ex)
+                {
+                    if (tries > 0)
+                    {
+                        DeviceLogger.Log($"Failed to dump UI, trying {tries} more times");
+                        Thread.Sleep(1500);
+                        tries--;
+                        continue;
+                    }
+
+                    DeviceLogger.Log("Failed to dump UI!");
+                    throw;
+                }
+            }
         }
     }
 }
