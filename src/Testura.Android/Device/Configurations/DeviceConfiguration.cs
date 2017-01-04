@@ -17,6 +17,7 @@ namespace Testura.Android.Device.Configurations
             ShouldInstallDependencies = true;
             DependenciesDirectory = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Dependencies");
             Port = 9008;
+            DumpTries = 5;
         }
 
         /// <summary>
@@ -44,5 +45,11 @@ namespace Testura.Android.Device.Configurations
         /// Gets or sets the local port to the device
         /// </summary>
         public int Port { get; set; }
+
+        /// <summary>
+        /// Gets or sets how many times we should try to dump the UI before 
+        /// sending exception.
+        /// </summary>
+        public int DumpTries { get; set; }
     }
 }
