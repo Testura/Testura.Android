@@ -24,9 +24,18 @@ namespace Testura.Android.Device.Services.Default
         public void Gps(State state)
         {
             DeviceLogger.Log("Changing gps state");
-            Device.Adb.Shell(state == State.Enable
-                ? "settings put secure location_providers_allowed +gps"
-                : "settings put secure location_providers_allowed -gps");
+            if (state == State.Enable)
+            {
+                Device.Adb.Shell("settings put secure location_providers_allowed +gps");
+                Device.Adb.Shell("settings put secure location_providers_allowed +network");
+                Device.Adb.Shell("settings put secure location_providers_allowed +wifi");
+            }
+            else
+            {
+                Device.Adb.Shell("settings put secure location_providers_allowed -gps");
+                Device.Adb.Shell("settings put secure location_providers_allowed -network");
+                Device.Adb.Shell("settings put secure location_providers_allowed -wifi");
+            }
         }
 
         /// <summary>
