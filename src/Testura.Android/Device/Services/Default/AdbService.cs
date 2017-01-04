@@ -49,7 +49,7 @@ namespace Testura.Android.Device.Services.Default
                 throw new ArgumentException("Argument is null or empty", nameof(remotePath));
             }
 
-            ExecuteCommand("push", $"\"{localPath}\"", $"\"{remotePath}\"");
+            ExecuteCommand("push", localPath, remotePath);
         }
 
         /// <summary>
