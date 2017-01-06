@@ -25,7 +25,9 @@ Testura.Android is a lightweight test automation framework for Android built in 
 
 ## Usage
 
-[Introduction video here](https://www.youtube.com/watch?v=x-U2F6mzcyc)
+[Short introduction - Youtube](https://www.youtube.com/watch?v=x-U2F6mzcyc)
+
+[How to create a test automation project with testura - Youtube](https://www.youtube.com/watch?v=0QhAcGdx65E)
 
 Testura.Android has been designed for the page object pattern. Here is a short example of a login view:
 
