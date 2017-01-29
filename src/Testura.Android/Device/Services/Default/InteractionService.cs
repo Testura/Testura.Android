@@ -96,6 +96,15 @@ namespace Testura.Android.Device.Services.Default
             Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
         }
 
+        /// <summary>
+        /// Send a key event to the device.
+        /// </summary>
+        /// <param name="keyevent">Selected key event to send to the device</param>
+        public void SendInputKeyEvent(Keyevents keyevent)
+        {
+            Device.Adb.Shell($"input keyevent {(int)keyevent}");
+        }
+
         private void SetScreenHeightAndWidth()
         {
             DeviceLogger.Log("Getting width and height");
