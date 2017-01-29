@@ -48,7 +48,7 @@ namespace Testura.Android.Device.Configurations
         public int Port { get; set; }
 
         /// <summary>
-        /// Gets or sets how many times we should try to dump the UI before 
+        /// Gets or sets how many times we should try to dump the UI before
         /// sending exception.
         /// </summary>
         public int DumpTries { get; set; }

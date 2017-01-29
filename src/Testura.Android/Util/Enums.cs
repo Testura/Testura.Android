@@ -104,7 +104,7 @@
         Del,
         Grave,
         Minus,
-        equals,
+        Equals,
         LeftBracket,
         RightBracket,
         Backslash,
