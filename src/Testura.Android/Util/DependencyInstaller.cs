@@ -11,25 +11,44 @@ namespace Testura.Android.Util
 
         public void InstallDependencies(IAdbService adbService, DeviceConfiguration configuration)
         {
-            DeviceLogger.Log("Installing dependencies..");
+            DeviceLogger.Log("Installing all dependencies..");
             adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.HelperApkName));
-            adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStub), DevicePath);
-            adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStubBundle), DevicePath);
+            adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStub),
+                DevicePath);
+            adbService.Push(
+                Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStubBundle), DevicePath);
         }
 
-        public void InstallDependenciesIfMissing(IAdbService adbService, IActivityService activityService, DeviceConfiguration configuration)
+        public void InstallDependenciesIfMissing(IAdbService adbService, IActivityService activityService,
+            DeviceConfiguration configuration)
         {
+            DeviceLogger.Log("Checking if helper is installed..");
             if (!activityService.IsPackagedInstalled("com.testura.helper"))
             {
-                adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.HelperApkName));
+                DeviceLogger.Log("..not installed, installing..");
+                adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory,
+                    DeviceConfiguration.HelperApkName));
+            }
+            else
+            {
+                DeviceLogger.Log("..already installed.");
             }
 
+            DeviceLogger.Log("Checking if server is installed..");
             var files = adbService.Shell($"ls {DevicePath}");
             if (!files.Contains(DeviceConfiguration.UiAutomatorStub) ||
                 !files.Contains(DeviceConfiguration.UiAutomatorStubBundle))
             {
-                adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStub), DevicePath);
-                adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStubBundle), DevicePath);
+                DeviceLogger.Log("..not installed, installing..");
+                adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStub),
+                    DevicePath);
+                adbService.Push(
+                    Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStubBundle),
+                    DevicePath);
+            }
+            else
+            {
+                DeviceLogger.Log("..already installed");
             }
         }
     }
