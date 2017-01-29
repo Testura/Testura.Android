@@ -75,10 +75,14 @@ namespace Testura.Android.Device
 
         private void InstallHelperApks()
         {
-            if (Configuration.ShouldInstallDependencies)
+            var dependencyInstaller = new DependencyInstaller();
+            if (Configuration.Dependencies == DependencyHandling.AlwaysInstall)
             {
-                var dependencyInstaller = new DependencyInstaller();
                 dependencyInstaller.InstallDependencies(Adb, Configuration);
+            }
+            else if (Configuration.Dependencies == DependencyHandling.InstallIfMissing)
+            {
+                dependencyInstaller.InstallDependenciesIfMissing(Adb, Activity, Configuration);
             }
         }
     }

@@ -1,5 +1,12 @@
 ﻿namespace Testura.Android.Util
 {
+    public enum DependencyHandling
+    {
+        InstallIfMissing,
+        AlwaysInstall,
+        NeverInstall
+    }
+
     public enum AttributeTags
     {
         TextContains,

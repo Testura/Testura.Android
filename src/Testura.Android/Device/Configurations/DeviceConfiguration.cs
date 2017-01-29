@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
+using Testura.Android.Util;
 using Testura.Android.Util.Extensions;
 
 namespace Testura.Android.Device.Configurations
@@ -14,7 +15,7 @@ namespace Testura.Android.Device.Configurations
         {
             AdbPath = string.Empty;
             Serial = string.Empty;
-            ShouldInstallDependencies = true;
+            Dependencies = DependencyHandling.InstallIfMissing;
             DependenciesDirectory = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Dependencies");
             Port = 9008;
             DumpTries = 5;
@@ -34,7 +35,7 @@ namespace Testura.Android.Device.Configurations
         /// Gets or sets a value indicating whether we should push and install
         /// all required dependencies.
         /// </summary>
-        public bool ShouldInstallDependencies { get; set; }
+        public DependencyHandling Dependencies { get; set; }
 
         /// <summary>
         /// Gets or sets the directory to all dependencies (uiautomator stub, helper apk, etc)
