@@ -13,21 +13,17 @@ namespace Testura.Android.Util
         {
             DeviceLogger.Log("Installing all dependencies..");
             adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.HelperApkName));
-            adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStub),
-                DevicePath);
-            adbService.Push(
-                Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStubBundle), DevicePath);
+            adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStub), DevicePath);
+            adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStubBundle), DevicePath);
         }
 
-        public void InstallDependenciesIfMissing(IAdbService adbService, IActivityService activityService,
-            DeviceConfiguration configuration)
+        public void InstallDependenciesIfMissing(IAdbService adbService, IActivityService activityService, DeviceConfiguration configuration)
         {
             DeviceLogger.Log("Checking if helper is installed..");
             if (!activityService.IsPackagedInstalled("com.testura.helper"))
             {
                 DeviceLogger.Log("..not installed, installing..");
-                adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory,
-                    DeviceConfiguration.HelperApkName));
+                adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.HelperApkName));
             }
             else
             {
@@ -40,11 +36,8 @@ namespace Testura.Android.Util
                 !files.Contains(DeviceConfiguration.UiAutomatorStubBundle))
             {
                 DeviceLogger.Log("..not installed, installing..");
-                adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStub),
-                    DevicePath);
-                adbService.Push(
-                    Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStubBundle),
-                    DevicePath);
+                adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStub), DevicePath);
+                adbService.Push(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.UiAutomatorStubBundle), DevicePath);
             }
             else
             {
