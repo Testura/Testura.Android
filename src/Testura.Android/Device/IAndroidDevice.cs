@@ -21,7 +21,7 @@ namespace Testura.Android.Device
         IUiService Ui { get; }
 
         /// <summary>
-        /// Gets the settings service of an andoid device
+        /// Gets the settings service of an android device
         /// </summary>
         ISettingsService Settings { get;  }
 

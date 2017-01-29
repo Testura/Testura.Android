@@ -17,15 +17,15 @@ namespace Testura.Android.Device.Services
         /// Copies a specified file from your development computer to an emulator/device instance.
         /// </summary>
         /// <param name="localPath">Path to local file</param>
-        /// <param name="remotePath">Path to destionation on device/emulator</param>
+        /// <param name="remotePath">Path to destination on device/emulator</param>
         /// <exception cref="AdbException">Thrown when fail to push file</exception>
         void Push(string localPath, string remotePath);
 
         /// <summary>
         /// Copies a specified file from an emulator/device instance to your development computer.
         /// </summary>
-        /// <param name="remotePath">Path to file on device/emulato</param>
-        /// <param name="localPath">Path to destionation on local computer</param>
+        /// <param name="remotePath">Path to file on device/emulator</param>
+        /// <param name="localPath">Path to destination on local computer</param>
         /// <exception cref="AdbException">Thrown when fail to pull file</exception>
         void Pull(string remotePath, string localPath);
 

@@ -50,7 +50,7 @@ namespace Testura.Android.Device
         public IUiService Ui { get; }
 
         /// <summary>
-        /// Gets the settings service of an andoid device
+        /// Gets the settings service of an android device
         /// </summary>
         public ISettingsService Settings { get; }
 

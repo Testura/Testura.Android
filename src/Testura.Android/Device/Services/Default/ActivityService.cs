@@ -49,7 +49,7 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Get the current open acitivity
+        /// Get the current open activity
         /// </summary>
         /// <returns>Current open activity</returns>
         public string GetCurrent()

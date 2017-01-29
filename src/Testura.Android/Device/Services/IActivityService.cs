@@ -17,7 +17,7 @@ namespace Testura.Android.Device.Services
         void Start(string packageName, string activity, bool forceStopActivity, bool clearTasks);
 
         /// <summary>
-        /// Get the current open acitivity
+        /// Get the current open activity
         /// </summary>
         /// <returns>Current open activity</returns>
         string GetCurrent();

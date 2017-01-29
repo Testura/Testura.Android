@@ -142,7 +142,7 @@ namespace Testura.Android.Device.Ui.Server
         }
 
         /// <summary>
-        /// Ping the ui automator server on the andoid device
+        /// Ping the ui automator server on the android device
         /// </summary>
         /// <returns>True if we got response, false otherwise</returns>
         private bool Ping()

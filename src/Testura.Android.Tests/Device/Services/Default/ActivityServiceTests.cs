@@ -29,7 +29,7 @@ namespace Testura.Android.Tests.Device.Services.Default
         [Test]
         public void Start_WhenPackageIsNull_ShouldThrowException()
         {
-            Assert.Throws<ArgumentException>(() => _activityService.Start(null, "acivity", false, false));
+            Assert.Throws<ArgumentException>(() => _activityService.Start(null, "activity", false, false));
         }
 
         [Test]

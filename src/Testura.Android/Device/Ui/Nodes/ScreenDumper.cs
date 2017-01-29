@@ -48,7 +48,7 @@ namespace Testura.Android.Device.Ui.Nodes
         /// <summary>
         /// Dump the current screen of the android device/emulator
         /// </summary>
-        /// <returns>An xmldocument contaning all information about the current android screen</returns>
+        /// <returns>An xmldocument containing all information about the current android screen</returns>
         public XDocument DumpUi()
         {
             var dump = GetDump();
