@@ -6,20 +6,20 @@ namespace Testura.Android.Device.Services
     public interface IInteractionService
     {
         /// <summary>
-        /// Performe a swipe motion on the screen.
+        /// Perform a swipe motion on the screen.
         /// </summary>
         /// <param name="fromX">Start x position on screen</param>
         /// <param name="fromY">Start y position on screen</param>
         /// <param name="toX">Final x position on screen</param>
         /// <param name="toY">Final y position on screen</param>
-        /// <param name="duration">Duration of the swipe in miliseconds</param>
+        /// <param name="duration">Duration of the swipe in milliseconds</param>
         void Swipe(int fromX, int fromY, int toX, int toY, int duration);
 
         /// <summary>
         /// Swipe from one edge of the screen to another.
         /// </summary>
         /// <param name="swipeDirection">Direction to swipe</param>
-        /// <param name="duration">Duration of the swipe in muliseconds</param>
+        /// <param name="duration">Duration of the swipe in milliseconds</param>
         void Swipe(SwipeDirections swipeDirection, int duration);
 
         /// <summary>
@@ -40,5 +40,11 @@ namespace Testura.Android.Device.Services
         /// </summary>
         /// <param name="text">Input to field</param>
         void SendKeys(string text);
+
+        /// <summary>
+        /// Send a key event to the device.
+        /// </summary>
+        /// <param name="keyevent">Selected key event to send to the device</param>
+        void SendInputKeyEvent(Keyevents keyevent);
     }
 }

@@ -102,7 +102,7 @@ namespace Testura.Android.Device.Ui.Search
         /// Find node with matching package
         /// </summary>
         /// <param name="package">The package of the node to be found</param>
-        /// <returns>An instance of the with objecting containg the search function</returns>
+        /// <returns>An instance of the with objecting containing the search function</returns>
         public static With Package(string package)
         {
             return Attribute(AttributeTags.Package, package);

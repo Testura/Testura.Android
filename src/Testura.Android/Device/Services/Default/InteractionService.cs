@@ -11,13 +11,13 @@ namespace Testura.Android.Device.Services.Default
         private NodeBounds _screenBounds;
 
         /// <summary>
-        /// Performe a swipe motion on the screen.
+        /// Perform a swipe motion on the screen.
         /// </summary>
         /// <param name="fromX">Start x position on screen</param>
         /// <param name="fromY">Start y position on screen</param>
         /// <param name="toX">Final x position on screen</param>
         /// <param name="toY">Final y position on screen</param>
-        /// <param name="duration">Duration of the swipe in miliseconds</param>
+        /// <param name="duration">Duration of the swipe in milliseconds</param>
         public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
             Device.Adb.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
@@ -27,7 +27,7 @@ namespace Testura.Android.Device.Services.Default
         /// Swipe from one edge of the screen to another.
         /// </summary>
         /// <param name="swipeDirection">Direction to swipe</param>
-        /// <param name="duration">Duration of the swipe in muliseconds</param>
+        /// <param name="duration">Duration of the swipe in milliseconds</param>
         public void Swipe(SwipeDirections swipeDirection, int duration)
         {
             if (_screenBounds == null)
@@ -94,6 +94,15 @@ namespace Testura.Android.Device.Services.Default
             }
 
             Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
+        }
+
+        /// <summary>
+        /// Send a key event to the device.
+        /// </summary>
+        /// <param name="keyevent">Selected key event to send to the device</param>
+        public void SendInputKeyEvent(Keyevents keyevent)
+        {
+            Device.Adb.Shell($"input keyevent {(int)keyevent}");
         }
 
         private void SetScreenHeightAndWidth()

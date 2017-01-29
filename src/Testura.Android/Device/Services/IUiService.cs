@@ -35,14 +35,14 @@ namespace Testura.Android.Device.Services
         IList<Node> FindNodes(int timeout, params With[] with);
 
         /// <summary>
-        /// Create a new ui object that wraps around a node that match a specific search critiera
+        /// Create a new ui object that wraps around a node that match a specific search criteria
         /// </summary>
         /// <param name="with">Find node with</param>
         /// <returns>The mapped ui object</returns>
         UiObject CreateUiObject(params With[] with);
 
         /// <summary>
-        /// Create a new ui object that wraps around multiple nodes that match a specific search critiera
+        /// Create a new ui object that wraps around multiple nodes that match a specific search criteria
         /// </summary>
         /// <param name="with">Find nodes with</param>
         /// <returns>The mapped ui object</returns>

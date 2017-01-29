@@ -1,4 +1,6 @@
 ﻿#pragma warning disable IDE0005 // Using directive is unnecessary.
+using System.Collections;
+using System.Collections.Generic;
 using Testura.Android.Util.Exceptions;
 #pragma warning restore IDE0005 // Using directive is unnecessary.
 
@@ -17,9 +19,22 @@ namespace Testura.Android.Device.Services
         void Start(string packageName, string activity, bool forceStopActivity, bool clearTasks);
 
         /// <summary>
-        /// Get the current open acitivity
+        /// Get the current open activity
         /// </summary>
         /// <returns>Current open activity</returns>
         string GetCurrent();
+
+        /// <summary>
+        /// Get a list with all installed packages on the android device
+        /// </summary>
+        /// <returns>A list with all installed packages</returns>
+        IList<string> GetPackages();
+
+        /// <summary>
+        /// Check if a specific package is installed
+        /// </summary>
+        /// <param name="packageName">Name of the package</param>
+        /// <returns>True if package are installed, otherwise false</returns>
+        bool IsPackagedInstalled(string packageName);
     }
 }

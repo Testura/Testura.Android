@@ -30,7 +30,7 @@ namespace Testura.Android.Device.Ui.Objects
         protected IAndroidDevice Device { get; }
 
         /// <summary>
-        /// Gets all search criterias to find this ui object
+        /// Gets all search criteria to find this ui object
         /// </summary>
         protected With[] With { get; }
 

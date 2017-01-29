@@ -67,7 +67,7 @@ namespace Testura.Android.Device.Services.Default
         {
             if (with == null || !with.Any())
             {
-                throw new ArgumentException("You must search with atleast one \"with\"", nameof(with));
+                throw new ArgumentException("You must search with at least one \"with\"", nameof(with));
             }
 
             var startTime = DateTime.Now;
@@ -95,7 +95,7 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Create a new ui object that wraps around a node that match a specific search critiera
+        /// Create a new ui object that wraps around a node that match a specific search criteria
         /// </summary>
         /// <param name="with">Find node with</param>
         /// <returns>The mapped ui object</returns>
@@ -105,7 +105,7 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Create a new ui object that wraps around multiple nodes that match a specific search critiera
+        /// Create a new ui object that wraps around multiple nodes that match a specific search criteria
         /// </summary>
         /// <param name="with">Find nodes with</param>
         /// <returns>The mapped ui object</returns>

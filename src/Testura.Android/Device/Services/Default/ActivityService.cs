@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,7 +15,7 @@ namespace Testura.Android.Device.Services.Default
         /// </summary>
         /// <param name="packageName">Name of the package</param>
         /// <param name="activity">Name of the activity</param>
-        /// <param name="forceStopActivity">Force stop the target app before starting the activity.</param>
+        /// <param name="forceStopActivity">Force stop the target application before starting the activity.</param>
         /// <param name="clearTasks">Clear activity stack</param>
         /// <exception cref="AdbException">Thrown if we can't find package/activity</exception>
         public void Start(string packageName, string activity, bool forceStopActivity, bool clearTasks)
@@ -49,7 +50,7 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Get the current open acitivity
+        /// Get the current open activity
         /// </summary>
         /// <returns>Current open activity</returns>
         public string GetCurrent()
@@ -60,10 +61,31 @@ namespace Testura.Android.Device.Services.Default
             var matches = regex.Matches(activity);
             if (matches.Count == 0)
             {
-                return "Unkown activity";
+                return "Unknown activity";
             }
 
             return matches[0].Value.Split(' ').Last();
+        }
+
+        /// <summary>
+        /// Get a list with all installed packages on the android device
+        /// </summary>
+        /// <returns>A list with all installed packages</returns>
+        public IList<string> GetPackages()
+        {
+            var packages = Device.Adb.Shell("pm list packages").Split(new[] { "\r\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            return packages.Select(p => p.Replace("package:", string.Empty)).ToList();
+        }
+
+        /// <summary>
+        /// Check if a specific package is installed
+        /// </summary>
+        /// <param name="packageName">Name of the package</param>
+        /// <returns>True if package are installed, otherwise false</returns>
+        public bool IsPackagedInstalled(string packageName)
+        {
+            var packages = GetPackages();
+            return packages.Contains(packageName);
         }
     }
 }

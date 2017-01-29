@@ -17,6 +17,7 @@ namespace Testura.Android.Device.Ui.Nodes
         /// Initializes a new instance of the <see cref="ScreenDumper"/> class.
         /// </summary>
         /// <param name="server">The ui dump server</param>
+        /// <param name="dumpTries">Number of times we try to dump the screen before throwing exception</param>
         public ScreenDumper(IUiAutomatorServer server, int dumpTries)
         {
             if (server == null)
@@ -48,7 +49,7 @@ namespace Testura.Android.Device.Ui.Nodes
         /// <summary>
         /// Dump the current screen of the android device/emulator
         /// </summary>
-        /// <returns>An xmldocument contaning all information about the current android screen</returns>
+        /// <returns>An xmldocument containing all information about the current android screen</returns>
         public XDocument DumpUi()
         {
             var dump = GetDump();

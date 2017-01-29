@@ -50,7 +50,7 @@ namespace Testura.Android.Device
         public IUiService Ui { get; }
 
         /// <summary>
-        /// Gets the settings service of an andoid device
+        /// Gets the settings service of an android device
         /// </summary>
         public ISettingsService Settings { get; }
 
@@ -75,10 +75,14 @@ namespace Testura.Android.Device
 
         private void InstallHelperApks()
         {
-            if (Configuration.ShouldInstallDependencies)
+            var dependencyInstaller = new DependencyInstaller();
+            if (Configuration.Dependencies == DependencyHandling.AlwaysInstall)
             {
-                var dependencyInstaller = new DependencyInstaller();
                 dependencyInstaller.InstallDependencies(Adb, Configuration);
+            }
+            else if (Configuration.Dependencies == DependencyHandling.InstallIfMissing)
+            {
+                dependencyInstaller.InstallDependenciesIfMissing(Adb, Activity, Configuration);
             }
         }
     }

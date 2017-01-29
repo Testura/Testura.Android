@@ -29,7 +29,7 @@ namespace Testura.Android.Tests.Device.Services.Default
         [Test]
         public void Start_WhenPackageIsNull_ShouldThrowException()
         {
-            Assert.Throws<ArgumentException>(() => _activityService.Start(null, "acivity", false, false));
+            Assert.Throws<ArgumentException>(() => _activityService.Start(null, "activity", false, false));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace Testura.Android.Tests.Device.Services.Default
         public void GetCurrent_WhenCantParseActvity_ShouldReturnUnkownActivity()
         {
             _adbServiceMock.Setup(s => s.Shell(It.IsAny<string>())).Returns("223232ddad");
-            Assert.AreEqual("Unkown activity", _activityService.GetCurrent());
+            Assert.AreEqual("Unknown activity", _activityService.GetCurrent());
         }
     }
 }

@@ -27,8 +27,8 @@ namespace Testura.Android.PageObject
         }
 
         /// <summary>
-        /// Go through all properties in the classt that inherit from the view class
-        /// and intialize and solve their dependencies with our unity container
+        /// Go through all properties in the class that inherit from the view class
+        /// and initialize and solve their dependencies with our unity container
         /// </summary>
         protected virtual void SolveViewDependencies()
         {
