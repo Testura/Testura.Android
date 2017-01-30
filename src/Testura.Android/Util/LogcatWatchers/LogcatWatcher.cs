@@ -2,7 +2,9 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Medallion.Shell;
 using Testura.Android.Device.Configurations;
+using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Util.LogcatWatchers
@@ -12,6 +14,7 @@ namespace Testura.Android.Util.LogcatWatchers
         private readonly ITerminal _terminal;
         private readonly IEnumerable<string> _tags;
         private readonly bool _flushLogcat;
+        private Task _task;
         private CancellationTokenSource _cancellationTokenSource;
 
         protected LogcatWatcher(DeviceConfiguration deviceConfiguration, IEnumerable<string> tags, bool flushLogcat = false)
@@ -26,6 +29,8 @@ namespace Testura.Android.Util.LogcatWatchers
         /// </summary>
         public void Start()
         {
+            DeviceLogger.Log("Starting logcat watcher..");
+
             if (_flushLogcat)
             {
                 _terminal.ExecuteAdbCommand(new[] { "logcat", "-c" });
@@ -42,22 +47,26 @@ namespace Testura.Android.Util.LogcatWatchers
 
             commands.AddRange(_tags);
             var process = _terminal.StartAdbProcessWithoutShell(commands.ToArray());
-            var reader = new StreamReader(process.StandardOutput.BaseStream);
             var cancellationToken = _cancellationTokenSource.Token;
-            Task.Run(
+            _task = Task.Run(
                 () =>
                     {
                         while (true)
                         {
-                            var output = reader.ReadLine();
-                            if (!string.IsNullOrEmpty(output))
+                            if (process.StandardOutput.Peek() >= 0)
                             {
-                                NewOutput(output);
+                                var output = process.StandardOutput.ReadLine();
+                                if (!string.IsNullOrEmpty(output))
+                                {
+                                    NewOutput(output);
+                                }
                             }
                             if (_cancellationTokenSource.IsCancellationRequested)
                             {
+                                DeviceLogger.Log("Logcat watcher cancellation requested, stopping task.");
                                 return;
                             }
+                            Thread.Sleep(250);
                         }
                     },
                 cancellationToken);
@@ -68,7 +77,9 @@ namespace Testura.Android.Util.LogcatWatchers
         /// </summary>
         public void Stop()
         {
+            DeviceLogger.Log("Request to stop logcat watcher..");
             _cancellationTokenSource?.Cancel();
+            _task?.Wait(2000);
         }
 
         /// <summary>
