@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Medallion.Shell;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
@@ -61,12 +59,16 @@ namespace Testura.Android.Util.LogcatWatchers
                                     NewOutput(output);
                                 }
                             }
+                            else
+                            {
+                                Thread.Sleep(250);
+                            }
+
                             if (_cancellationTokenSource.IsCancellationRequested)
                             {
                                 DeviceLogger.Log("Logcat watcher cancellation requested, stopping task.");
                                 return;
                             }
-                            Thread.Sleep(250);
                         }
                     },
                 cancellationToken);
