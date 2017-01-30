@@ -19,11 +19,11 @@ namespace Testura.Android.Device.Ui.Server
         private const int Timeout = 5;
 
         private readonly int _localPort;
-        private readonly bool _runServerInShell;
+        private readonly bool _runServerWithShell;
         private readonly ITerminal _terminal;
         private Command _currentServerProcess;
 
-        public UiAutomatorServer(ITerminal terminal, int port, bool runServerInShell)
+        public UiAutomatorServer(ITerminal terminal, int port, bool runServerWithShell)
         {
             if (terminal == null)
             {
@@ -31,7 +31,7 @@ namespace Testura.Android.Device.Ui.Server
             }
 
             _localPort = port;
-            _runServerInShell = runServerInShell;
+            _runServerWithShell = runServerWithShell;
             _terminal = terminal;
         }
 
@@ -52,7 +52,7 @@ namespace Testura.Android.Device.Ui.Server
             if (_currentServerProcess == null || _currentServerProcess.Process.HasExited)
             {
                 DeviceLogger.Log("Starting instrumental");
-                if (_runServerInShell)
+                if (_runServerWithShell)
                 {
                     _currentServerProcess = _terminal.StartAdbProcess(
                         "shell",
@@ -104,7 +104,7 @@ namespace Testura.Android.Device.Ui.Server
                 }
             }
 
-            if (_currentServerProcess != null && _runServerInShell)
+            if (_currentServerProcess != null && _runServerWithShell)
             {
                 KillProcessAndChildrens(_currentServerProcess.Process.Id);
             }
