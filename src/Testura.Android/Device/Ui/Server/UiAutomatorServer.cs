@@ -19,11 +19,10 @@ namespace Testura.Android.Device.Ui.Server
         private const int Timeout = 5;
 
         private readonly int _localPort;
-        private readonly bool _runServerWithShell;
         private readonly ITerminal _terminal;
         private Command _currentServerProcess;
 
-        public UiAutomatorServer(ITerminal terminal, int port, bool runServerWithShell)
+        public UiAutomatorServer(ITerminal terminal, int port)
         {
             if (terminal == null)
             {
@@ -31,7 +30,6 @@ namespace Testura.Android.Device.Ui.Server
             }
 
             _localPort = port;
-            _runServerWithShell = runServerWithShell;
             _terminal = terminal;
         }
 
@@ -52,28 +50,14 @@ namespace Testura.Android.Device.Ui.Server
             if (_currentServerProcess == null || _currentServerProcess.Process.HasExited)
             {
                 DeviceLogger.Log("Starting instrumental");
-                if (_runServerWithShell)
-                {
-                    _currentServerProcess = _terminal.StartAdbProcess(
-                        "shell",
-                        "uiautomator",
-                        "runtest",
-                        DeviceConfiguration.UiAutomatorStubBundle,
-                        DeviceConfiguration.UiAutomatorStub,
-                        "-c",
-                        "com.github.uiautomatorstub.Stub");
-                }
-                else
-                {
-                    _terminal.StartAdbProcessWithoutShell(
-                        "shell",
-                        "uiautomator",
-                        "runtest",
-                        DeviceConfiguration.UiAutomatorStubBundle,
-                        DeviceConfiguration.UiAutomatorStub,
-                        "-c",
-                        "com.github.uiautomatorstub.Stub");
-                }
+                _currentServerProcess = _terminal.StartAdbProcess(
+                    "shell",
+                    "uiautomator",
+                    "runtest",
+                    DeviceConfiguration.UiAutomatorStubBundle,
+                    DeviceConfiguration.UiAutomatorStub,
+                    "-c",
+                    "com.github.uiautomatorstub.Stub");
             }
             else
             {
@@ -104,7 +88,7 @@ namespace Testura.Android.Device.Ui.Server
                 }
             }
 
-            if (_currentServerProcess != null && _runServerWithShell)
+            if (_currentServerProcess != null)
             {
                 KillProcessAndChildrens(_currentServerProcess.Process.Id);
             }

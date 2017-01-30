@@ -19,7 +19,6 @@ namespace Testura.Android.Device.Configurations
             DependenciesDirectory = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Dependencies");
             Port = 9008;
             DumpTries = 5;
-            RunUiServerWithShell = true;
         }
 
         /// <summary>
@@ -53,10 +52,5 @@ namespace Testura.Android.Device.Configurations
         /// sending exception.
         /// </summary>
         public int DumpTries { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether we should run the UI server with shell and a seperate window.
-        /// </summary>
-        public bool RunUiServerWithShell { get; set; }
     }
 }
