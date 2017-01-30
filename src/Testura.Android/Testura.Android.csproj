@@ -91,6 +91,8 @@
     <Compile Include="Util\Logging\ConsoleLogListener.cs" />
     <Compile Include="Util\Logging\ILogListener.cs" />
     <Compile Include="Util\Logging\DeviceLogger.cs" />
+    <Compile Include="Util\LogWatchers\EventLogWatcher.cs" />
+    <Compile Include="Util\LogWatchers\LogWatcher.cs" />
     <Compile Include="Util\Terminal\ITerminal.cs" />
     <Compile Include="Util\Terminal\Terminal.cs" />
   </ItemGroup>
