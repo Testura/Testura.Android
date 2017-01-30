@@ -21,7 +21,7 @@ namespace Testura.Android.Util.Terminal
         /// </summary>
         /// <param name="arguments">Arguments to send to the adb</param>
         /// <returns>Output from adb</returns>
-        public string ExecuteAdbCommand(string[] arguments)
+        public string ExecuteAdbCommand(params string[] arguments)
         {
             var allArguments = new List<string>();
             if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
@@ -58,7 +58,7 @@ namespace Testura.Android.Util.Terminal
         /// </summary>
         /// <param name="arguments">Arguments that should be provided to adb</param>
         /// <returns>The command that contains the started process</returns>
-        public Command StartAdbProcess(string[] arguments)
+        public Command StartAdbProcess(params string[] arguments)
         {
             var allArguments = new List<string> { "/c", GetAdbExe() };
 
@@ -69,6 +69,8 @@ namespace Testura.Android.Util.Terminal
             }
 
             allArguments.AddRange(arguments);
+
+            DeviceLogger.Log($"Starting adb process with shell: {string.Join(" ", allArguments)}");
 
             var command = Command.Run(
                 "cmd.exe",
@@ -84,6 +86,43 @@ namespace Testura.Android.Util.Terminal
                         si.RedirectStandardOutput = false;
                     });
                     o.DisposeOnExit(false);
+                });
+            return command;
+        }
+
+        /// <summary>
+        /// Start the adb process without shell and no window and return the command
+        /// </summary>
+        /// <param name="arguments">Arguments that should be provided to adb</param>
+        /// <returns>The command that contains the started process</returns>
+        public Command StartAdbProcessWithoutShell(params string[] arguments)
+        {
+            var allArguments = new List<string> { "/c", GetAdbExe() };
+
+            if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
+            {
+                allArguments.Add("-s");
+                allArguments.Add(_deviceConfiguration.Serial);
+            }
+
+            allArguments.AddRange(arguments);
+
+            DeviceLogger.Log($"Starting adb process without shell: {string.Join(" ", allArguments)}");
+
+            var command = Command.Run(
+                "cmd.exe",
+                allArguments.ToArray(),
+                o =>
+                {
+                    o.StartInfo(si =>
+                    {
+                        si.CreateNoWindow = true;
+                        si.UseShellExecute = false;
+                        si.RedirectStandardError = true;
+                        si.RedirectStandardInput = true;
+                        si.RedirectStandardOutput = true;
+                    });
+                    o.DisposeOnExit();
                 });
             return command;
         }

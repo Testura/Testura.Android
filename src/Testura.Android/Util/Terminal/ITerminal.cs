@@ -20,5 +20,12 @@ namespace Testura.Android.Util.Terminal
         /// <param name="arguments">Arguments that should be provided to adb</param>
         /// <returns>The command that contains the started process</returns>
         Command StartAdbProcess(params string[] arguments);
+
+        /// <summary>
+        /// Start the adb process without shell and return the command
+        /// </summary>
+        /// <param name="arguments">Arguments that should be provided to adb</param>
+        /// <returns>The command that contains the started process</returns>
+        Command StartAdbProcessWithoutShell(params string[] arguments);
     }
 }
