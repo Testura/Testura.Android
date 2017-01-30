@@ -1,11 +1,11 @@
 ﻿using System;
 using Testura.Android.Device.Configurations;
 
-namespace Testura.Android.Util.LogWatchers
+namespace Testura.Android.Util.LogcatWatchers
 {
-    public class EventLogWatcher : LogWatcher
+    public class EventLogcatWatcher : LogcatWatcher
     {
-        public EventLogWatcher(DeviceConfiguration deviceConfiguration, string[] tags, bool flushLogcat = false)
+        public EventLogcatWatcher(DeviceConfiguration deviceConfiguration, string[] tags, bool flushLogcat = false)
             : base(deviceConfiguration, tags, flushLogcat)
         {
         }

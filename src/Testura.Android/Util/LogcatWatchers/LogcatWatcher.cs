@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Util.Terminal;
 
-namespace Testura.Android.Util.LogWatchers
+namespace Testura.Android.Util.LogcatWatchers
 {
-    public abstract class LogWatcher
+    public abstract class LogcatWatcher
     {
         private readonly ITerminal _terminal;
         private readonly IEnumerable<string> _tags;
         private readonly bool _flushLogcat;
         private CancellationTokenSource _cancellationTokenSource;
 
-        protected LogWatcher(DeviceConfiguration deviceConfiguration, IEnumerable<string> tags, bool flushLogcat = false)
+        protected LogcatWatcher(DeviceConfiguration deviceConfiguration, IEnumerable<string> tags, bool flushLogcat = false)
         {
             _terminal = new Terminal.Terminal(deviceConfiguration);
             _tags = tags;
