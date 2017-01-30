@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Testura.Android.Device.Configurations;
@@ -48,10 +49,12 @@ namespace Testura.Android.Util.LogcatWatchers
             var cancellationToken = _cancellationTokenSource.Token;
             _task = Task.Run(
                 () =>
-                    {
+                {
+                    process.StandardOutput.BaseStream.ReadTimeout = 500;
+
                         while (true)
                         {
-                            if (process.StandardOutput.Peek() >= 0)
+                            try
                             {
                                 var output = process.StandardOutput.ReadLine();
                                 if (!string.IsNullOrEmpty(output))
@@ -59,9 +62,8 @@ namespace Testura.Android.Util.LogcatWatchers
                                     NewOutput(output);
                                 }
                             }
-                            else
+                            catch (TimeoutException)
                             {
-                                Thread.Sleep(250);
                             }
 
                             if (_cancellationTokenSource.IsCancellationRequested)

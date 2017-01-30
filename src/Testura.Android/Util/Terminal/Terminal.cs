@@ -70,6 +70,8 @@ namespace Testura.Android.Util.Terminal
 
             allArguments.AddRange(arguments);
 
+            DeviceLogger.Log($"Starting adb process with shell: {string.Join(" ", allArguments)}");
+
             var command = Command.Run(
                 "cmd.exe",
                 allArguments.ToArray(),
@@ -104,6 +106,8 @@ namespace Testura.Android.Util.Terminal
             }
 
             allArguments.AddRange(arguments);
+
+            DeviceLogger.Log($"Starting adb process without shell: {string.Join(" ", allArguments)}");
 
             var command = Command.Run(
                 "cmd.exe",
