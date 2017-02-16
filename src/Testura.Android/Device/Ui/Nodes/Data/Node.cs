@@ -17,12 +17,22 @@ namespace Testura.Android.Device.Ui.Nodes.Data
             Element = element;
             Parent = parent;
             Children = new List<Node>();
+            Index = element.Attribute("index")?.Value;
             Text = element.Attribute("text")?.Value;
             ResourceId = element.Attribute("resource-id")?.Value;
-            ContentDesc = element.Attribute("content-desc")?.Value;
             Class = element.Attribute("class")?.Value;
-            Index = element.Attribute("index")?.Value;
             Package = element.Attribute("package")?.Value;
+            ContentDesc = element.Attribute("content-desc")?.Value;
+            Checkable = bool.Parse(element.Attribute("checkable").Value);
+            Checked = bool.Parse(element.Attribute("checkable").Value);
+            Clickable = bool.Parse(element.Attribute("checkable").Value);
+            Enabled = bool.Parse(element.Attribute("checkable").Value);
+            Focusable = bool.Parse(element.Attribute("checkable").Value);
+            Focused = bool.Parse(element.Attribute("checkable").Value);
+            Scrollable = bool.Parse(element.Attribute("checkable").Value);
+            LongClickable = bool.Parse(element.Attribute("checkable").Value);
+            Password = bool.Parse(element.Attribute("checkable").Value);
+            Selected = bool.Parse(element.Attribute("checkable").Value);
         }
 
         /// <summary>
@@ -69,6 +79,56 @@ namespace Testura.Android.Device.Ui.Nodes.Data
         /// Gets the package of the node
         /// </summary>
         public string Package { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is checkable
+        /// </summary>
+        public bool Checkable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is checked
+        /// </summary>
+        public bool Checked { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is clickable
+        /// </summary>
+        public bool Clickable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is enabled
+        /// </summary>
+        public bool Enabled { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is focusabled
+        /// </summary>
+        public bool Focusable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is focused
+        /// </summary>
+        public bool Focused { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is scrollable
+        /// </summary>
+        public bool Scrollable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is long clickable
+        /// </summary>
+        public bool LongClickable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is a password
+        /// </summary>
+        public bool Password { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is selected
+        /// </summary>
+        public bool Selected { get; }
 
         /// <summary>
         /// Get coordinates of the node center point
