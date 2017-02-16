@@ -17,12 +17,22 @@ namespace Testura.Android.Device.Ui.Nodes.Data
             Element = element;
             Parent = parent;
             Children = new List<Node>();
+            Index = element.Attribute("index")?.Value;
             Text = element.Attribute("text")?.Value;
             ResourceId = element.Attribute("resource-id")?.Value;
-            ContentDesc = element.Attribute("content-desc")?.Value;
             Class = element.Attribute("class")?.Value;
-            Index = element.Attribute("index")?.Value;
             Package = element.Attribute("package")?.Value;
+            ContentDesc = element.Attribute("content-desc")?.Value;
+            Checkable = ParseAttribute("checkable");
+            Checked = ParseAttribute("checked");
+            Clickable = ParseAttribute("clickable");
+            Enabled = ParseAttribute("enabled");
+            Focusable = ParseAttribute("focusable");
+            Focused = ParseAttribute("focused");
+            Scrollable = ParseAttribute("scrollable");
+            LongClickable = ParseAttribute("long-clickable");
+            Password = ParseAttribute("password");
+            Selected = ParseAttribute("selected");
         }
 
         /// <summary>
@@ -71,6 +81,56 @@ namespace Testura.Android.Device.Ui.Nodes.Data
         public string Package { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the node is checkable
+        /// </summary>
+        public bool Checkable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is checked
+        /// </summary>
+        public bool Checked { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is clickable
+        /// </summary>
+        public bool Clickable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is enabled
+        /// </summary>
+        public bool Enabled { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is focusabled
+        /// </summary>
+        public bool Focusable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is focused
+        /// </summary>
+        public bool Focused { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is scrollable
+        /// </summary>
+        public bool Scrollable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is long clickable
+        /// </summary>
+        public bool LongClickable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is a password
+        /// </summary>
+        public bool Password { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is selected
+        /// </summary>
+        public bool Selected { get; }
+
+        /// <summary>
         /// Get coordinates of the node center point
         /// </summary>
         /// <returns>Coordinates in the center of a node</returns>
@@ -101,6 +161,13 @@ namespace Testura.Android.Device.Ui.Nodes.Data
                 new Coordinate(int.Parse(values[0]), int.Parse(values[1])),
                 new Coordinate(int.Parse(values[2]), int.Parse(values[3]))
             };
+        }
+
+        private bool ParseAttribute(string name)
+        {
+            bool value;
+            bool.TryParse(Element.Attribute(name)?.Value, out value);
+            return value;
         }
     }
 }
