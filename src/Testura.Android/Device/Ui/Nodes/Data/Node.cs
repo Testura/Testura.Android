@@ -23,16 +23,16 @@ namespace Testura.Android.Device.Ui.Nodes.Data
             Class = element.Attribute("class")?.Value;
             Package = element.Attribute("package")?.Value;
             ContentDesc = element.Attribute("content-desc")?.Value;
-            Checkable = bool.Parse(element.Attribute("checkable").Value);
-            Checked = bool.Parse(element.Attribute("checkable").Value);
-            Clickable = bool.Parse(element.Attribute("checkable").Value);
-            Enabled = bool.Parse(element.Attribute("checkable").Value);
-            Focusable = bool.Parse(element.Attribute("checkable").Value);
-            Focused = bool.Parse(element.Attribute("checkable").Value);
-            Scrollable = bool.Parse(element.Attribute("checkable").Value);
-            LongClickable = bool.Parse(element.Attribute("checkable").Value);
-            Password = bool.Parse(element.Attribute("checkable").Value);
-            Selected = bool.Parse(element.Attribute("checkable").Value);
+            Checkable = ParseAttribute("checkable");
+            Checked = ParseAttribute("checked");
+            Clickable = ParseAttribute("clickable");
+            Enabled = ParseAttribute("enabled");
+            Focusable = ParseAttribute("focusable");
+            Focused = ParseAttribute("focused");
+            Scrollable = ParseAttribute("scrollable");
+            LongClickable = ParseAttribute("long-clickable");
+            Password = ParseAttribute("password");
+            Selected = ParseAttribute("selected");
         }
 
         /// <summary>
@@ -161,6 +161,13 @@ namespace Testura.Android.Device.Ui.Nodes.Data
                 new Coordinate(int.Parse(values[0]), int.Parse(values[1])),
                 new Coordinate(int.Parse(values[2]), int.Parse(values[3]))
             };
+        }
+
+        private bool ParseAttribute(string name)
+        {
+            bool value;
+            bool.TryParse(Element.Attribute(name)?.Value, out value);
+            return value;
         }
     }
 }
