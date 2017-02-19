@@ -44,7 +44,7 @@ namespace Testura.Android.Tests.Device
 
         private readonly UiObject _usernameTextbox;
         private readonly UiObject _passwordTextbox;
-        private readonly UiObject _logginButton;
+        private readonly UiObject _logInButton;
 
         public ExampleView()
         {
@@ -54,14 +54,14 @@ namespace Testura.Android.Tests.Device
             // so it's perfectly safe to set up everything inside the constructor.
             _usernameTextbox = _androidDevice.Ui.CreateUiObject(With.ResourceId("usernameTextbox"));
             _passwordTextbox = _androidDevice.Ui.CreateUiObject(With.ContentDesc("passwordTextbox"));
-            _logginButton = _androidDevice.Ui.CreateUiObject(With.Lambda(n => n.Text == "Login"));
+            _logInButton = _androidDevice.Ui.CreateUiObject(With.Lambda(n => n.Text == "Login"));
         }
 
         public void Login(string username, string password)
         {
             _usernameTextbox.SendKeys(username);
             _passwordTextbox.SendKeys(password);
-            _logginButton.Click();
+            _logInButton.Click();
         }
     }
 }
@@ -84,7 +84,7 @@ When mapping up a new UI object, you first have to decide how to find it, using 
 - `With.Package` - Find nodes that contains the exact package
 - `With.Lamba` - Find nodes with a lamba expression
 
-`With.Lamba` is a powerful method to find nodes, and you can access both the node's parent and children:
+`With.Lamba` is a powerful method to find nodes and you can access both the node's parent and children:
 
 ```c#
 With.Lambda(n =>
