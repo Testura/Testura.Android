@@ -49,9 +49,9 @@ namespace Testura.Android.Device.Ui.Objects
         /// <summary>
         /// Wait for node values to match
         /// </summary>
-        /// <param name="expectedValues">Expected values on the specified node</param>
+        /// <param name="expectedValues">Expected values on the node</param>
         /// <param name="timeout">Timeout in seconds</param>
-        /// <returns>True if node values match, otherwise false.</returns>
+        /// <returns>True if node values match before timeout, otherwise false.</returns>
         public bool WaitForValues(Func<Node, bool> expectedValues, int timeout = 20)
         {
             var startTime = DateTime.Now;
