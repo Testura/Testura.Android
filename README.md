@@ -122,6 +122,7 @@ uiObject.Click();
 uiObject.IsVisible();
 uiObject.IsHidden();
 uiObject.SendKeys("..");
+uiObject.WaitForValue(n => n.Enabled);
 var node = uiObject.Values();
 ```
 
