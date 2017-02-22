@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
 
@@ -43,6 +44,31 @@ namespace Testura.Android.Device.Ui.Objects
         public Node Values(int timeout = 2)
         {
             return Device.Ui.FindNode(timeout, With);
+        }
+
+        /// <summary>
+        /// Wait for node values to match
+        /// </summary>
+        /// <param name="expectedValues">Expected values on the specified node</param>
+        /// <param name="timeout">Timeout in seconds</param>
+        /// <returns>True if node values match, otherwise false.</returns>
+        public bool WaitForValues(Func<Node, bool> expectedValues, int timeout = 20)
+        {
+            var startTime = DateTime.Now;
+            while (true)
+            {
+                var currentValues = Values(timeout);
+
+                if (expectedValues.Invoke(currentValues))
+                {
+                    return true;
+                }
+
+                if ((DateTime.Now - startTime).Seconds > timeout)
+                {
+                    return false;
+                }
+            }
         }
 
         protected override IList<Node> TryFindNode(int timeout)
