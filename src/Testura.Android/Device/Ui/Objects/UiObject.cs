@@ -52,7 +52,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <param name="expectedValues">Expected values on the node</param>
         /// <param name="timeout">Timeout in seconds</param>
         /// <returns>True if node values match before timeout, otherwise false.</returns>
-        public bool WaitForValues(Func<Node, bool> expectedValues, int timeout = 20)
+        public bool WaitForValue(Func<Node, bool> expectedValues, int timeout = 20)
         {
             var startTime = DateTime.Now;
             while (true)
