@@ -33,6 +33,13 @@ namespace Testura.Android.Device.Ui.Objects
         public void SendKeys(string text, int timeout = 20)
         {
             Click(timeout);
+            var tries = 0;
+            while (!WaitForValue(n => n.Focused, 1) && tries < 3)
+            {
+                Click(1);
+                tries++;
+            }
+
             Device.Interaction.SendKeys(text);
         }
 
