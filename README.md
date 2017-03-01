@@ -1,4 +1,4 @@
-![Testura Logo](http://testura.net/Content/Images/logo.png)
+![Testura Logo](http://testura.net/Content/Images/logo2.png)
 
 Testura.Android is a lightweight test automation framework for Android built in C#. It contains tools and help classes to test, validate and interact with your Android device or emulator.
 
