@@ -66,7 +66,7 @@ namespace Testura.Android.Device.Ui.Objects
             {
                 var currentValues = Values(timeout);
 
-                if (expectedValues.Invoke(currentValues))
+                if (currentValues != null && expectedValues.Invoke(currentValues))
                 {
                     return true;
                 }
