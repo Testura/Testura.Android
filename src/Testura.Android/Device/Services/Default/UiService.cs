@@ -79,7 +79,10 @@ namespace Testura.Android.Device.Services.Default
                     var nodes = _nodeParser.ParseNodes(screenDump);
                     foreach (var uiExtension in Extensions)
                     {
-                        uiExtension.CheckNodes(nodes, Device);
+                        if (uiExtension.CheckNodes(nodes, Device))
+                        {
+                            startTime = DateTime.Now;
+                        }
                     }
 
                     return _nodeFinder.FindNodes(nodes, with);
