@@ -10,6 +10,7 @@ namespace Testura.Android.Device.Extensions
         /// </summary>
         /// <param name="nodes">A list with nodes on the screen</param>
         /// <param name="device">Current android device</param>
-        void CheckNodes(IList<Node> nodes, IAndroidDevice device);
+        /// <returns>True if we should reset the regular find node time, leave it untouched if false</returns>
+        bool CheckNodes(IList<Node> nodes, IAndroidDevice device);
     }
 }
