@@ -128,7 +128,7 @@ var node = uiObject.Values();
 
 ## Page object helpers
 
-For more information about page object helpers, visit the wiki: https://github.com/Testura/Testura.Android/wiki/10.-Page-Object
+For more information about page object helpers, visit the wiki: https://github.com/Testura/Testura.Android/wiki/Page-Object
 
 We also have a help tool to generate page objects: https://github.com/Testura/Testura.Android.PageObjectCreator
 
