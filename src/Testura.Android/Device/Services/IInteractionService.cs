@@ -44,7 +44,7 @@ namespace Testura.Android.Device.Services
         /// <summary>
         /// Send a key event to the device.
         /// </summary>
-        /// <param name="keyevent">Selected key event to send to the device</param>
-        void SendInputKeyEvent(Keyevents keyevent);
+        /// <param name="keyEvent">Selected key event to send to the device</param>
+        void SendInputKeyEvent(KeyEvents keyEvent);
     }
 }

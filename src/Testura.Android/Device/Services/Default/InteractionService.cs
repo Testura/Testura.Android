@@ -99,10 +99,10 @@ namespace Testura.Android.Device.Services.Default
         /// <summary>
         /// Send a key event to the device.
         /// </summary>
-        /// <param name="keyevent">Selected key event to send to the device</param>
-        public void SendInputKeyEvent(Keyevents keyevent)
+        /// <param name="keyEvent">Selected key event to send to the device</param>
+        public void SendInputKeyEvent(KeyEvents keyEvent)
         {
-            Device.Adb.Shell($"input keyevent {(int)keyevent}");
+            Device.Adb.Shell($"input keyevent {(int)keyEvent}");
         }
 
         private void SetScreenHeightAndWidth()
