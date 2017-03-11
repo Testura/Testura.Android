@@ -8,31 +8,32 @@ namespace Testura.Android.Device.Ui.Objects
 {
     public abstract class BaseUiObject
     {
-        protected BaseUiObject(IAndroidDevice device, params With[] with)
+        protected BaseUiObject(IAndroidDevice device, params With[] withs)
         {
             if (device == null)
             {
                 throw new ArgumentNullException(nameof(device));
             }
 
-            if (with == null || with.Length == 0)
+            if (withs == null || withs.Length == 0)
             {
-                throw new ArgumentException("Argument is empty collection", nameof(with));
+                throw new ArgumentException("Argument is empty collection", nameof(withs));
             }
 
             Device = device;
-            With = with;
+            Withs = withs;
         }
+
+        /// <summary>
+        /// Gets all search criteria to find this ui object
+        /// </summary>
+        internal With[] Withs { get; }
 
         /// <summary>
         /// Gets the current android device
         /// </summary>
         protected IAndroidDevice Device { get; }
 
-        /// <summary>
-        /// Gets all search criteria to find this ui object
-        /// </summary>
-        protected With[] With { get; }
 
         /// <summary>
         /// Wait for the node(s) to be visible

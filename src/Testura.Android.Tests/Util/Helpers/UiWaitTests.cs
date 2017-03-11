@@ -43,5 +43,21 @@ namespace Testura.Android.Tests.Util.Helpers
             Assert.AreEqual(uiObjectOne, foundObject);
             Thread.Sleep(1000);
         }
+
+        [Test]
+        public void ForAll_WhenFindAll_ShouldNotThrowException()
+        {
+            var uiObjectOne = _testHelper.CreateUiObject(With.Class("test"), 500);
+            var uiObjectTwo = _testHelper.CreateUiObject(With.ResourceId("test"), 500);
+            UiWait.ForAll(1, uiObjectOne.IsVisible, uiObjectTwo.IsVisible);
+        }
+
+        [Test]
+        public void ForAll_WhenCantFindAll_ShouldThrowException()
+        {
+            var uiObjectOne = _testHelper.CreateUiObject(With.Class("test"), 500, true);
+            var uiObjectTwo = _testHelper.CreateUiObject(With.ResourceId("test"), 500, true);
+            Assert.Throws<UiNodeNotFoundException>(() => UiWait.ForAll(1, uiObjectOne.IsVisible, uiObjectTwo.IsVisible));
+        }
     }
 }

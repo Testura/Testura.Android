@@ -10,8 +10,8 @@ namespace Testura.Android.Device.Ui.Objects
     /// </summary>
     public class UiObject : BaseUiObject
     {
-        internal UiObject(IAndroidDevice device, params With[] with)
-            : base(device, with)
+        internal UiObject(IAndroidDevice device, params With[] withs)
+            : base(device, withs)
         {
         }
 
@@ -21,7 +21,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <param name="timeout">Timeout in seconds</param>
         public void Tap(int timeout = 20)
         {
-            var node = Device.Ui.FindNode(timeout, With);
+            var node = Device.Ui.FindNode(timeout, Withs);
             Device.Interaction.Tap(node);
         }
 
@@ -50,7 +50,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns>A node object with all values of this node</returns>
         public Node Values(int timeout = 2)
         {
-            return Device.Ui.FindNode(timeout, With);
+            return Device.Ui.FindNode(timeout, Withs);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Testura.Android.Device.Ui.Objects
 
         protected override IList<Node> TryFindNode(int timeout)
         {
-            return new List<Node> { Device.Ui.FindNode(timeout, With) };
+            return new List<Node> { Device.Ui.FindNode(timeout, Withs) };
         }
     }
 }

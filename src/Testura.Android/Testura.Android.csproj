@@ -94,6 +94,7 @@
     <Compile Include="Util\LogcatWatchers\LogcatWatcher.cs" />
     <Compile Include="Util\Terminal\ITerminal.cs" />
     <Compile Include="Util\Terminal\Terminal.cs" />
+    <Compile Include="Util\WithErrorMessageBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

@@ -41,13 +41,13 @@ namespace Testura.Android.Tests
         {
             if (shouldThrowExeception)
             {
-                UiServiceMock.Setup(u => u.FindNode(10, with))
+                UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), with))
                     .Callback(() => Thread.Sleep(delayInMiliSec))
                     .Throws<UiNodeNotFoundException>();
             }
             else
             {
-                UiServiceMock.Setup(u => u.FindNode(10, with))
+                UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), with))
                    .Callback(() => Thread.Sleep(delayInMiliSec))
                    .Returns(new Node(new XElement("mm"), null));
             }
