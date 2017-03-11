@@ -6,12 +6,12 @@ namespace Testura.Android.Device.Ui.Search
 {
     public class With
     {
-        private With(Func<Node, bool> nodeSearche)
+        private With(Func<Node, bool> nodeSearch)
         {
-            NodeSearche = nodeSearche;
+            NodeSearch = nodeSearch;
         }
 
-        public Func<Node, bool> NodeSearche { get; private set; }
+        public Func<Node, bool> NodeSearch { get; private set; }
 
         /// <summary>
         /// Find node with matching text

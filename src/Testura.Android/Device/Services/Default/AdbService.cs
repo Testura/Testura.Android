@@ -13,6 +13,11 @@ namespace Testura.Android.Device.Services.Default
 
         public AdbService(ITerminal terminal)
         {
+            if (terminal == null)
+            {
+                throw new ArgumentNullException(nameof(terminal));
+            }
+
             _terminal = terminal;
         }
 
