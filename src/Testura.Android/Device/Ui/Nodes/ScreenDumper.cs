@@ -77,7 +77,7 @@ namespace Testura.Android.Device.Ui.Nodes
 
                     return _server.DumpUi();
                 }
-                catch (UiAutomatorServerException ex)
+                catch (UiAutomatorServerException)
                 {
                     if (tries > 0)
                     {

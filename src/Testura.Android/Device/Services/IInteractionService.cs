@@ -23,28 +23,28 @@ namespace Testura.Android.Device.Services
         void Swipe(SwipeDirections swipeDirection, int duration);
 
         /// <summary>
-        /// Click in the center of a node.
+        /// Tap in the center of a node.
         /// </summary>
         /// <param name="node">Node to click on</param>
-        void Click(Node node);
+        void Tap(Node node);
 
         /// <summary>
-        /// Click on an x and y position of the screen.
+        /// Tap on an x and y position of the screen.
         /// </summary>
         /// <param name="x">The x position</param>
         /// <param name="y">The y position</param>
-        void Click(int x, int y);
+        void Tap(int x, int y);
 
         /// <summary>
-        /// Send keys to a input (text) field.
+        /// Input text into the selected node
         /// </summary>
-        /// <param name="text">Input to field</param>
-        void SendKeys(string text);
+        /// <param name="text">The text to input into the selected node</param>
+        void InputText(string text);
 
         /// <summary>
-        /// Send a key event to the device.
+        /// Input key event to the device
         /// </summary>
-        /// <param name="keyevent">Selected key event to send to the device</param>
-        void SendInputKeyEvent(Keyevents keyevent);
+        /// <param name="keyEvent">Selected key event to send to the device</param>
+        void InputKeyEvent(KeyEvents keyEvent);
     }
 }

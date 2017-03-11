@@ -32,7 +32,7 @@
         Disable
     }
 
-    public enum Keyevents
+    public enum KeyEvents
     {
         Unknown,
         Menu,

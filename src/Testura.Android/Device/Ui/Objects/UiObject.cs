@@ -10,37 +10,37 @@ namespace Testura.Android.Device.Ui.Objects
     /// </summary>
     public class UiObject : BaseUiObject
     {
-        internal UiObject(IAndroidDevice device, params With[] with)
-            : base(device, with)
+        internal UiObject(IAndroidDevice device, params With[] withs)
+            : base(device, withs)
         {
         }
 
         /// <summary>
-        /// Click in the center of a node
+        /// Tap in the center of a node
         /// </summary>
         /// <param name="timeout">Timeout in seconds</param>
-        public void Click(int timeout = 20)
+        public void Tap(int timeout = 20)
         {
-            var node = Device.Ui.FindNode(timeout, With);
-            Device.Interaction.Click(node);
+            var node = Device.Ui.FindNode(timeout, Withs);
+            Device.Interaction.Tap(node);
         }
 
         /// <summary>
-        /// Send text to the node
+        /// Input text into the node
         /// </summary>
-        /// <param name="text">Text to write</param>
-        /// <param name="timeout">Timeout in seconds</param>
-        public void SendKeys(string text, int timeout = 20)
+        /// <param name="text">The text to input into the node</param>
+        /// <param name="timeout">Timeout in second </param>
+        public void InputText(string text, int timeout = 20)
         {
-            Click(timeout);
+            Tap(timeout);
             var tries = 0;
             while (!WaitForValue(n => n.Focused, 1) && tries < 3)
             {
-                Click(1);
+                Tap(1);
                 tries++;
             }
 
-            Device.Interaction.SendKeys(text);
+            Device.Interaction.InputText(text);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns>A node object with all values of this node</returns>
         public Node Values(int timeout = 2)
         {
-            return Device.Ui.FindNode(timeout, With);
+            return Device.Ui.FindNode(timeout, Withs);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Testura.Android.Device.Ui.Objects
 
         protected override IList<Node> TryFindNode(int timeout)
         {
-            return new List<Node> { Device.Ui.FindNode(timeout, With) };
+            return new List<Node> { Device.Ui.FindNode(timeout, Withs) };
         }
     }
 }

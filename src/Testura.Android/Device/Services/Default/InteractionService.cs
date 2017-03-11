@@ -58,10 +58,10 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Click in the center of a node.
+        /// Tap in the center of a node.
         /// </summary>
         /// <param name="node">Node to click on</param>
-        public void Click(Node node)
+        public void Tap(Node node)
         {
             if (node == null)
             {
@@ -69,24 +69,24 @@ namespace Testura.Android.Device.Services.Default
             }
 
             var center = node.GetNodeCenter();
-            Click(center.X, center.Y);
+            Tap(center.X, center.Y);
         }
 
         /// <summary>
-        /// Click on an x and y position of the screen.
+        /// Tap on an x and y position of the screen.
         /// </summary>
         /// <param name="x">The x position</param>
         /// <param name="y">The y position</param>
-        public void Click(int x, int y)
+        public void Tap(int x, int y)
         {
             Device.Adb.Shell($"input tap {x} {y}");
         }
 
         /// <summary>
-        /// Send keys to a input (text) field.
+        /// Input text into the node
         /// </summary>
-        /// <param name="text">Input to field</param>
-        public void SendKeys(string text)
+        /// <param name="text">The text to input into the node</param>
+        public void InputText(string text)
         {
             if (text == null)
             {
@@ -99,10 +99,10 @@ namespace Testura.Android.Device.Services.Default
         /// <summary>
         /// Send a key event to the device.
         /// </summary>
-        /// <param name="keyevent">Selected key event to send to the device</param>
-        public void SendInputKeyEvent(Keyevents keyevent)
+        /// <param name="keyEvent">Selectei key event to send to the device</param>
+        public void InputKeyEvent(KeyEvents keyEvent)
         {
-            Device.Adb.Shell($"input keyevent {(int)keyevent}");
+            Device.Adb.Shell($"input keyevent {(int)keyEvent}");
         }
 
         private void SetScreenHeightAndWidth()

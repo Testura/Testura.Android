@@ -1,11 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Util.Exceptions
 {
     public class UiNodeNotFoundException : Exception
     {
         public UiNodeNotFoundException()
-            : base("Could not find node.")
+        {
+        }
+
+        public UiNodeNotFoundException(IList<With> withs)
+            : base(WithErrorMessageBuilder.BuildWithErrorMessage(withs))
         {
         }
 

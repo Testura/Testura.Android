@@ -12,7 +12,7 @@ namespace Testura.Android.Device.Ui.Nodes
         /// <summary>
         /// Search through a list of nodes and return the first node that match the search criteria.
         /// </summary>
-        /// <param name="nodes">A list with nodes to search through</param>
+        /// <param name="nodes">A list withs nodes to search through</param>
         /// <param name="with">One ore many search criteria</param>
         /// <returns>The first node we find that match the search criteria</returns>
         public Node FindNode(IList<Node> nodes, params With[] with)
@@ -34,26 +34,26 @@ namespace Testura.Android.Device.Ui.Nodes
         /// <summary>
         /// Search through a list of nodes and return all nodes that match the search criteria.
         /// </summary>
-        /// <param name="nodes">A list with nodes to search through</param>
-        /// <param name="with">One ore many search criteria</param>
+        /// <param name="nodes">A list withs nodes to search through</param>
+        /// <param name="withs">One ore many search criteria</param>
         /// <returns>All nodes we find that match the search criteria</returns>
-        public IList<Node> FindNodes(IList<Node> nodes, params With[] with)
+        public IList<Node> FindNodes(IList<Node> nodes, params With[] withs)
         {
             if (nodes == null)
             {
                 throw new ArgumentNullException(nameof(nodes));
             }
 
-            if (with == null || with.Length == 0)
+            if (withs == null || withs.Length == 0)
             {
-                throw new ArgumentException("Argument is empty collection", nameof(with));
+                throw new ArgumentException("Argument is empty collection", nameof(withs));
             }
 
             var approvedNodes = new List<Node>();
 
-            foreach (var with1 in with)
+            foreach (var with in withs)
             {
-                var foundNodes = nodes.Where(with1.NodeSearche).ToList();
+                var foundNodes = nodes.Where(with.NodeSearch).ToList();
                 if (!approvedNodes.Any())
                 {
                     approvedNodes = foundNodes;
@@ -66,7 +66,7 @@ namespace Testura.Android.Device.Ui.Nodes
 
             if (!approvedNodes.Any())
             {
-                throw new UiNodeNotFoundException();
+                throw new UiNodeNotFoundException(withs);
             }
 
             return approvedNodes;

@@ -35,6 +35,14 @@ namespace Testura.Android.Device
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
+        /// </summary>
+        public AndroidDevice()
+            : this(new DeviceConfiguration(), new ServiceLoader.ServiceLoader())
+        {
+        }
+
+        /// <summary>
         /// Gets the current device Configuration
         /// </summary>
         public DeviceConfiguration Configuration { get; }

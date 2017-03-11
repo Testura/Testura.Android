@@ -9,8 +9,8 @@ namespace Testura.Android.Device.Ui.Objects
     /// </summary>
     public class UiObjects : BaseUiObject
     {
-        internal UiObjects(IAndroidDevice device, params With[] with)
-            : base(device, with)
+        internal UiObjects(IAndroidDevice device, params With[] withs)
+            : base(device, withs)
         {
         }
 
@@ -26,7 +26,7 @@ namespace Testura.Android.Device.Ui.Objects
 
         protected override IList<Node> TryFindNode(int timeout)
         {
-            return Device.Ui.FindNodes(timeout, With);
+            return Device.Ui.FindNodes(timeout, Withs);
         }
     }
 }
