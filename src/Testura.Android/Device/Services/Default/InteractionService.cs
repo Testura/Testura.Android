@@ -83,9 +83,9 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Input text to the device
+        /// Input text into the node
         /// </summary>
-        /// <param name="text">Input to field</param>
+        /// <param name="text">The text to input into the node</param>
         public void InputText(string text)
         {
             if (text == null)

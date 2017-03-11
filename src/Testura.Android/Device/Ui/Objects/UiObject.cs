@@ -26,10 +26,10 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Input text to the node
+        /// Input text into the node
         /// </summary>
-        /// <param name="text">Text to write</param>
-        /// <param name="timeout">Timeout in seconds</param>
+        /// <param name="text">The text to input into the node</param>
+        /// <param name="timeout">Timeout in second </param>
         public void InputText(string text, int timeout = 20)
         {
             Tap(timeout);

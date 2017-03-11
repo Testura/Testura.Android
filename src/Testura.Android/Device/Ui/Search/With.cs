@@ -6,7 +6,6 @@ namespace Testura.Android.Device.Ui.Search
 {
     public class With
     {
-
         private With(Func<Node, bool> nodeSearch, string errorMessage)
         {
             NodeSearch = nodeSearch;
