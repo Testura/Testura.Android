@@ -34,7 +34,7 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
             //Assert.IsNotEmpty(ui);
 
             var device = new AndroidDevice(new DeviceConfiguration());
-            device.Ui.CreateUiObject(With.ResourceId("android:id/search_src_text")).SendKeys("171");
+            device.Ui.CreateUiObject(With.ResourceId("android:id/search_src_text")).InputText("171");
         }
     }
 }

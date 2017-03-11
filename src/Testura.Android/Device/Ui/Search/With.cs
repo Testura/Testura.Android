@@ -6,12 +6,16 @@ namespace Testura.Android.Device.Ui.Search
 {
     public class With
     {
-        private With(Func<Node, bool> nodeSearch)
+
+        private With(Func<Node, bool> nodeSearch, string errorMessage)
         {
             NodeSearch = nodeSearch;
+            ErrorMessage = errorMessage;
         }
 
-        public Func<Node, bool> NodeSearch { get; private set; }
+        public Func<Node, bool> NodeSearch { get; }
+
+        public string ErrorMessage { get; }
 
         /// <summary>
         /// Find node with matching text
@@ -123,7 +127,7 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            return new With(predicate);
+            return new With(predicate, "complex lambda");
         }
 
         private static With Attribute(AttributeTags attribute, string value)
@@ -131,19 +135,19 @@ namespace Testura.Android.Device.Ui.Search
             switch (attribute)
             {
                 case AttributeTags.TextContains:
-                    return new With(node => node.Text.Contains(value));
+                    return new With(node => node.Text.Contains(value), $"text contains \"{value}\"");
                 case AttributeTags.Text:
-                    return new With(node => node.Text == value);
+                    return new With(node => node.Text == value, $"text equals \"{value}\"");
                 case AttributeTags.ResourceId:
-                    return new With(node => node.ResourceId == value);
+                    return new With(node => node.ResourceId == value, $"resource id equals \"{value}\"");
                 case AttributeTags.ContentDesc:
-                    return new With(node => node.ContentDesc == value);
+                    return new With(node => node.ContentDesc == value, $"content desc equals \"{value}\"");
                 case AttributeTags.Class:
-                    return new With(node => node.Class == value);
+                    return new With(node => node.Class == value, $"class equals \"{value}\"");
                 case AttributeTags.Index:
-                    return new With(node => node.Index == value);
+                    return new With(node => node.Index == value, $"index equals {value}");
                 case AttributeTags.Package:
-                    return new With(node => node.Package == value);
+                    return new With(node => node.Package == value, $"package equals \"{value}\"");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null);
             }

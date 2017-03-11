@@ -26,11 +26,11 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Send text to the node
+        /// Input text to the node
         /// </summary>
         /// <param name="text">Text to write</param>
         /// <param name="timeout">Timeout in seconds</param>
-        public void SendKeys(string text, int timeout = 20)
+        public void InputText(string text, int timeout = 20)
         {
             Tap(timeout);
             var tries = 0;
@@ -40,7 +40,7 @@ namespace Testura.Android.Device.Ui.Objects
                 tries++;
             }
 
-            Device.Interaction.SendKeys(text);
+            Device.Interaction.InputText(text);
         }
 
         /// <summary>

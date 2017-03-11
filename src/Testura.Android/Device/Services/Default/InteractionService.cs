@@ -83,10 +83,10 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Send keys to a input (text) field.
+        /// Input text to the device
         /// </summary>
         /// <param name="text">Input to field</param>
-        public void SendKeys(string text)
+        public void InputText(string text)
         {
             if (text == null)
             {
@@ -99,8 +99,8 @@ namespace Testura.Android.Device.Services.Default
         /// <summary>
         /// Send a key event to the device.
         /// </summary>
-        /// <param name="keyEvent">Selected key event to send to the device</param>
-        public void SendInputKeyEvent(KeyEvents keyEvent)
+        /// <param name="keyEvent">Selectei key event to send to the device</param>
+        public void InputKeyEvent(KeyEvents keyEvent)
         {
             Device.Adb.Shell($"input keyevent {(int)keyEvent}");
         }

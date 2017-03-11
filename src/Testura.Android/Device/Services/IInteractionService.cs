@@ -36,15 +36,15 @@ namespace Testura.Android.Device.Services
         void Tap(int x, int y);
 
         /// <summary>
-        /// Send keys to a input (text) field.
+        /// Input text to the device
         /// </summary>
         /// <param name="text">Input to field</param>
-        void SendKeys(string text);
+        void InputText(string text);
 
         /// <summary>
-        /// Send a key event to the device.
+        /// Input key event to the device
         /// </summary>
         /// <param name="keyEvent">Selected key event to send to the device</param>
-        void SendInputKeyEvent(KeyEvents keyEvent);
+        void InputKeyEvent(KeyEvents keyEvent);
     }
 }

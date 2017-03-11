@@ -34,7 +34,7 @@ namespace Testura.Android.Tests.Device.Services.Default
         [Test]
         public void SendKeys_WhenTextIsNull_ShouldThrowException()
         {
-            Assert.Throws<ArgumentNullException>(() => _interactionService.SendKeys(null));
+            Assert.Throws<ArgumentNullException>(() => _interactionService.InputText(null));
         }
     }
 }
