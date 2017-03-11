@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
+using Testura.Android.Device;
 using Testura.Android.Device.Configurations;
+using Testura.Android.Device.Ui.Search;
 using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Terminal;
 using Assert = NUnit.Framework.Assert;
@@ -7,7 +9,6 @@ using Assert = NUnit.Framework.Assert;
 namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
 {
     [TestFixture]
-    [Ignore("Integration")]
     public class UiAutomatorServerTests
     {
         private UiAutomatorServer _server;
@@ -27,10 +28,13 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
         [Test]
         public void UiAUtomatorServer_WhenDumpingUi_ShouldGetContentBack()
         {
-            _server.Start();
-            var ui = _server.DumpUi();
-            Assert.IsNotNull(ui);
-            Assert.IsNotEmpty(ui);
+            //_server.Start();
+            //var ui = _server.DumpUi();
+            //Assert.IsNotNull(ui);
+            //Assert.IsNotEmpty(ui);
+
+            var device = new AndroidDevice(new DeviceConfiguration());
+            device.Ui.CreateUiObject(With.ResourceId("android:id/search_src_text")).SendKeys("171");
         }
     }
 }

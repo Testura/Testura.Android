@@ -28,7 +28,7 @@ namespace Testura.Android.Tests.Device.Services.Default
         [Test]
         public void Click_WhenNodeIsNull_ShouldThrowException()
         {
-            Assert.Throws<ArgumentNullException>(() => _interactionService.Click(null));
+            Assert.Throws<ArgumentNullException>(() => _interactionService.Tap(null));
         }
 
         [Test]

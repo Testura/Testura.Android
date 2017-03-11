@@ -58,10 +58,10 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Click in the center of a node.
+        /// Tap in the center of a node.
         /// </summary>
         /// <param name="node">Node to click on</param>
-        public void Click(Node node)
+        public void Tap(Node node)
         {
             if (node == null)
             {
@@ -69,15 +69,15 @@ namespace Testura.Android.Device.Services.Default
             }
 
             var center = node.GetNodeCenter();
-            Click(center.X, center.Y);
+            Tap(center.X, center.Y);
         }
 
         /// <summary>
-        /// Click on an x and y position of the screen.
+        /// Tap on an x and y position of the screen.
         /// </summary>
         /// <param name="x">The x position</param>
         /// <param name="y">The y position</param>
-        public void Click(int x, int y)
+        public void Tap(int x, int y)
         {
             Device.Adb.Shell($"input tap {x} {y}");
         }

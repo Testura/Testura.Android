@@ -16,13 +16,13 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Click in the center of a node
+        /// Tap in the center of a node
         /// </summary>
         /// <param name="timeout">Timeout in seconds</param>
-        public void Click(int timeout = 20)
+        public void Tap(int timeout = 20)
         {
             var node = Device.Ui.FindNode(timeout, With);
-            Device.Interaction.Click(node);
+            Device.Interaction.Tap(node);
         }
 
         /// <summary>
@@ -32,11 +32,11 @@ namespace Testura.Android.Device.Ui.Objects
         /// <param name="timeout">Timeout in seconds</param>
         public void SendKeys(string text, int timeout = 20)
         {
-            Click(timeout);
+            Tap(timeout);
             var tries = 0;
             while (!WaitForValue(n => n.Focused, 1) && tries < 3)
             {
-                Click(1);
+                Tap(1);
                 tries++;
             }
 
