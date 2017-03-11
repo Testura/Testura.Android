@@ -115,18 +115,19 @@ namespace Testura.Android.Device.Ui.Search
         /// Find node that match the lambda expression
         /// </summary>
         /// <param name="predicate">The lambda expression</param>
+        /// <param name="customErrorMessage">Error message if we can't find node</param>
         /// <returns>An instance of the with object containing the search function</returns>
         /// <code>
         /// device.Ui.CreateUiObject(With.Lambda(n => n.Text == "someText"));
         /// </code>
-        public static With Lambda(Func<Node, bool> predicate)
+        public static With Lambda(Func<Node, bool> predicate, string customErrorMessage = null)
         {
             if (predicate == null)
             {
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            return new With(predicate, "complex lambda");
+            return new With(predicate, customErrorMessage ?? "complex lambda");
         }
 
         private static With Attribute(AttributeTags attribute, string value)
