@@ -26,13 +26,13 @@ namespace Testura.Android.Tests.Device.Services.Default
         }
 
         [Test]
-        public void Click_WhenNodeIsNull_ShouldThrowException()
+        public void Tap_WhenNodeIsNull_ShouldThrowException()
         {
             Assert.Throws<ArgumentNullException>(() => _interactionService.Tap(null));
         }
 
         [Test]
-        public void SendKeys_WhenTextIsNull_ShouldThrowException()
+        public void InputText_WhenTextIsNull_ShouldThrowException()
         {
             Assert.Throws<ArgumentNullException>(() => _interactionService.InputText(null));
         }
