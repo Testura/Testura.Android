@@ -59,9 +59,9 @@ namespace Testura.Android.Tests.Device
 
         public void Login(string username, string password)
         {
-            _usernameTextbox.SendKeys(username);
-            _passwordTextbox.SendKeys(password);
-            _logInButton.Click();
+            _usernameTextbox.InputText(username);
+            _passwordTextbox.InputText(password);
+            _logInButton.Tap();
         }
     }
 }
@@ -118,10 +118,10 @@ device.Settings.Wifi(State.Enable);
 ```c#
 var device = new AndroidDevice(new DeviceConfiguration());
 var uiObject = device.Ui.CreateUiObject(With.ContentDesc(".."));
-uiObject.Click();
+uiObject.Tap();
 uiObject.IsVisible();
 uiObject.IsHidden();
-uiObject.SendKeys("..");
+uiObject.InputText("..");
 uiObject.WaitForValue(n => n.Enabled);
 var node = uiObject.Values();
 ```
