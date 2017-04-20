@@ -4,9 +4,9 @@ using Testura.Android.Device;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
 
-namespace Testura.Android.Util.Monkey
+namespace Testura.Android.Util.Walker
 {
-    public class MonkeyCase
+    public class WalkerTrigger
     {
         /// <summary>
         /// Gets or sets the with for the special case node

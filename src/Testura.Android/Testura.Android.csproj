@@ -92,10 +92,11 @@
     <Compile Include="Util\Logging\DeviceLogger.cs" />
     <Compile Include="Util\LogcatWatchers\EventLogcatWatcher.cs" />
     <Compile Include="Util\LogcatWatchers\LogcatWatcher.cs" />
-    <Compile Include="Util\Monkey\MonkeyCase.cs" />
+    <Compile Include="Util\Walker\AppWalkerConfiguration..cs" />
+    <Compile Include="Util\Walker\WalkerTrigger.cs" />
     <Compile Include="Util\Terminal\ITerminal.cs" />
     <Compile Include="Util\Terminal\Terminal.cs" />
-    <Compile Include="Util\Monkey\ClickMonkey.cs" />
+    <Compile Include="Util\Walker\AppWalker.cs" />
     <Compile Include="Util\WithErrorMessageBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
