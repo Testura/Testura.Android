@@ -10,21 +10,28 @@ namespace Testura.Android.Util.Walker.Input
     public class TapAppWalkerInput : IAppWalkerInput
     {
         private readonly bool _shouldOnlyTapClickAbleNodes;
+        private readonly IEnumerable<TapCase> _tapCases;
         private readonly Random _rnd;
 
         public TapAppWalkerInput(bool shouldOnlyTapClickAbleNodes)
         {
+            _tapCases = new List<TapCase>();
             _shouldOnlyTapClickAbleNodes = shouldOnlyTapClickAbleNodes;
             _rnd = new Random();
+        }
+
+        public TapAppWalkerInput(bool shouldOnlyTapClickAbleNodes, IEnumerable<TapCase> tapCases)
+            : this(shouldOnlyTapClickAbleNodes)
+        {
+            _tapCases = tapCases;
         }
 
         /// <summary>
         /// Peform app walker input
         /// </summary>
         /// <param name="device">The current device</param>
-        /// <param name="tapCases">List of provided tap cases</param>
         /// <param name="nodes">All nodes on current screen</param>
-        public void PerformInput(IAndroidDevice device, IEnumerable<TapCase> tapCases, IList<Node> nodes)
+        public void PerformInput(IAndroidDevice device, IList<Node> nodes)
         {
             if (_shouldOnlyTapClickAbleNodes)
             {
@@ -38,7 +45,7 @@ namespace Testura.Android.Util.Walker.Input
             }
 
             var selectedNode = nodes[_rnd.Next(0, nodes.Count)];
-            var shouldStillTap = CheckTapCases(device, tapCases, selectedNode);
+            var shouldStillTap = CheckTapCases(device, _tapCases, selectedNode);
 
             if (shouldStillTap)
             {

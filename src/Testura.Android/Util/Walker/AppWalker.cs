@@ -97,7 +97,7 @@ namespace Testura.Android.Util.Walker
                     return;
                 }
 
-                _inputs[_rnd.Next(0, _inputs.Count)].PerformInput(device, tapCases, nodes);
+                _inputs[_rnd.Next(0, _inputs.Count)].PerformInput(device, nodes);
 
                 var packageAndActivity = device.Activity.GetCurrent();
 
