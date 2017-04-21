@@ -24,7 +24,7 @@ namespace Testura.Android.Util.Walker
                 throw new ArgumentNullException(nameof(appWalkerConfiguration));
             }
 
-            _inputs = inputs ?? new List<IAppWalkerInput> {new TapAppWalkerInput()};
+            _inputs = inputs ?? new List<IAppWalkerInput> { new TapAppWalkerInput(true) };
             _appWalkerConfiguration = appWalkerConfiguration;
             _rnd = new Random();
         }
@@ -97,7 +97,7 @@ namespace Testura.Android.Util.Walker
                     return;
                 }
 
-                _inputs[_rnd.Next(0, _inputs.Count)].PerformInput(device, tapCases, nodes, _appWalkerConfiguration);
+                _inputs[_rnd.Next(0, _inputs.Count)].PerformInput(device, tapCases, nodes);
 
                 var packageAndActivity = device.Activity.GetCurrent();
 

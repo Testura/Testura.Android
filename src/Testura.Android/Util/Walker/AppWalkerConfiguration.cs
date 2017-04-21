@@ -4,18 +4,12 @@
     {
         public AppWalkerConfiguration()
         {
-            ShouldOnlyTapClickAbleNodes = true;
             MaxInputBeforeGoingBack = 5;
             WalkDuration = 0;
             ShouldStartActivity = true;
             ShouldGoBackToActivity = true;
             InputCooldown = 0;
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether we should only tap nodes that have clickable set to true
-        /// </summary>
-        public bool ShouldOnlyTapClickAbleNodes { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum input on the same activity page before we go back. Minus one means that we never go back.

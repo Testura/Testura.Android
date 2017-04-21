@@ -37,8 +37,8 @@ namespace Testura.Android.Util.Walker.Input
         /// </summary>
         /// <param name="device">The current device</param>
         /// <param name="tapCases">List of provided tap cases</param>
-        /// <param name="configuration">The current app walker configuration</param>
-        public void PerformInput(IAndroidDevice device, IEnumerable<TapCase> tapCases, IList<Node> nodes, AppWalkerConfiguration configuration)
+        /// <param name="nodes">All nodes on current screen</param>
+        public void PerformInput(IAndroidDevice device, IEnumerable<TapCase> tapCases, IList<Node> nodes)
         {
             device.Interaction.Swipe(_swipeDirectionses[_rnd.Next(0, _swipeDirectionses.Count)], _duration);
         }

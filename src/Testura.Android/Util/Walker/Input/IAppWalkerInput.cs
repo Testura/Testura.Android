@@ -13,7 +13,6 @@ namespace Testura.Android.Util.Walker.Input
         /// <param name="device">The current device</param>
         /// <param name="tapCases">List of provided tap cases</param>
         /// <param name="nodes">All nodes on current screen</param>
-        /// <param name="configuration">The current app walker configuration</param>
-        void PerformInput(IAndroidDevice device, IEnumerable<TapCase> tapCases, IList<Node> nodes, AppWalkerConfiguration configuration);
+        void PerformInput(IAndroidDevice device, IEnumerable<TapCase> tapCases, IList<Node> nodes);
     }
 }
