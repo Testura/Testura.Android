@@ -90,7 +90,6 @@ namespace Testura.Android.Util.Walker
                     }
                 }
 
-                var packageAndActivity = device.Activity.GetCurrent();
                 var nodes = ForceGetAllNodes(uiService);
 
                 if (StopWalk(device, stopCases, nodes))
@@ -99,6 +98,8 @@ namespace Testura.Android.Util.Walker
                 }
 
                 _inputs[_rnd.Next(0, _inputs.Count)].PerformInput(device, tapCases, nodes, _appWalkerConfiguration);
+
+                var packageAndActivity = device.Activity.GetCurrent();
 
                 if (package != null && !packageAndActivity.Contains(package) && _appWalkerConfiguration.ShouldGoBackToActivity)
                 {
