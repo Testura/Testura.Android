@@ -92,8 +92,13 @@
     <Compile Include="Util\Logging\DeviceLogger.cs" />
     <Compile Include="Util\LogcatWatchers\EventLogcatWatcher.cs" />
     <Compile Include="Util\LogcatWatchers\LogcatWatcher.cs" />
-    <Compile Include="Util\Walker\AppWalkerConfiguration..cs" />
-    <Compile Include="Util\Walker\WalkerTrigger.cs" />
+    <Compile Include="Util\Walker\AppWalkerConfiguration.cs" />
+    <Compile Include="Util\Walker\Cases\StopCase.cs" />
+    <Compile Include="Util\Walker\Cases\TimeCase.cs" />
+    <Compile Include="Util\Walker\Input\IAppWalkerInput.cs" />
+    <Compile Include="Util\Walker\Input\SwipeAppWalkerInput.cs" />
+    <Compile Include="Util\Walker\Input\TapAppWalkerInput.cs" />
+    <Compile Include="Util\Walker\Cases\TapCase.cs" />
     <Compile Include="Util\Terminal\ITerminal.cs" />
     <Compile Include="Util\Terminal\Terminal.cs" />
     <Compile Include="Util\Walker\AppWalker.cs" />
@@ -125,6 +130,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

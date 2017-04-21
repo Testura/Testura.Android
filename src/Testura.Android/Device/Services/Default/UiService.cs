@@ -132,6 +132,10 @@ namespace Testura.Android.Device.Services.Default
             _screenDumper.StopUiServer();
         }
 
+        /// <summary>
+        /// Get all nodes on the screen
+        /// </summary>
+        /// <returns>A list with all nodes on the screen</returns>
         internal IList<Node> GetAllNodesOnScreen()
         {
             var screenDump = _screenDumper.DumpUi();
