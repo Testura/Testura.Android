@@ -9,6 +9,7 @@
             WalkDuration = 0;
             ShouldStartActivity = true;
             ShouldGoBackToActivity = true;
+            InputCooldown = 0;
         }
 
         /// <summary>
@@ -35,5 +36,10 @@
         /// Gets or sets the walk duration in minutes (0 means infinity)
         /// </summary>
         public int WalkDuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cooldown between input in milliseconds
+        /// </summary>
+        public int InputCooldown { get; set; }
     }
 }
