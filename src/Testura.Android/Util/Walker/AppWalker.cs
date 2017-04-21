@@ -40,19 +40,13 @@ namespace Testura.Android.Util.Walker
         /// <param name="device">Device to run walk with</param>
         /// <param name="package">Package to app walk. If null we start from current screen</param>
         /// <param name="activity">Activity to app walk. If null we start from current screen</param>
-        /// <param name="tapCases">Tap cases with specific nodes that we want to handle</param>
         /// <param name="timeCases">Time cases with specific actions that we want to perform in intervals</param>
         /// <param name="stopCases">Stop cases to decide if we should stop the run</param>
-        public void Start(IAndroidDevice device, string package, string activity, IEnumerable<TapCase> tapCases = null, IEnumerable<TimeCase> timeCases = null, IEnumerable<StopCase> stopCases = null)
+        public void Start(IAndroidDevice device, string package, string activity, IEnumerable<TimeCase> timeCases = null, IEnumerable<StopCase> stopCases = null)
         {
             if (device == null)
             {
                 throw new ArgumentNullException(nameof(device));
-            }
-
-            if (tapCases == null)
-            {
-                tapCases = new List<TapCase>();
             }
 
             if (timeCases == null)

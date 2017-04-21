@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Testura.Android.Device;
 using Testura.Android.Device.Ui.Nodes.Data;
-using Testura.Android.Util.Walker.Cases;
 
 namespace Testura.Android.Util.Walker.Input
 {
