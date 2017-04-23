@@ -121,4 +121,10 @@
         Search,
         TagLastKeycode
     }
+
+    public enum WalkerInputs
+    {
+        Tap,
+        Swipe
+    }
 }

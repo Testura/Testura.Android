@@ -34,7 +34,6 @@ namespace Testura.Android.Device.Ui.Objects
         /// </summary>
         protected IAndroidDevice Device { get; }
 
-
         /// <summary>
         /// Wait for the node(s) to be visible
         /// </summary>

@@ -75,8 +75,7 @@ namespace Testura.Android.Device.Services.Default
             {
                 try
                 {
-                    var screenDump = _screenDumper.DumpUi();
-                    var nodes = _nodeParser.ParseNodes(screenDump);
+                    var nodes = GetAllNodesOnScreen();
                     foreach (var uiExtension in Extensions)
                     {
                         if (uiExtension.CheckNodes(nodes, Device))
@@ -131,6 +130,16 @@ namespace Testura.Android.Device.Services.Default
         public void StopUiServer()
         {
             _screenDumper.StopUiServer();
+        }
+
+        /// <summary>
+        /// Get all nodes on the screen
+        /// </summary>
+        /// <returns>A list with all nodes on the screen</returns>
+        internal IList<Node> GetAllNodesOnScreen()
+        {
+            var screenDump = _screenDumper.DumpUi();
+            return _nodeParser.ParseNodes(screenDump);
         }
     }
 }
