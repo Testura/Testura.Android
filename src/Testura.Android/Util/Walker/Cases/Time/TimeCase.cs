@@ -1,20 +1,22 @@
-﻿using System;
-using System.Timers;
+﻿using System.Timers;
 using Testura.Android.Device;
 
-namespace Testura.Android.Util.Walker.Cases
+namespace Testura.Android.Util.Walker.Cases.Time
 {
-    public class TimeCase
+    public abstract class TimeCase
     {
-        private readonly Action<IAndroidDevice> _timeCase;
         private readonly Timer _timer;
-        private IAndroidDevice _device;
 
-        public TimeCase(double interval, Action<IAndroidDevice> timeCase)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeCase"/> class.
+        /// </summary>
+        /// <param name="interval">Time between time action in milliseconds</param>
+        protected TimeCase(double interval)
         {
-            _timeCase = timeCase;
             _timer = new Timer(interval);
         }
+
+        protected IAndroidDevice Device { get; private set; }
 
         /// <summary>
         /// Start the timer
@@ -24,15 +26,20 @@ namespace Testura.Android.Util.Walker.Cases
         {
             _timer.Start();
             _timer.Elapsed += TimerOnElapsed;
-            _device = device;
+            Device = device;
         }
+
+        /// <summary>
+        /// Execute the case
+        /// </summary>
+        protected abstract void Execute();
 
         /// <summary>
         /// Peform time case action
         /// </summary>
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            _timeCase.Invoke(_device);
+            Execute();
         }
     }
 }

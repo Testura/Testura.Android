@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Testura.Android.Device;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
 
-namespace Testura.Android.Util.Walker.Cases
+namespace Testura.Android.Util.Walker.Cases.Stop
 {
-    public class StopCase
+    public abstract class StopCase
     {
+        protected StopCase(IList<With> withs)
+        {
+            Withs = withs;
+        }
+
         /// <summary>
         /// Gets or sets the with for the special case node
         /// </summary>
         public IList<With> Withs { get; set; }
-
-        /// <summary>
-        /// Gets or sets the func that should be executed when we find the special case node. Returns
-        /// true if we stop the walking
-        /// </summary>
-        public Func<IAndroidDevice, bool> Case { get; set; }
 
         /// <summary>
         /// Check if selected node match this tap case
@@ -29,5 +27,12 @@ namespace Testura.Android.Util.Walker.Cases
         {
             return nodes.Any(node => Withs.All(with => with.NodeSearch(node)));
         }
+
+        /// <summary>
+        /// Execute the case
+        /// </summary>
+        /// <param name="device">The current device</param>
+        /// <returns>True if we should stop the app walker run, false otherwise</returns>
+        public abstract bool Execute(IAndroidDevice device);
     }
 }

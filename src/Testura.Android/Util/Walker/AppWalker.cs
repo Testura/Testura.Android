@@ -6,7 +6,8 @@ using Testura.Android.Device;
 using Testura.Android.Device.Services.Default;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Util.Exceptions;
-using Testura.Android.Util.Walker.Cases;
+using Testura.Android.Util.Walker.Cases.Stop;
+using Testura.Android.Util.Walker.Cases.Time;
 using Testura.Android.Util.Walker.Input;
 
 namespace Testura.Android.Util.Walker
@@ -35,14 +36,25 @@ namespace Testura.Android.Util.Walker
         }
 
         /// <summary>
-        /// Start a new app walker run
+        /// Start the app walker
+        /// </summary>
+        /// <param name="device">Device to run walk with</param>
+        /// <param name="package">Package to app walk. If null we start from current screen</param>
+        /// <param name="activity">Activity to app walk. If null we start from current screen</param>
+        public void Start(IAndroidDevice device, string package, string activity)
+        {
+            Start(device, package, activity, new List<TimeCase>(), new List<StopCase>());
+        }
+
+        /// <summary>
+        /// Start the app walker
         /// </summary>
         /// <param name="device">Device to run walk with</param>
         /// <param name="package">Package to app walk. If null we start from current screen</param>
         /// <param name="activity">Activity to app walk. If null we start from current screen</param>
         /// <param name="timeCases">Time cases with specific actions that we want to perform in intervals</param>
         /// <param name="stopCases">Stop cases to decide if we should stop the run</param>
-        public void Start(IAndroidDevice device, string package, string activity, IEnumerable<TimeCase> timeCases = null, IEnumerable<StopCase> stopCases = null)
+        public void Start(IAndroidDevice device, string package, string activity, IEnumerable<TimeCase> timeCases, IEnumerable<StopCase> stopCases)
         {
             if (device == null)
             {
@@ -56,7 +68,7 @@ namespace Testura.Android.Util.Walker
 
             if (stopCases == null)
             {
-                stopCases = new List<StopCase>();
+                stopCases = new List<FuncStopCase>();
             }
 
             if (package != null && activity != null && _appWalkerConfiguration.ShouldStartActivity)
@@ -131,7 +143,7 @@ namespace Testura.Android.Util.Walker
             var stopCase = stopCases.FirstOrDefault(s => s.IsMatching(nodes));
             if (stopCase != null)
             {
-                return stopCase.Case.Invoke(device);
+                return stopCase.Execute(device);
             }
 
             return false;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Testura.Android.Device;
 using Testura.Android.Device.Ui.Nodes.Data;
-using Testura.Android.Util.Walker.Cases;
+using Testura.Android.Util.Walker.Cases.Tap;
 
 namespace Testura.Android.Util.Walker.Input
 {
@@ -72,7 +72,7 @@ namespace Testura.Android.Util.Walker.Input
 
             if (matchingTapCase != null)
             {
-                shouldStillTap = matchingTapCase.Case.Invoke(device, selectedNode);
+                shouldStillTap = matchingTapCase.Execute(device, selectedNode);
             }
 
             return shouldStillTap;
