@@ -48,7 +48,7 @@ namespace Testura.Android.Tests.Device
 
         public ExampleView()
         {
-            _androidDevice = new AndroidDevice(new DeviceConfiguration());
+            _androidDevice = new AndroidDevice();
 
             // The device won't look for the node/UI object before we interact with it,
             // so it's perfectly safe to set up everything inside the constructor.
@@ -116,7 +116,7 @@ device.Settings.Wifi(State.Enable);
 `UiObject` is one of the core components of Testura.Android. It wraps a node with all the necessary functions:
 
 ```c#
-var device = new AndroidDevice(new DeviceConfiguration());
+var device = new AndroidDevice();
 var uiObject = device.Ui.CreateUiObject(With.ContentDesc(".."));
 uiObject.Tap();
 uiObject.IsVisible();
