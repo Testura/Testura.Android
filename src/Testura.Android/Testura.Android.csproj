@@ -96,7 +96,7 @@
     <Compile Include="Util\Walker\Cases\Stop\StopCase.cs" />
     <Compile Include="Util\Walker\Cases\Stop\FuncStopCase.cs" />
     <Compile Include="Util\Walker\Cases\Tap\FuncTapCase.cs" />
-    <Compile Include="Util\Walker\Cases\Time\FunTimeCase.cs" />
+    <Compile Include="Util\Walker\Cases\Time\ActionTimeCase.cs" />
     <Compile Include="Util\Walker\Cases\Time\TimeCase.cs" />
     <Compile Include="Util\Walker\Input\IAppWalkerInput.cs" />
     <Compile Include="Util\Walker\Input\SwipeAppWalkerInput.cs" />
