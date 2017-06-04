@@ -139,6 +139,7 @@ namespace Testura.Android.Device.Services.Default
             var remotePath = "sdcard/temp_screencap_1234.png";
             ExecuteCommand("shell", "screencap", remotePath);
             Pull(remotePath, localPath);
+            ExecuteCommand("shell", "rm", remotePath);
         }
 
         private string ExecuteCommand(params string[] arguments)
