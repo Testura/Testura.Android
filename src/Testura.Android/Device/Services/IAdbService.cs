@@ -42,5 +42,11 @@ namespace Testura.Android.Device.Services
         /// <param name="shouldReinstall">True if we should use the reinstall flag </param>
         /// <param name="shouldUsePm">True if we should use the package manager flag</param>
         void InstallApp(string path, bool shouldReinstall = true, bool shouldUsePm = false);
+
+        /// <summary>
+        /// Take a screenshot of device display
+        /// </summary>
+        /// <param name="path">Save path for file</param>
+        void Screencap(string path);
     }
 }
