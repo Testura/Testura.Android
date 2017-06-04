@@ -1,8 +1,11 @@
 ﻿using System.Linq;
 using Testura.Android.Device.Configurations;
-using Testura.Android.Device.ServiceLoader;
 using Testura.Android.Device.Services;
+using Testura.Android.Device.Services.Default;
+using Testura.Android.Device.Ui.Nodes;
+using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util;
+using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device
 {
@@ -12,15 +15,25 @@ namespace Testura.Android.Device
         /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
         /// </summary>
         /// <param name="configuration">Device Configuration</param>
-        /// <param name="serviceLoader">A custom service loader</param>
-        public AndroidDevice(DeviceConfiguration configuration, IServiceLoader serviceLoader)
+        /// <param name="adbService">Service to handle communication with adb</param>
+        /// <param name="uiService">Service to handle UI</param>
+        /// <param name="settingsService">Service to handle settings</param>
+        /// <param name="activityService">Service to handle activities</param>
+        /// <param name="interactionService">Service to handle interaction with the device</param>
+        public AndroidDevice(
+            DeviceConfiguration configuration,
+            IAdbService adbService,
+            IUiService uiService,
+            ISettingsService settingsService,
+            IActivityService activityService,
+            IInteractionService interactionService)
         {
             Configuration = configuration;
-            Adb = serviceLoader.LoadAdbService(Configuration);
-            Ui = serviceLoader.LoadUiService(Configuration);
-            Settings = serviceLoader.LoadSettingsService(Configuration);
-            Activity = serviceLoader.LoadActivityService(Configuration);
-            Interaction = serviceLoader.LoadInteractionService(Configuration);
+            Adb = adbService;
+            Ui = uiService;
+            Settings = settingsService;
+            Activity = activityService;
+            Interaction = interactionService;
             SetOwner();
             InstallHelperApks();
         }
@@ -30,15 +43,25 @@ namespace Testura.Android.Device
         /// </summary>
         /// <param name="configuration">Device Configuration</param>
         public AndroidDevice(DeviceConfiguration configuration)
-            : this(configuration, new ServiceLoader.ServiceLoader())
         {
+            Configuration = configuration;
+            Adb = new AdbService(new Terminal(configuration));
+            Ui = new UiService(
+                new ScreenDumper(new UiAutomatorServer(new Terminal(configuration), configuration.Port), configuration.DumpTries),
+                new NodeParser(),
+                new NodeFinder());
+            Settings = new SettingsService();
+            Activity = new ActivityService();
+            Interaction = new InteractionService();
+            SetOwner();
+            InstallHelperApks();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
         /// </summary>
         public AndroidDevice()
-            : this(new DeviceConfiguration(), new ServiceLoader.ServiceLoader())
+            : this(new DeviceConfiguration())
         {
         }
 

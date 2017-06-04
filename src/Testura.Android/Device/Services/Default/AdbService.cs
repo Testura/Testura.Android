@@ -125,6 +125,23 @@ namespace Testura.Android.Device.Services.Default
             ExecuteCommand(arguments.ToArray());
         }
 
+        /// <summary>
+        /// Take a screenshot of device display
+        /// </summary>
+        /// <param name="localPath">Save path for file</param>
+        public void Screencap(string localPath)
+        {
+            if (string.IsNullOrEmpty(localPath))
+            {
+                throw new ArgumentException("Argument is null or empty", nameof(localPath));
+            }
+
+            var remotePath = "sdcard/temp_screencap_1234.png";
+            ExecuteCommand("shell", "screencap", remotePath);
+            Pull(remotePath, localPath);
+            ExecuteCommand("shell", "rm", remotePath);
+        }
+
         private string ExecuteCommand(params string[] arguments)
         {
             return _terminal.ExecuteAdbCommand(arguments);

@@ -3,11 +3,11 @@ using Testura.Android.Device;
 
 namespace Testura.Android.Util.Walker.Cases.Time
 {
-    public class FunTimeCase : TimeCase
+    public class ActionTimeCase : TimeCase
     {
         private readonly Action<IAndroidDevice> _timeCase;
 
-        public FunTimeCase(double interval, Action<IAndroidDevice> timeCase)
+        public ActionTimeCase(double interval, Action<IAndroidDevice> timeCase)
             : base(interval)
         {
             _timeCase = timeCase;
