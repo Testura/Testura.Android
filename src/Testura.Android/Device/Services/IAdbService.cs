@@ -46,7 +46,7 @@ namespace Testura.Android.Device.Services
         /// <summary>
         /// Take a screenshot of device display
         /// </summary>
-        /// <param name="path">Save path for file</param>
-        void Screencap(string path);
+        /// <param name="localPath">Save path for file</param>
+        void Screencap(string localPath);
     }
 }
