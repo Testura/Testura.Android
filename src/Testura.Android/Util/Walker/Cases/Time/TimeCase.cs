@@ -40,6 +40,8 @@ namespace Testura.Android.Util.Walker.Cases.Time
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             Execute();
+            _timer.Stop();
+            _timer.Start();
         }
     }
 }
