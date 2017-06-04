@@ -48,8 +48,6 @@
   <ItemGroup>
     <Compile Include="Device\AndroidDevice.cs" />
     <Compile Include="Device\Extensions\IUiExtension.cs" />
-    <Compile Include="Device\ServiceLoader\ServiceLoader.cs" />
-    <Compile Include="Device\ServiceLoader\IServiceLoader.cs" />
     <Compile Include="Device\Services\Default\ActivityService.cs" />
     <Compile Include="Device\Services\Default\InteractionService.cs" />
     <Compile Include="Device\Services\IActivityService.cs" />
