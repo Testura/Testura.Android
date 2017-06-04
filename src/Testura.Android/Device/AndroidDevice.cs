@@ -53,6 +53,8 @@ namespace Testura.Android.Device
             Settings = new SettingsService();
             Activity = new ActivityService();
             Interaction = new InteractionService();
+            SetOwner();
+            InstallHelperApks();
         }
 
         /// <summary>
