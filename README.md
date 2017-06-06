@@ -2,6 +2,13 @@
 
 Testura.Android is a lightweight test automation framework for Android built in C#. It contains tools and help classes to test, validate and interact with your Android device or emulator.
 
+## Why should I use Testura instead of x framework? 
+ 
+- Quick and easy to set up
+- Designed to use with page object pattern
+- Designed to be flexible and you can change the behavior of individual services and add extensions for the UI dumping. 
+- Help tools to create your page object ([seperate project](https://github.com/Testura/Testura.Android.PageObjectCreator))
+
 
 # Install
 
