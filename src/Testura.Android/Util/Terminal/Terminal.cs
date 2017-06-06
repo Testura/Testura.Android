@@ -26,6 +26,7 @@ namespace Testura.Android.Util.Terminal
         public string ExecuteAdbCommand(params string[] arguments)
         {
             var allArguments = new List<string>();
+
             if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
             {
                 allArguments.Add("-s");
@@ -39,7 +40,7 @@ namespace Testura.Android.Util.Terminal
             try
             {
                 using (var command = Command.Run(
-                    "adb.exe",
+                    GetAdbExe(),
                     allArguments,
                     options: o => o.Timeout(TimeSpan.FromMinutes(1))))
                 {
