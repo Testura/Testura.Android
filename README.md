@@ -6,7 +6,7 @@ Testura.Android is a lightweight test automation framework for Android built in 
  
 - Quick and easy to set up
 - Designed to use with page object pattern
-- Designed to be flexible and you can change the behavior of individual services and add extensions for the UI dumping. 
+- Designed to be flexible so you can change the behavior of individual services or/and extend the UI dump functionallity. 
 - Help tools to create your page object ([seperate project](https://github.com/Testura/Testura.Android.PageObjectCreator))
 
 
