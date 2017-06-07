@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
+using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
 {
@@ -18,6 +19,8 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
         {
             _nodes = new List<Node>
             {
+                new Node(new XElement("node", new XAttribute("package", "myPackage")), null),
+                new Node(new XElement("node", new XAttribute("index", 1)), null),
                 new Node(new XElement("node", new XAttribute("text", "Buss")), null),
                 new Node(new XElement("node", new XAttribute("resource-id", "android:id/search_src_text")), null),
                 new Node(new XElement("node", new XAttribute("content-desc", "Number_ListItem_Container")), null),
@@ -30,10 +33,17 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
 
 
         [Test]
-        public void NodeChecker_WhenGettingNodeThatExist_ShouldReturnNode()
+        public void NodeChecker_WhenGettingNodeThatDontExist_ShouldThrowException()
         {
-            var node = _nodeFinder.FindNodes(_nodes, With.Text("Buss"));
-            Assert.IsNotNull(node);
+            Assert.Throws<UiNodeNotFoundException>(() => _nodeFinder.FindNodes(_nodes, With.Text("fdsfsdf")));
+        }
+
+        [Test]
+        public void NodeChecker_WhenGettingNodeWithText_ShouldReturnNode()
+        {
+            var foundNode = _nodeFinder.FindNode(_nodes, With.Text("Buss"));
+            Assert.IsNotNull(foundNode);
+            Assert.AreEqual("Buss", foundNode.Text);
         }
 
 
@@ -42,6 +52,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
         {
             var foundNode = _nodeFinder.FindNode(_nodes, With.ResourceId("android:id/search_src_text"));
             Assert.IsNotNull(foundNode);
+            Assert.AreEqual("android:id/search_src_text", foundNode.ResourceId);
         }
 
         [Test]
@@ -49,6 +60,31 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
         {
             var foundNode = _nodeFinder.FindNode(_nodes, With.ContentDesc("Number_ListItem_Container"));
             Assert.IsNotNull(foundNode);
+            Assert.AreEqual("Number_ListItem_Container", foundNode.ContentDesc);
+        }
+
+        [Test]
+        public void NodeChecker_WhenGettingNodeWithClass_ShouldReturnNode()
+        {
+            var foundNode = _nodeFinder.FindNode(_nodes, With.Class("android.widget.TextView"));
+            Assert.IsNotNull(foundNode);
+            Assert.AreEqual("android.widget.TextView", foundNode.Class);
+        }
+
+        [Test]
+        public void NodeChecker_WhenGettingNodeWithIndex_ShouldReturnNode()
+        {
+            var foundNode = _nodeFinder.FindNode(_nodes, With.Index(1));
+            Assert.IsNotNull(foundNode);
+            Assert.AreEqual("1", foundNode.Index);
+        }
+
+        [Test]
+        public void NodeChecker_WhenGettingNodeWithPackage_ShouldReturnNode()
+        {
+            var foundNode = _nodeFinder.FindNode(_nodes, With.Package("myPackage"));
+            Assert.IsNotNull(foundNode);
+            Assert.AreEqual("myPackage", foundNode.Package);
         }
 
         [Test]
