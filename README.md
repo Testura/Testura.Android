@@ -115,7 +115,7 @@ The Android device class consists of multiple "services" that handle different p
 All services are accessible from the device class like this:
 
 ```c#
-var device = new AndroidDevice(new DeviceConfiguration());
+var device = new AndroidDevice();
 device.Adb.Shell("my shell commando");
 device.Settings.Wifi(State.Enable);
 ```
