@@ -4,6 +4,10 @@ using Testura.Android.Util;
 
 namespace Testura.Android.PageObject.Attributes
 {
+    /// <summary>
+    /// Initialize an UIObject automatically by using this attribute
+    /// on a field/property inside a class that inherit from "View".
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class CreateAttribute : Attribute
     {
