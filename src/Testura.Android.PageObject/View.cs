@@ -1,4 +1,6 @@
-﻿using Testura.Android.Device;
+﻿using System.Reflection;
+using Testura.Android.Device;
+using Testura.Android.PageObject.Attributes;
 
 namespace Testura.Android.PageObject
 {
@@ -27,22 +29,22 @@ namespace Testura.Android.PageObject
             var properties = GetType().GetProperties();
             foreach (var property in properties)
             {
-                var attributes = property.GetCustomAttributes(typeof(InitializeUiObjectAttribute), true);
+                var attributes = property.GetCustomAttributes(typeof(CreateAttribute), true);
                 if (attributes.Length >= 1)
                 {
-                    var attribute = attributes[0] as InitializeUiObjectAttribute;
-                    property.SetValue(this, attribute.With);
+                    var attribute = attributes[0] as CreateAttribute;
+                    property.SetValue(this, Device.Ui.CreateUiObject(attribute.With));
                 }
             }
 
-            var fields = GetType().GetFields();
+            var fields = GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var field in fields)
             {
-                var attributes = field.GetCustomAttributes(typeof(InitializeUiObjectAttribute), true);
+                var attributes = field.GetCustomAttributes(typeof(CreateAttribute), true);
                 if (attributes.Length >= 1)
                 {
-                    var attribute = attributes[0] as InitializeUiObjectAttribute;
-                    field.SetValue(this, attribute.With);
+                    var attribute = attributes[0] as CreateAttribute;
+                    field.SetValue(this, Device.Ui.CreateUiObject(attribute.With));
                 }
             }
         }

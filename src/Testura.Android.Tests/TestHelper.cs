@@ -20,22 +20,23 @@ namespace Testura.Android.Tests
     internal class TestHelper
     {
         private readonly UiService _uiService;
-        private Mock<IAndroidDevice> _deviceMock;
 
         public TestHelper()
         {
-            _deviceMock = new Mock<IAndroidDevice>();
+            DeviceMock = new Mock<IAndroidDevice>();
             UiServiceMock = new Mock<IUiService>();
-            _deviceMock.SetupGet(d => d.Ui).Returns(UiServiceMock.Object);
+            DeviceMock.SetupGet(d => d.Ui).Returns(UiServiceMock.Object);
 
             _uiService = new UiService(
                 new Mock<IScreenDumper>().Object,
                 new Mock<INodeParser>().Object,
                 new Mock<INodeFinder>().Object);
-            _uiService.InitializeServiceOwner(_deviceMock.Object);
+            _uiService.InitializeServiceOwner(DeviceMock.Object);
         }
 
         public Mock<IUiService> UiServiceMock { get; private set; }
+
+        public Mock<IAndroidDevice> DeviceMock { get; private set; }
 
         public UiObject CreateUiObject(With with, int delayInMiliSec, bool shouldThrowExeception = false)
         {
