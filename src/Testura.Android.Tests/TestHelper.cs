@@ -54,5 +54,22 @@ namespace Testura.Android.Tests
             }
             return _uiService.CreateUiObject(with);
         }
+
+        public UiObjects CreateUiObjects(With with, int delayInMiliSec, bool shouldThrowExeception = false)
+        {
+            if (shouldThrowExeception)
+            {
+                UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), with))
+                    .Callback(() => Thread.Sleep(delayInMiliSec))
+                    .Throws<UiNodeNotFoundException>();
+            }
+            else
+            {
+                UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), with))
+                   .Callback(() => Thread.Sleep(delayInMiliSec))
+                   .Returns(new Node(new XElement("mm"), null));
+            }
+            return _uiService.CreateUiObjects(with);
+        }
     }
 }
