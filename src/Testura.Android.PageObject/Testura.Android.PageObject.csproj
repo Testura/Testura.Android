@@ -68,6 +68,7 @@
     <Compile Include="Application.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View.cs" />
+    <Compile Include="Attributes\CreateAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
