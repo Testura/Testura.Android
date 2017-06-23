@@ -4,6 +4,9 @@ using Testura.Android.Util;
 
 namespace Testura.Android.Device.Ui.Search
 {
+    /// <summary>
+    /// Represent how we should find a node on the screen.
+    /// </summary>
     public class With
     {
         private With(Func<Node, bool> nodeSearch, string errorMessage)
@@ -12,15 +15,21 @@ namespace Testura.Android.Device.Ui.Search
             ErrorMessage = errorMessage;
         }
 
+        /// <summary>
+        /// Gets the func used to find the node.
+        /// </summary>
         public Func<Node, bool> NodeSearch { get; }
 
+        /// <summary>
+        /// Gets the error message that are thrown if we can't find the node.
+        /// </summary>
         public string ErrorMessage { get; }
 
         /// <summary>
-        /// Find node with matching text
+        /// Find node with matching text.
         /// </summary>
-        /// <param name="text">The text of the node to be found</param>
-        /// <returns>An instance of the with object containing the search function</returns>
+        /// <param name="text">The text of the node to be found.</param>
+        /// <returns>An instance of the with object containing the search function.</returns>
         public static With Text(string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -32,10 +41,10 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with text that contains text
+        /// Find node with text that contains text.
         /// </summary>
-        /// <param name="text">The partial text of the node to be found</param>
-        /// <returns>An instance of the with object containing the search function</returns>
+        /// <param name="text">The partial text of the node to be found.</param>
+        /// <returns>An instance of the with object containing the search function.</returns>
         public static With ContainsText(string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -47,10 +56,10 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with matching resource id
+        /// Find node with matching resource id.
         /// </summary>
-        /// <param name="id">The resource if of the node to be found</param>
-        /// <returns>An instance of the with object containing the search function</returns>
+        /// <param name="id">The resource if of the node to be found.</param>
+        /// <returns>An instance of the with object containing the search function.</returns>
         public static With ResourceId(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -62,10 +71,10 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with matching content desc
+        /// Find node with matching content desc.
         /// </summary>
-        /// <param name="contentDesc">The content desc of the node to be found</param>
-        /// <returns>An instance of the with object containing the search function</returns>
+        /// <param name="contentDesc">The content desc of the node to be found.</param>
+        /// <returns>An instance of the with object containing the search function.</returns>
         public static With ContentDesc(string contentDesc)
         {
             if (string.IsNullOrEmpty(contentDesc))
@@ -77,10 +86,10 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with matching class
+        /// Find node with matching class.
         /// </summary>
-        /// <param name="class">The class of the node to be found</param>
-        /// <returns>An instance of the with object containing the search function</returns>
+        /// <param name="class">The class of the node to be found.</param>
+        /// <returns>An instance of the with object containing the search function.</returns>
         public static With Class(string @class)
         {
             if (string.IsNullOrEmpty(@class))
@@ -92,31 +101,31 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with matching index
+        /// Find node with matching index.
         /// </summary>
-        /// <param name="index">The index of the node to be found</param>
-        /// <returns>An instance of the with object containing the search function</returns>
+        /// <param name="index">The index of the node to be found.</param>
+        /// <returns>An instance of the with object containing the search function.</returns>
         public static With Index(int index)
         {
             return Attribute(AttributeTags.Index, index.ToString());
         }
 
         /// <summary>
-        /// Find node with matching package
+        /// Find node with matching package.
         /// </summary>
-        /// <param name="package">The package of the node to be found</param>
-        /// <returns>An instance of the with objecting containing the search function</returns>
+        /// <param name="package">The package of the node to be found.</param>
+        /// <returns>An instance of the with objecting containing the search function.</returns>
         public static With Package(string package)
         {
             return Attribute(AttributeTags.Package, package);
         }
 
         /// <summary>
-        /// Find node that match the lambda expression
+        /// Find node that match the lambda expression.
         /// </summary>
-        /// <param name="predicate">The lambda expression</param>
-        /// <param name="customErrorMessage">Error message if we can't find node</param>
-        /// <returns>An instance of the with object containing the search function</returns>
+        /// <param name="predicate">The lambda expression.</param>
+        /// <param name="customErrorMessage">Error message if we can't find node.</param>
+        /// <returns>An instance of the with object containing the search function.</returns>
         /// <code>
         /// device.Ui.CreateUiObject(With.Lambda(n => n.Text == "someText"));
         /// </code>

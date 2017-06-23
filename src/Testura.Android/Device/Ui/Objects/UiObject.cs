@@ -6,7 +6,7 @@ using Testura.Android.Device.Ui.Search;
 namespace Testura.Android.Device.Ui.Objects
 {
     /// <summary>
-    /// A wrapper for a single node on the screen
+    /// Represent a single UI Object on the screen
     /// </summary>
     public class UiObject : BaseUiObject
     {
@@ -16,9 +16,9 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Tap in the center of a node
+        /// Tap in the center of a node.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
+        /// <param name="timeout">Timeout in seconds.</param>
         public void Tap(int timeout = 20)
         {
             var node = Device.Ui.FindNode(timeout, Withs);
@@ -26,10 +26,10 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Input text into the node
+        /// Input text into the node.
         /// </summary>
-        /// <param name="text">The text to input into the node</param>
-        /// <param name="timeout">Timeout in second </param>
+        /// <param name="text">The text to input into the nod.e</param>
+        /// <param name="timeout">Timeout in second.</param>
         public void InputText(string text, int timeout = 20)
         {
             Tap(timeout);
@@ -44,20 +44,20 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Get the node values
+        /// Get the node values.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
-        /// <returns>A node object with all values of this node</returns>
+        /// <param name="timeout">Timeout in seconds.</param>
+        /// <returns>A node object with all values of this node.</returns>
         public Node Values(int timeout = 2)
         {
             return Device.Ui.FindNode(timeout, Withs);
         }
 
         /// <summary>
-        /// Wait for node values to match
+        /// Wait for node values to match.
         /// </summary>
-        /// <param name="expectedValues">Expected values on the node</param>
-        /// <param name="timeout">Timeout in seconds</param>
+        /// <param name="expectedValues">Expected values on the node.</param>
+        /// <param name="timeout">Timeout in seconds.</param>
         /// <returns>True if node values match before timeout, otherwise false.</returns>
         public bool WaitForValue(Func<Node, bool> expectedValues, int timeout = 20)
         {

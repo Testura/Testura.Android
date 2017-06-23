@@ -13,15 +13,30 @@ using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device.Ui.Server
 {
+    /// <summary>
+    /// Provides functionality to interact with the UI automator server
+    /// </summary>
     public class UiAutomatorServer : IUiAutomatorServer
     {
+        /// <summary>
+        /// Get the device port.
+        /// </summary>
         public const int DevicePort = 9008;
+
+        /// <summary>
+        /// Get the timeout in seconds.
+        /// </summary>
         private const int Timeout = 5;
 
         private readonly int _localPort;
         private readonly ITerminal _terminal;
         private Command _currentServerProcess;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UiAutomatorServer"/> class.
+        /// </summary>
+        /// <param name="terminal">Object to interact with the terminal.</param>
+        /// <param name="port">The local port.</param>
         public UiAutomatorServer(ITerminal terminal, int port)
         {
             if (terminal == null)
@@ -40,9 +55,9 @@ namespace Testura.Android.Device.Ui.Server
         private string StopUrl => $"{BaseUrl}/stop";
 
         /// <summary>
-        /// Start the ui automator server on the android device
+        /// Start the ui automator server on the android device.
         /// </summary>
-        /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
+        /// <exception cref="UiAutomatorServerException">The exception thrown if we can't server.</exception>
         public void Start()
         {
             DeviceLogger.Log("Starting server..");
@@ -71,7 +86,7 @@ namespace Testura.Android.Device.Ui.Server
         }
 
         /// <summary>
-        /// Stop the ui automator server on the android device
+        /// Stop the ui automator server on the android device.
         /// </summary>
         public void Stop()
         {
@@ -95,9 +110,9 @@ namespace Testura.Android.Device.Ui.Server
         }
 
         /// <summary>
-        /// Check if the ui automator server is alive on the android device
+        /// Check if the ui automator server is alive on the android device.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
+        /// <param name="timeout">Timeout in seconds.</param>
         /// <returns>True if server is a alive, false otherwise.</returns>
         public bool Alive(int timeout)
         {
@@ -118,7 +133,7 @@ namespace Testura.Android.Device.Ui.Server
         /// <summary>
         /// Send a screen dump request to the ui automator server on the android device.
         /// </summary>
-        /// <returns>The screen content as a xml string</returns>
+        /// <returns>The screen content as a xml string.</returns>
         public string DumpUi()
         {
             var response = SendRpc(RpcUrl, "{\"jsonrpc\":2.0,\"method\":\"dumpWindowHierarchy\",\"id\":1,\"params\":[\"false\",null]}");
@@ -133,7 +148,7 @@ namespace Testura.Android.Device.Ui.Server
         }
 
         /// <summary>
-        /// Forward ports to the android device
+        /// Forward ports to the android device.
         /// </summary>
         private void ForwardPorts()
         {
@@ -142,9 +157,9 @@ namespace Testura.Android.Device.Ui.Server
         }
 
         /// <summary>
-        /// Ping the ui automator server on the android device
+        /// Ping the ui automator server on the android device.
         /// </summary>
-        /// <returns>True if we got response, false otherwise</returns>
+        /// <returns>True if we got response, false otherwise.</returns>
         private bool Ping()
         {
             try
@@ -159,10 +174,10 @@ namespace Testura.Android.Device.Ui.Server
         }
 
         /// <summary>
-        /// Send a rpc to the server
+        /// Send a rpc to the server.
         /// </summary>
         /// <param name="url">The url</param>
-        /// <param name="data">The rpc command in json format</param>
+        /// <param name="data">The rpc command in json format.</param>
         /// <returns>The response from the server, empty no response.</returns>
         private string SendRpc(string url, string data)
         {

@@ -9,52 +9,55 @@ using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Device.Services
 {
+    /// <summary>
+    /// Defines methods to get content on screen.
+    /// </summary>
     public interface IUiService
     {
         /// <summary>
-        /// Gets a list of ui extensions
+        /// Gets a list of ui extensions.
         /// </summary>
         IList<IUiExtension> Extensions { get; }
 
         /// <summary>
-        /// Find a node on the screen
+        /// Find a node on the screen.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
-        /// <param name="with">Find node with</param>
-        /// <returns>Returns found node</returns>
-        /// <exception cref="UiNodeNotFoundException">If we timeout and can't find the node</exception>
+        /// <param name="timeout">Timeout in seconds.</param>
+        /// <param name="with">Find node with.</param>
+        /// <returns>Returns found node.</returns>
+        /// <exception cref="UiNodeNotFoundException">The exception that is thrown when we timeout and can't find the node</exception>
         Node FindNode(int timeout, params With[] with);
 
         /// <summary>
         /// Find multiple nodes on the screen
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
-        /// <param name="with">Find node with</param>
-        /// <returns>Returns found node</returns>
-        /// <exception cref="UiNodeNotFoundException">If we timeout and can't find any nodes</exception>
+        /// <param name="timeout">Timeout in seconds.</param>
+        /// <param name="with">Find node with.</param>
+        /// <returns>Returns found node.</returns>
+        /// <exception cref="UiNodeNotFoundException">The exception that is thrown when we timeout and can't find any nodes</exception>
         IList<Node> FindNodes(int timeout, params With[] with);
 
         /// <summary>
         /// Create a new ui object that wraps around a node that match a specific search criteria
         /// </summary>
-        /// <param name="with">Find node with</param>
-        /// <returns>The mapped ui object</returns>
+        /// <param name="with">Find node with.</param>
+        /// <returns>The mapped ui object.</returns>
         UiObject CreateUiObject(params With[] with);
 
         /// <summary>
         /// Create a new ui object that wraps around multiple nodes that match a specific search criteria
         /// </summary>
-        /// <param name="with">Find nodes with</param>
-        /// <returns>The mapped ui object</returns>
+        /// <param name="with">Find nodes with.</param>
+        /// <returns>The mapped ui object.</returns>
         UiObjects CreateUiObjects(params With[] with);
 
         /// <summary>
-        /// Start the ui server
+        /// Start the ui server.
         /// </summary>
         void StartUiServer();
 
         /// <summary>
-        /// Force stop the ui server
+        /// Force stop the ui server.
         /// </summary>
         void StopUiServer();
     }

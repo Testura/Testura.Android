@@ -5,12 +5,29 @@ using Testura.Android.Util.Extensions;
 
 namespace Testura.Android.Device.Configurations
 {
+    /// <summary>
+    /// Represents the device configuration.
+    /// </summary>
     public class DeviceConfiguration
     {
+        /// <summary>
+        /// Name of the UI automator stub file.
+        /// </summary>
         public const string UiAutomatorStub = "uiautomator-stub.jar";
+
+        /// <summary>
+        /// Name of the UI automator sub bundle file.
+        /// </summary>
         public const string UiAutomatorStubBundle = "uiautomator-stub-bundle.jar";
+
+        /// <summary>
+        /// Name of the Testura helper APK file.
+        /// </summary>
         public const string HelperApkName = "testura-helper.apk";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceConfiguration"/> class.
+        /// </summary>
         public DeviceConfiguration()
         {
             AdbPath = string.Empty;
@@ -22,7 +39,7 @@ namespace Testura.Android.Device.Configurations
         }
 
         /// <summary>
-        /// Gets or sets the path to adb.exe
+        /// Gets or sets the path to adb.exe.
         /// </summary>
         public string AdbPath { get; set; }
 
@@ -38,12 +55,12 @@ namespace Testura.Android.Device.Configurations
         public DependencyHandling Dependencies { get; set; }
 
         /// <summary>
-        /// Gets or sets the directory to all dependencies (uiautomator stub, helper apk, etc)
+        /// Gets or sets the directory to all dependencies (uiautomator stub, helper apk, etc).
         /// </summary>
         public string DependenciesDirectory { get; set; }
 
         /// <summary>
-        /// Gets or sets the local port to the device
+        /// Gets or sets the local port to the device.
         /// </summary>
         public int Port { get; set; }
 
