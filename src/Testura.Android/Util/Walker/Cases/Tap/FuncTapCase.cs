@@ -6,6 +6,9 @@ using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Util.Walker.Cases.Tap
 {
+    /// <summary>
+    /// Provides functionality to handle specific nodes by invoke a func.
+    /// </summary>
     public class FuncTapCase : TapCase
     {
         private readonly Func<IAndroidDevice, Node, bool> _case;

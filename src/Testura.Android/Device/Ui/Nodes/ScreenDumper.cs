@@ -8,6 +8,9 @@ using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device.Ui.Nodes
 {
+    /// <summary>
+    /// Provides functionality to dump the screen of an android device.
+    /// </summary>
     public class ScreenDumper : IScreenDumper
     {
         private readonly IUiAutomatorServer _server;
@@ -16,8 +19,8 @@ namespace Testura.Android.Device.Ui.Nodes
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenDumper"/> class.
         /// </summary>
-        /// <param name="server">The ui dump server</param>
-        /// <param name="dumpTries">Number of times we try to dump the screen before throwing exception</param>
+        /// <param name="server">The ui dump server.</param>
+        /// <param name="dumpTries">Number of times we try to dump the screen before throwing exception.</param>
         public ScreenDumper(IUiAutomatorServer server, int dumpTries)
         {
             if (server == null)
@@ -30,7 +33,7 @@ namespace Testura.Android.Device.Ui.Nodes
         }
 
         /// <summary>
-        /// Start the UI server
+        /// Start the UI server.
         /// </summary>
         /// <exception cref="UiAutomatorServerException">Thrown if we can't server</exception>
         public void StartUiServer()
@@ -39,7 +42,7 @@ namespace Testura.Android.Device.Ui.Nodes
         }
 
         /// <summary>
-        /// Stop the UI server
+        /// Stop the UI server.
         /// </summary>
         public void StopUiServer()
         {

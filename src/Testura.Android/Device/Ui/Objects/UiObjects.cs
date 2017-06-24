@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
+#pragma warning disable 1591
 
 namespace Testura.Android.Device.Ui.Objects
 {
     /// <summary>
-    /// A wrapper for multiple nodes on the screen
+    /// Represent multiple UI Objects on the screen
     /// </summary>
     public class UiObjects : BaseUiObject
     {
@@ -15,10 +16,10 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Get a list of nodes that contain all values
+        /// Get a list of nodes that contain all values.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
-        /// <returns>A list of nodes that contain all values</returns>
+        /// <param name="timeout">Timeout in seconds.</param>
+        /// <returns>A list of nodes that contain all values.</returns>
         public IList<Node> Values(int timeout = 2)
         {
             return TryFindNode(timeout);

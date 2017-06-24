@@ -5,6 +5,9 @@ using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Util.Walker.Cases.Stop
 {
+    /// <summary>
+    /// Provides functionality to stop am app walker run from a func.
+    /// </summary>
     public class FuncStopCase : StopCase
     {
         private readonly Func<IAndroidDevice, bool> _case;

@@ -9,6 +9,9 @@ using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device
 {
+    /// <summary>
+    /// Provides functionality to interact with an Android Device through multiple service objects
+    /// </summary>
     public class AndroidDevice : IAndroidDevice
     {
         /// <summary>
@@ -66,32 +69,32 @@ namespace Testura.Android.Device
         }
 
         /// <summary>
-        /// Gets the current device Configuration
+        /// Gets the current device Configuration.
         /// </summary>
         public DeviceConfiguration Configuration { get; }
 
         /// <summary>
-        /// Gets the adb service of an android device
+        /// Gets the adb service of an android device.
         /// </summary>
         public IAdbService Adb { get; }
 
         /// <summary>
-        /// Gets the ui service of an android device
+        /// Gets the ui service of an android device.
         /// </summary>
         public IUiService Ui { get; }
 
         /// <summary>
-        /// Gets the settings service of an android device
+        /// Gets the settings service of an android device.
         /// </summary>
         public ISettingsService Settings { get; }
 
         /// <summary>
-        /// Gets the activity service of an android device
+        /// Gets the activity service of an android device.
         /// </summary>
         public IActivityService Activity { get; }
 
         /// <summary>
-        /// Gets the interaction service of an android device
+        /// Gets the interaction service of an android device.
         /// </summary>
         public IInteractionService Interaction { get; }
 

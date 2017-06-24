@@ -9,11 +9,17 @@ namespace Testura.Android.PageObject
     /// </summary>
     public abstract class Application
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Application"/> class.
+        /// </summary>
         protected Application()
         {
             Container = new UnityContainer();
         }
 
+        /// <summary>
+        /// Gets or sets the unity container
+        /// </summary>
         protected UnityContainer Container { get; set; }
 
         /// <summary>

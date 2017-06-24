@@ -1,5 +1,8 @@
 ﻿namespace Testura.Android.Util.Logging
 {
+    /// <summary>
+    /// Defines methods to work with the log listener.
+    /// </summary>
     public interface ILogListener
     {
         /// <summary>

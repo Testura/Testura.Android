@@ -4,22 +4,25 @@ using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Device.Ui.Nodes
 {
+    /// <summary>
+    /// Define methods to find node(s) in a node list.
+    /// </summary>
     public interface INodeFinder
     {
         /// <summary>
         /// Search through a list of nodes and return the first node that match the search criteria.
         /// </summary>
-        /// <param name="nodes">A list withs nodes to search through</param>
-        /// <param name="with">One ore many search criteria</param>
-        /// <returns>The first node we find that match the search criteria</returns>
+        /// <param name="nodes">A list withs nodes to search through.</param>
+        /// <param name="with">One ore many search criteria.</param>
+        /// <returns>The first node we find that match the search criteria.</returns>
         Node FindNode(IList<Node> nodes, params With[] with);
 
         /// <summary>
         /// Search through a list of nodes and return all nodes that match the search criteria.
         /// </summary>
-        /// <param name="nodes">A list withs nodes to search through</param>
-        /// <param name="withs">One ore many search criteria</param>
-        /// <returns>All nodes we find that match the search criteria</returns>
+        /// <param name="nodes">A list withs nodes to search through.</param>
+        /// <param name="withs">One ore many search criteria.</param>
+        /// <returns>All nodes we find that match the search criteria.</returns>
         IList<Node> FindNodes(IList<Node> nodes, params With[] withs);
     }
 }

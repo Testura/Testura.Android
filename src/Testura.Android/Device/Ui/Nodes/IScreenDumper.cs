@@ -5,6 +5,9 @@ using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Device.Ui.Nodes
 {
+    /// <summary>
+    /// Defines methods to dump android device screen.
+    /// </summary>
     public interface IScreenDumper
     {
         /// <summary>

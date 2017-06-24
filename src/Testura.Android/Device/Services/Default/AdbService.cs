@@ -7,10 +7,17 @@ using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device.Services.Default
 {
+    /// <summary>
+    /// Provides functionality to interact with adb on an android device.
+    /// </summary>
     public class AdbService : Service, IAdbService
     {
         private readonly ITerminal _terminal;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdbService"/> class.
+        /// </summary>
+        /// <param name="terminal">Object to interact with terminal</param>
         public AdbService(ITerminal terminal)
         {
             if (terminal == null)

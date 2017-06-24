@@ -8,6 +8,9 @@ using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device.Services.Default
 {
+    /// <summary>
+    /// Provides functionality to interact with activities on an android device
+    /// </summary>
     public class ActivityService : Service, IActivityService
     {
         /// <summary>

@@ -3,11 +3,20 @@ using System.Linq;
 using Testura.Android.Device;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
+using Testura.Android.Util.Walker.Input;
 
 namespace Testura.Android.Util.Walker.Cases.Tap
 {
+    /// <summary>
+    /// Provides the base class from which the classes that represent tap cases are derived. Tap cases
+    /// make it possible to handle specific nodes in <see cref="TapAppWalkerInput"/>
+    /// </summary>
     public abstract class TapCase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TapCase"/> class.
+        /// </summary>
+        /// <param name="withs">A set of special case withs</param>
         protected TapCase(IList<With> withs)
         {
             Withs = withs;

@@ -3,8 +3,17 @@ using Testura.Android.Device.Configurations;
 
 namespace Testura.Android.Util.LogcatWatchers
 {
+    /// <summary>
+    /// Provides a log watcher that send out a new event every time we get a new matching log message.
+    /// </summary>
     public class EventLogcatWatcher : LogcatWatcher
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventLogcatWatcher"/> class.
+        /// </summary>
+        /// <param name="deviceConfiguration">Current device configuration.</param>
+        /// <param name="tags">A set of logcat tags.</param>
+        /// <param name="flushLogcat">If we should flush logcat before starting.</param>
         public EventLogcatWatcher(DeviceConfiguration deviceConfiguration, string[] tags, bool flushLogcat = false)
             : base(deviceConfiguration, tags, flushLogcat)
         {
