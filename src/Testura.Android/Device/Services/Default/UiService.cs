@@ -10,12 +10,21 @@ using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Device.Services.Default
 {
+    /// <summary>
+    /// Provides functionality to get content on screen.
+    /// </summary>
     public class UiService : Service, IUiService
     {
         private readonly IScreenDumper _screenDumper;
         private readonly INodeParser _nodeParser;
         private readonly INodeFinder _nodeFinder;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UiService"/> class.
+        /// </summary>
+        /// <param name="screenDumper">The screen dumper.</param>
+        /// <param name="nodeParser">The node parser.</param>
+        /// <param name="nodeFinder">The node finder.</param>
         public UiService(IScreenDumper screenDumper, INodeParser nodeParser, INodeFinder nodeFinder)
         {
             if (screenDumper == null)

@@ -8,7 +8,7 @@ using Testura.Android.Util.Exceptions;
 namespace Testura.Android.Device.Ui.Nodes
 {
     /// <summary>
-    /// Provices functionality to find node(s) in a node list.
+    /// Provides functionality to find node(s) in a node list.
     /// </summary>
     public class NodeFinder : INodeFinder
     {
@@ -33,7 +33,6 @@ namespace Testura.Android.Device.Ui.Nodes
             var foundNodes = FindNodes(nodes, with);
             return foundNodes.First();
         }
-
 
         /// <summary>
         /// Search through a list of nodes and return all nodes that match the search criteria.

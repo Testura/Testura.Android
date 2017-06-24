@@ -3,6 +3,9 @@ using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device.Services.Default
 {
+    /// <summary>
+    /// Provides functionality to change settings on android device.
+    /// </summary>
     public class SettingsService : Service, ISettingsService
     {
         /// <summary>

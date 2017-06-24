@@ -8,6 +8,9 @@ using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Util.Helpers
 {
+    /// <summary>
+    /// Provides the functionality to wait for multiple UI Objects at the same time.
+    /// </summary>
     public static class UiWait
     {
         /// <summary>

@@ -7,7 +7,7 @@ using Testura.Android.Util.Exceptions;
 namespace Testura.Android.Device.Ui.Objects
 {
     /// <summary>
-    /// Provices the base class from which the classes that represent UI nodes are derived.
+    /// Provides the base class from which the classes that represent UI nodes are derived.
     /// </summary>
     public abstract class BaseUiObject
     {
@@ -85,6 +85,11 @@ namespace Testura.Android.Device.Ui.Objects
             }
         }
 
+        /// <summary>
+        /// Find node(s) on the screen.
+        /// </summary>
+        /// <param name="timeout">Timeout in seconds</param>
+        /// <returns>All found node(s)</returns>
         protected abstract IList<Node> TryFindNode(int timeout);
     }
 }

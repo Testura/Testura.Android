@@ -5,6 +5,9 @@
 
 namespace Testura.Android.Util.Terminal
 {
+    /// <summary>
+    /// Define methods to interact with the terminal.
+    /// </summary>
     public interface ITerminal
     {
         /// <summary>

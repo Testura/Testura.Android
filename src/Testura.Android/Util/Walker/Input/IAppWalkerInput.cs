@@ -4,10 +4,13 @@ using Testura.Android.Device.Ui.Nodes.Data;
 
 namespace Testura.Android.Util.Walker.Input
 {
+    /// <summary>
+    /// Defines methods to perform input when app walking.
+    /// </summary>
     public interface IAppWalkerInput
     {
         /// <summary>
-        /// Peform app walker input
+        /// Perform app walker input
         /// </summary>
         /// <param name="device">The current device</param>
         /// <param name="nodes">All nodes on current screen</param>

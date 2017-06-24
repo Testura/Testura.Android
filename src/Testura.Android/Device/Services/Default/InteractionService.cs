@@ -6,6 +6,9 @@ using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device.Services.Default
 {
+    /// <summary>
+    /// Provides functionality to interact with the screen with an android device.
+    /// </summary>
     public class InteractionService : Service, IInteractionService
     {
         private NodeBounds _screenBounds;
@@ -99,7 +102,7 @@ namespace Testura.Android.Device.Services.Default
         /// <summary>
         /// Send a key event to the device.
         /// </summary>
-        /// <param name="keyEvent">Selectei key event to send to the device</param>
+        /// <param name="keyEvent">Key event to send to the device</param>
         public void InputKeyEvent(KeyEvents keyEvent)
         {
             Device.Adb.Shell($"input keyevent {(int)keyEvent}");

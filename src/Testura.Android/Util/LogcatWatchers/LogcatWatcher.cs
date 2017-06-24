@@ -8,6 +8,9 @@ using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Util.LogcatWatchers
 {
+    /// <summary>
+    /// Provides the base class for logcat watchers.
+    /// </summary>
     public abstract class LogcatWatcher
     {
         private readonly ITerminal _terminal;
@@ -16,6 +19,12 @@ namespace Testura.Android.Util.LogcatWatchers
         private Task _task;
         private CancellationTokenSource _cancellationTokenSource;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogcatWatcher"/> class.
+        /// </summary>
+        /// <param name="deviceConfiguration">Current device configuration.</param>
+        /// <param name="tags">A set of logcat tags.</param>
+        /// <param name="flushLogcat">If we should flush logcat before starting.</param>
         protected LogcatWatcher(DeviceConfiguration deviceConfiguration, IEnumerable<string> tags, bool flushLogcat = false)
         {
             _terminal = new Terminal.Terminal(deviceConfiguration);
@@ -24,7 +33,7 @@ namespace Testura.Android.Util.LogcatWatchers
         }
 
         /// <summary>
-        /// Start the logcat watcher task
+        /// Start the logcat watcher task.
         /// </summary>
         public void Start()
         {
@@ -77,7 +86,7 @@ namespace Testura.Android.Util.LogcatWatchers
         }
 
         /// <summary>
-        /// Stop the logcat watcher task
+        /// Stop the logcat watcher task.
         /// </summary>
         public void Stop()
         {
@@ -87,9 +96,9 @@ namespace Testura.Android.Util.LogcatWatchers
         }
 
         /// <summary>
-        /// Called when we receive another matching line from logcat
+        /// Called when we receive another matching line from logcat.
         /// </summary>
-        /// <param name="output">Last matching line from logcat</param>
+        /// <param name="output">Last matching line from logcat.</param>
         protected abstract void NewOutput(string output);
     }
 }

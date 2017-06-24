@@ -7,7 +7,6 @@
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeBounds"/> class.
-        /// 
         /// </summary>
         /// <param name="width">Width of the node.</param>
         /// <param name="height">Height of the node.</param>

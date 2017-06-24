@@ -5,12 +5,20 @@ using Testura.Android.Device.Ui.Nodes.Data;
 
 namespace Testura.Android.Util.Walker.Input
 {
+    /// <summary>
+    /// Provides functionality to send swipe input when app walking.
+    /// </summary>
     public class SwipeAppWalkerInput : IAppWalkerInput
     {
         private readonly Random _rnd;
         private readonly IList<SwipeDirections> _swipeDirectionses;
         private readonly int _duration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SwipeAppWalkerInput"/> class.
+        /// </summary>
+        /// <param name="swipeDirectionses">A set of possible swipe directions.</param>
+        /// <param name="duration">The swipe duration in milliseconds.</param>
         public SwipeAppWalkerInput(IList<SwipeDirections> swipeDirectionses, int duration)
         {
             _rnd = new Random();
@@ -18,6 +26,10 @@ namespace Testura.Android.Util.Walker.Input
             _duration = duration;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SwipeAppWalkerInput"/> class.
+        /// </summary>
+        /// <param name="duration">The swipe duration in milliseconds.</param>
         public SwipeAppWalkerInput(int duration)
         {
             _duration = duration;
@@ -32,7 +44,7 @@ namespace Testura.Android.Util.Walker.Input
         }
 
         /// <summary>
-        /// Peform app walker input
+        /// Perform app walker input
         /// </summary>
         /// <param name="device">The current device</param>
         /// <param name="nodes">All nodes on current screen</param>

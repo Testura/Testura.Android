@@ -6,8 +6,16 @@ using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Util.Walker.Cases.Stop
 {
+    /// <summary>
+    /// Provides the base class from which the classes that represent stop cases are derived. Stop cases make it possible
+    /// to tell when we should stop an app walker run.
+    /// </summary>
     public abstract class StopCase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StopCase"/> class.
+        /// </summary>
+        /// <param name="withs">A set of withs to find specific node.</param>
         protected StopCase(IList<With> withs)
         {
             Withs = withs;

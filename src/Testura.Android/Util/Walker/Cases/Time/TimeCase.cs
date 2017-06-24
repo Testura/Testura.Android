@@ -3,6 +3,9 @@ using Testura.Android.Device;
 
 namespace Testura.Android.Util.Walker.Cases.Time
 {
+    /// <summary>
+    /// Provides the base class from which classes that represent time cases in app walker are derived.
+    /// </summary>
     public abstract class TimeCase
     {
         private readonly Timer _timer;
@@ -10,18 +13,21 @@ namespace Testura.Android.Util.Walker.Cases.Time
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeCase"/> class.
         /// </summary>
-        /// <param name="interval">Time between time action in milliseconds</param>
+        /// <param name="interval">Time between time action in milliseconds.</param>
         protected TimeCase(double interval)
         {
             _timer = new Timer(interval);
         }
 
+        /// <summary>
+        /// Gets the android device.
+        /// </summary>
         protected IAndroidDevice Device { get; private set; }
 
         /// <summary>
-        /// Start the timer
+        /// Start the timer.
         /// </summary>
-        /// <param name="device">The current device</param>
+        /// <param name="device">The current device.</param>
         public void StartTimer(IAndroidDevice device)
         {
             _timer.Start();
@@ -30,12 +36,12 @@ namespace Testura.Android.Util.Walker.Cases.Time
         }
 
         /// <summary>
-        /// Execute the case
+        /// Execute the case.
         /// </summary>
         protected abstract void Execute();
 
         /// <summary>
-        /// Peform time case action
+        /// Perform time case action.
         /// </summary>
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {

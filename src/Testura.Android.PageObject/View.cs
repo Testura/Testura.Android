@@ -6,10 +6,14 @@ using Testura.Android.PageObject.Attributes;
 namespace Testura.Android.PageObject
 {
     /// <summary>
-    /// This class represent a view in the application
+    /// Represent a view in a android application.
     /// </summary>
     public abstract class View
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="View"/> class.
+        /// </summary>
+        /// <param name="device">Current android device</param>
         protected View(IAndroidDevice device)
         {
             Device = device;

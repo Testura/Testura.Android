@@ -12,12 +12,20 @@ using Testura.Android.Util.Walker.Input;
 
 namespace Testura.Android.Util.Walker
 {
+    /// <summary>
+    /// Provides the functionality to walk through an application and perform different actions.
+    /// </summary>
     public class AppWalker
     {
         private readonly IList<IAppWalkerInput> _inputs;
         private readonly AppWalkerConfiguration _appWalkerConfiguration;
         private readonly Random _rnd;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppWalker"/> class.
+        /// </summary>
+        /// <param name="appWalkerConfiguration">The configuration that describes how we should run the walker.</param>
+        /// <param name="inputs">A set of allowed inputs.</param>
         public AppWalker(AppWalkerConfiguration appWalkerConfiguration, IList<IAppWalkerInput> inputs)
         {
             if (appWalkerConfiguration == null)
@@ -30,6 +38,10 @@ namespace Testura.Android.Util.Walker
             _rnd = new Random();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppWalker"/> class.
+        /// </summary>
+        /// <param name="appWalkerConfiguration">The configuration that describes how we should run the walker.</param>
         public AppWalker(AppWalkerConfiguration appWalkerConfiguration)
             : this(appWalkerConfiguration, null)
         {

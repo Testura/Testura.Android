@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+#pragma warning disable 1591
 
 namespace Testura.Android.Util.Extensions
 {
-    public static class AssemblyExtensions
+    internal static class AssemblyExtensions
     {
-        public static string GetDirectoryPath(this Assembly assembly)
+        internal static string GetDirectoryPath(this Assembly assembly)
         {
             var codeBase = assembly.CodeBase;
             var uri = new UriBuilder(codeBase);

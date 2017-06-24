@@ -7,7 +7,7 @@ using Testura.Android.Util.Exceptions;
 namespace Testura.Android.Device.Services
 {
     /// <summary>
-    /// Defines methods to interact with activies on an android device.
+    /// Defines methods to interact with activities on an android device.
     /// </summary>
     public interface IActivityService
     {

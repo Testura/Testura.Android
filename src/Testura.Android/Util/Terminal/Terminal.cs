@@ -8,21 +8,28 @@ using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Util.Terminal
 {
+    /// <summary>
+    /// Provides functionality to interact with the terminal.
+    /// </summary>
     public class Terminal : ITerminal
     {
-        private const string AdbNotFoundError = "Could not find adb.exe. Make sure that Android SDK are installed and that you have adb in your windows environment variables or specificed the path to adb.exe inside your device configuration.";
+        private const string AdbNotFoundError = "Could not find adb.exe. Make sure that Android SDK are installed and that you have adb in your windows environment variables or specified the path to adb.exe inside your device configuration.";
         private readonly DeviceConfiguration _deviceConfiguration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Terminal"/> class.
+        /// </summary>
+        /// <param name="deviceConfiguration">Current device configuration.</param>
         public Terminal(DeviceConfiguration deviceConfiguration)
         {
             _deviceConfiguration = deviceConfiguration;
         }
 
         /// <summary>
-        /// Execute a new adb command
+        /// Execute a new adb command.
         /// </summary>
-        /// <param name="arguments">Arguments to send to the adb</param>
-        /// <returns>Output from adb</returns>
+        /// <param name="arguments">Arguments to send to the adb.</param>
+        /// <returns>Output from adb.</returns>
         public string ExecuteAdbCommand(params string[] arguments)
         {
             var allArguments = new List<string>();
@@ -64,10 +71,10 @@ namespace Testura.Android.Util.Terminal
         }
 
         /// <summary>
-        /// Start the adb process and return the command
+        /// Start the adb process and return the command.
         /// </summary>
-        /// <param name="arguments">Arguments that should be provided to adb</param>
-        /// <returns>The command that contains the started process</returns>
+        /// <param name="arguments">Arguments that should be provided to adb.</param>
+        /// <returns>The command that contains the started process.</returns>
         public Command StartAdbProcess(params string[] arguments)
         {
             var allArguments = new List<string> { "/c", GetAdbExe() };
@@ -108,10 +115,10 @@ namespace Testura.Android.Util.Terminal
         }
 
         /// <summary>
-        /// Start the adb process without shell and no window and return the command
+        /// Start the adb process without shell and no window and return the command.
         /// </summary>
-        /// <param name="arguments">Arguments that should be provided to adb</param>
-        /// <returns>The command that contains the started process</returns>
+        /// <param name="arguments">Arguments that should be provided to adb.</param>
+        /// <returns>The command that contains the started process.</returns>
         public Command StartAdbProcessWithoutShell(params string[] arguments)
         {
             var allArguments = new List<string> { "/c", GetAdbExe() };

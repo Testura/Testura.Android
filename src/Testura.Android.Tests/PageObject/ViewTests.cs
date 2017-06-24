@@ -7,6 +7,7 @@ using Testura.Android.Device.Ui.Search;
 using Testura.Android.PageObject;
 using Testura.Android.PageObject.Attributes;
 using Testura.Android.Util;
+#pragma warning disable 169
 
 namespace Testura.Android.Tests.PageObject
 {

@@ -5,12 +5,16 @@ using Testura.Android.Util;
 namespace Testura.Android.PageObject.Attributes
 {
     /// <summary>
-    /// Initialize an UIObject automatically by using this attribute
-    /// on a field/property inside a class that inherit from "View".
+    /// Provides functionality to automatically initialize an UIObject that use this attribute and exist on a <see cref="View"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class CreateAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateAttribute"/> class.
+        /// </summary>
+        /// <param name="with">Find node with this attribute tag.</param>
+        /// <param name="value">Find node with this value on the wanted attribute tag.</param>
         public CreateAttribute(AttributeTags with, string value)
         {
             switch (with)
@@ -41,6 +45,9 @@ namespace Testura.Android.PageObject.Attributes
             }
         }
 
+        /// <summary>
+        /// Gets or sets the with that should be used to initialize the UI object.
+        /// </summary>
         public With With { get; set; }
     }
 }

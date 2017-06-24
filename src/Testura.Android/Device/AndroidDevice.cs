@@ -10,7 +10,7 @@ using Testura.Android.Util.Terminal;
 namespace Testura.Android.Device
 {
     /// <summary>
-    /// Provides functionallity to interact with an Android Device through multiple service objects
+    /// Provides functionality to interact with an Android Device through multiple service objects
     /// </summary>
     public class AndroidDevice : IAndroidDevice
     {

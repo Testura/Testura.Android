@@ -78,6 +78,11 @@ namespace Testura.Android.Device.Ui.Objects
             }
         }
 
+        /// <summary>
+        /// Find node(s) on the screen.
+        /// </summary>
+        /// <param name="timeout">Timeout in seconds</param>
+        /// <returns>All found node(s)</returns>
         protected override IList<Node> TryFindNode(int timeout)
         {
             return new List<Node> { Device.Ui.FindNode(timeout, Withs) };

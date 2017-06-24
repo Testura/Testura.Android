@@ -6,7 +6,7 @@ using Testura.Android.Device.Ui.Search;
 namespace Testura.Android.Device.Ui.Objects
 {
     /// <summary>
-    /// Represent multiple UI Objects on the scren
+    /// Represent multiple UI Objects on the screen
     /// </summary>
     public class UiObjects : BaseUiObject
     {

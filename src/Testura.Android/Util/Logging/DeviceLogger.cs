@@ -4,6 +4,9 @@ using System.Runtime.CompilerServices;
 
 namespace Testura.Android.Util.Logging
 {
+    /// <summary>
+    /// Provides functionality to log and listen to log.
+    /// </summary>
     public static class DeviceLogger
     {
         private static IList<ILogListener> _logListeners;

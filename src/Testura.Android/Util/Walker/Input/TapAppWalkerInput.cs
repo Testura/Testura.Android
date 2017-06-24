@@ -7,12 +7,19 @@ using Testura.Android.Util.Walker.Cases.Tap;
 
 namespace Testura.Android.Util.Walker.Input
 {
+    /// <summary>
+    /// Provides functionality to handle input and tap cases in a app walker run.
+    /// </summary>
     public class TapAppWalkerInput : IAppWalkerInput
     {
         private readonly bool _shouldOnlyTapClickAbleNodes;
         private readonly IEnumerable<TapCase> _tapCases;
         private readonly Random _rnd;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TapAppWalkerInput"/> class.
+        /// </summary>
+        /// <param name="shouldOnlyTapClickAbleNodes"><c>true</c> if we should only click on nodes that are clickable, otherwise <c>false</c>.</param>
         public TapAppWalkerInput(bool shouldOnlyTapClickAbleNodes)
         {
             _tapCases = new List<TapCase>();
@@ -20,6 +27,11 @@ namespace Testura.Android.Util.Walker.Input
             _rnd = new Random();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TapAppWalkerInput"/> class.
+        /// </summary>
+        /// <param name="shouldOnlyTapClickAbleNodes"><c>true</c> if we should only click on nodes that are click able.</param>
+        /// <param name="tapCases">A set of tap cases that tells us what to do for specific nodes.</param>
         public TapAppWalkerInput(bool shouldOnlyTapClickAbleNodes, IEnumerable<TapCase> tapCases)
             : this(shouldOnlyTapClickAbleNodes)
         {
@@ -27,7 +39,7 @@ namespace Testura.Android.Util.Walker.Input
         }
 
         /// <summary>
-        /// Peform app walker input
+        /// Perform app walker input
         /// </summary>
         /// <param name="device">The current device</param>
         /// <param name="nodes">All nodes on current screen</param>
@@ -59,11 +71,11 @@ namespace Testura.Android.Util.Walker.Input
         }
 
         /// <summary>
-        /// Check if we have any matching tap case for this node and if so invoke it first
+        /// Check if we have any matching tap case for this node and if so invoke it first.
         /// </summary>
-        /// <param name="device">The current device</param>
-        /// <param name="tapCases">List of provided tap cases<</param>
-        /// <param name="selectedNode">The currently selected node</param>
+        /// <param name="device">The current device.</param>
+        /// <param name="tapCases">List of provided tap cases.</param>
+        /// <param name="selectedNode">The currently selected node.</param>
         /// <returns>True if we still should tap the node, false otherwise.</returns>
         private bool CheckTapCases(IAndroidDevice device, IEnumerable<TapCase> tapCases, Node selectedNode)
         {
