@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using Testura.Android.Device;
+using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Ui.Objects;
 using Testura.Android.Device.Ui.Search;
 using Testura.Android.PageObject;
@@ -16,7 +17,7 @@ namespace Testura.Android.Tests.PageObject
     {
         private TestHelper _testHelper;
 
-        private class ExampleClass : View
+        private class ExampleClass : Hmm
         {
             [Create(with: AttributeTags.Text, value: "test")]
             private UiObject _fieldObject;
@@ -36,6 +37,22 @@ namespace Testura.Android.Tests.PageObject
             public UiObjects PropertyObjects { get; private set; }
         }
 
+        private class Hmm : View
+        {
+            [Create(with: AttributeTags.Text, value: "test")]
+            private UiObject _childFieldObject;
+
+            protected Hmm(IAndroidDevice device) : base(device)
+            {
+            }
+
+            [Create(with: AttributeTags.Class, value: "test")]
+            protected UiObject ChildObjectProp { get; set; }
+
+            [Create(with: AttributeTags.Class, value: "test")]
+            protected UiObject ChildObjectPropWithPrivateSet { get; private set; }
+        }
+
         [SetUp]
         public void SetUp()
         {
@@ -45,18 +62,14 @@ namespace Testura.Android.Tests.PageObject
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithPropertiesThatUseAttribute_ShouldInitializeUiObject()
         {
-            var uiObject = _testHelper.CreateUiObject(With.Text("test"), 0);
-            _testHelper.UiServiceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
-            var example = new ExampleClass(_testHelper.DeviceMock.Object);
+            var example = new ExampleClass(new AndroidDevice(new DeviceConfiguration { Dependencies = DependencyHandling.NeverInstall}));
             Assert.IsNotNull(example.PropertyObject);
         }
 
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithFieldsThatUseAttribute_ShouldInitializeUiObject()
         {
-            var uiObject = _testHelper.CreateUiObject(With.Text("test"), 0);
-            _testHelper.UiServiceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
-            var example = new ExampleClass(_testHelper.DeviceMock.Object);
+            var example = new ExampleClass(new AndroidDevice(new DeviceConfiguration { Dependencies = DependencyHandling.NeverInstall }));
             var field = typeof(ExampleClass).GetField("_fieldObject", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(example);
             Assert.IsNotNull(field);
         }
@@ -64,19 +77,31 @@ namespace Testura.Android.Tests.PageObject
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithPropertiesThatUseAttribute_ShouldInitializeUiObjects()
         {
-            var uiObject = _testHelper.CreateUiObjects(With.Text("test"), 0);
-            _testHelper.UiServiceMock.Setup(u => u.CreateUiObjects(It.IsAny<With>())).Returns(uiObject);
-            var example = new ExampleClass(_testHelper.DeviceMock.Object);
+            var example = new ExampleClass(new AndroidDevice(new DeviceConfiguration { Dependencies = DependencyHandling.NeverInstall }));
             Assert.IsNotNull(example.PropertyObjects);
         }
 
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithFieldsThatUseAttribute_ShouldInitializeUiObjects()
         {
-            var uiObject = _testHelper.CreateUiObjects(With.Text("test"), 0);
-            _testHelper.UiServiceMock.Setup(u => u.CreateUiObjects(It.IsAny<With>())).Returns(uiObject);
-            var example = new ExampleClass(_testHelper.DeviceMock.Object);
+            var example = new ExampleClass(new AndroidDevice(new DeviceConfiguration { Dependencies = DependencyHandling.NeverInstall }));
             var fields = typeof(ExampleClass).GetField("_fieldObjects", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(example);
+            Assert.IsNotNull(fields);
+        }
+
+        [Test]
+        public void InitializeUiObjects_WhenInheritFromBaseClassThatInheirtFromViewAndHaveProperties_ShouldInitializeUiObjectsOnInheritedView()
+        {
+            var example = new ExampleClass(new AndroidDevice(new DeviceConfiguration { Dependencies = DependencyHandling.NeverInstall }));
+            var property = typeof(Hmm).GetProperty("ChildObjectProp", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(example);
+            Assert.IsNotNull(property);
+        }
+
+        [Test]
+        public void InitializeUiObjects_WhenInheritFromBaseClassThatInheirtFromViewAndHaveFields_ShouldInitializeUiObjectsOnInheritedView()
+        {
+            var example = new ExampleClass(new AndroidDevice(new DeviceConfiguration { Dependencies = DependencyHandling.NeverInstall }));
+            var fields = typeof(Hmm).GetField("_childFieldObject", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(example);
             Assert.IsNotNull(fields);
         }
     }
