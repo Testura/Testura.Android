@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Remoting.Messaging;
+using System.Threading;
 using NUnit.Framework;
 using Testura.Android.Device;
 using Testura.Android.Device.Configurations;
@@ -13,7 +15,6 @@ using Assert = NUnit.Framework.Assert;
 namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
 {
     [TestFixture]
-    [Ignore("Integration")]
     public class UiAutomatorServerTests
     {
         private UiAutomatorServer _server;
@@ -33,10 +34,25 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
         [Test]
         public void UiAUtomatorServer_WhenDumpingUi_ShouldGetContentBack()
         {
-            _server.Start();
-            var ui = _server.DumpUi();
-            Assert.IsNotNull(ui);
-            Assert.IsNotEmpty(ui);
+            var d = new AndroidDevice();
+
+            d.Ui.CreateUiObject(With.Text("Bluetooth")).Tap();
+
+            d.Ui.StopUiServer();
+
+            //    var count = 1;
+            //    while (true)
+            //    {
+            //        _server.Start();
+            //        var ui = _server.DumpUi();
+            //        Assert.IsNotNull(ui);
+
+            //        count++;
+            //        _server.Stop();
+            //        Thread.Sleep(3000);
+            //        Debug.Write(count);
+            //    }
+            //}
         }
     }
 }

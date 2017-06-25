@@ -11,19 +11,14 @@ namespace Testura.Android.Device.Configurations
     public class DeviceConfiguration
     {
         /// <summary>
-        /// Name of the UI automator stub file.
-        /// </summary>
-        public const string UiAutomatorStub = "uiautomator-stub.jar";
-
-        /// <summary>
-        /// Name of the UI automator sub bundle file.
-        /// </summary>
-        public const string UiAutomatorStubBundle = "uiautomator-stub-bundle.jar";
-
-        /// <summary>
         /// Name of the Testura helper APK file.
         /// </summary>
-        public const string HelperApkName = "testura-helper.apk";
+        public const string HelperApkName = "Testra.Android.Helper.apk";
+
+        /// <summary>
+        /// Name of the Testura server APK file.
+        /// </summary>
+        public const string ServerApkName = "Testura.Android.Server.apk";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceConfiguration"/> class.
@@ -69,5 +64,6 @@ namespace Testura.Android.Device.Configurations
         /// sending exception.
         /// </summary>
         public int DumpTries { get; set; }
+
     }
 }
