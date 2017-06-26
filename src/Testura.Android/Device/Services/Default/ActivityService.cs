@@ -76,7 +76,7 @@ namespace Testura.Android.Device.Services.Default
         /// <returns>A list with all installed packages</returns>
         public IList<string> GetPackages()
         {
-            var packages = Device.Adb.Shell("pm list packages").Split(new[] { "\r\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var packages = Device.Adb.Shell("pm list packages").Split(new[] { "\r\r\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             return packages.Select(p => p.Replace("package:", string.Empty)).ToList();
         }
 

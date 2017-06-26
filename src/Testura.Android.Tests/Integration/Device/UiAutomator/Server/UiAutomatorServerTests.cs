@@ -1,19 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
-using NUnit.Framework;
-using Testura.Android.Device;
+﻿using NUnit.Framework;
 using Testura.Android.Device.Configurations;
-using Testura.Android.Device.Ui.Search;
 using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util.Terminal;
-using Testura.Android.Util.Walker;
-using Testura.Android.Util.Walker.Cases;
 using Assert = NUnit.Framework.Assert;
 
 namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
 {
-    [TestFixture]
     [Ignore("Integration")]
+    [TestFixture]
     public class UiAutomatorServerTests
     {
         private UiAutomatorServer _server;
