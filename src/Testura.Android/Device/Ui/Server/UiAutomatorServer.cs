@@ -15,7 +15,6 @@ namespace Testura.Android.Device.Ui.Server
     /// </summary>
     public class UiAutomatorServer : IUiAutomatorServer
     {
-
         /// <summary>
         /// Get the server package name
         /// </summary>
@@ -32,9 +31,9 @@ namespace Testura.Android.Device.Ui.Server
         private const int Timeout = 5;
 
         private readonly int _localPort;
+        private readonly object _thisLock;
         private readonly ITerminal _terminal;
         private Command _currentServerProcess;
-        private Object _thisLock;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UiAutomatorServer"/> class.
