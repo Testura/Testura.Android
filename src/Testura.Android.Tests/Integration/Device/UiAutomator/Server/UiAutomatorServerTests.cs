@@ -35,26 +35,18 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
         [Test]
         public void UiAUtomatorServer_WhenDumpingUi_ShouldGetContentBack()
         {
-            var d = new AndroidDevice();
+            var count = 1;
+            while (true)
+            {
+                _server.Start();
+                var ui = _server.DumpUi();
+                Assert.IsNotNull(ui);
 
-
-            //d.Ui.CreateUiObject(With.Text("Bluetooth")).Tap();
-
-            //d.Ui.StopUiServer();
-
-            //    var count = 1;
-            //    while (true)
-            //    {
-            //        _server.Start();
-            //        var ui = _server.DumpUi();
-            //        Assert.IsNotNull(ui);
-
-            //        count++;
-            //        _server.Stop();
-            //        Thread.Sleep(3000);
-            //        Debug.Write(count);
-            //    }
-            //}
+                count++;
+                _server.Stop();
+                Thread.Sleep(3000);
+                Debug.Write(count);
+            }
         }
     }
 }
