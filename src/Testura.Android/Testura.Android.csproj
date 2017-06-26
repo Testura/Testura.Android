@@ -112,9 +112,9 @@
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dependencies\Testura.Android.Server.apk">
+    <None Include="Dependencies\Testura.Android.Server.apk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="Dependencies\Testura.Android.Server-UiAutomator.apk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
