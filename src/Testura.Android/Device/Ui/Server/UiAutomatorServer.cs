@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
 using Medallion.Shell;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;

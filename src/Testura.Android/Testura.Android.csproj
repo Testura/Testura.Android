@@ -113,10 +113,10 @@
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dependencies\Testra.Android.Helper.apk">
+    <Content Include="Dependencies\Testura.Android.Server.apk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Dependencies\Testura.Android.Server.apk">
+    <Content Include="Dependencies\Testura.Android.Helper.apk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config">

@@ -16,8 +16,20 @@ namespace Testura.Android.Device.Services.Default
         {
             DeviceLogger.Log("Changing wifi state");
             Device.Adb.Shell(state == State.Enable
-                ? "am startservice -n com.testura.helper/.service.setting.WifiService -e enable 1"
-                : "am startservice -n com.testura.helper/.service.setting.WifiService -e enable 0");
+                ? "am startservice -n com.testura.helper/com.testura.helper.services.settings.WifiService -e enable 1"
+                : "am startservice -n com.testura.helper/com.testura.helper.services.settings.WifiService  -e enable 0");
+        }
+
+        /// <summary>
+        /// Enable or disable bluetooth.
+        /// </summary>
+        /// <param name="state">Wanted state of bluetooth.</param>
+        public void Bluetooth(State state)
+        {
+            DeviceLogger.Log("Changing wifi state");
+            Device.Adb.Shell(state == State.Enable
+                ? "am startservice -n com.testura.helper/com.testura.helper.services.settings.BluetoothService -e enable 1"
+                : "am startservice -n com.testura.helper/com.testura.helper.services.settings.BluetoothService  -e enable 0");
         }
 
         /// <summary>

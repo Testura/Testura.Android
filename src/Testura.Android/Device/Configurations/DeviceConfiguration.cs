@@ -13,7 +13,7 @@ namespace Testura.Android.Device.Configurations
         /// <summary>
         /// Name of the Testura helper APK file.
         /// </summary>
-        public const string HelperApkName = "Testra.Android.Helper.apk";
+        public const string HelperApkName = "Testura.Android.Helper.apk";
 
         /// <summary>
         /// Name of the Testura server APK file.

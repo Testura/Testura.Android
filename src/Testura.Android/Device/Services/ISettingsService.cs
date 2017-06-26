@@ -14,6 +14,12 @@ namespace Testura.Android.Device.Services
         void Wifi(State state);
 
         /// <summary>
+        /// Enable or disable bluetooth.
+        /// </summary>
+        /// <param name="state">Wanted state of bluetooth.</param>
+        void Bluetooth(State state);
+
+        /// <summary>
         /// Enable or disable gps.
         /// </summary>
         /// <param name="state">Wanted state of gps.</param>

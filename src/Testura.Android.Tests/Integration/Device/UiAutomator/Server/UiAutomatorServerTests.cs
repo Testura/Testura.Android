@@ -7,6 +7,7 @@ using Testura.Android.Device;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Ui.Search;
 using Testura.Android.Device.Ui.Server;
+using Testura.Android.Util;
 using Testura.Android.Util.Terminal;
 using Testura.Android.Util.Walker;
 using Testura.Android.Util.Walker.Cases;
@@ -36,9 +37,10 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
         {
             var d = new AndroidDevice();
 
-            d.Ui.CreateUiObject(With.Text("Bluetooth")).Tap();
 
-            d.Ui.StopUiServer();
+            //d.Ui.CreateUiObject(With.Text("Bluetooth")).Tap();
+
+            //d.Ui.StopUiServer();
 
             //    var count = 1;
             //    while (true)
