@@ -16,9 +16,14 @@ namespace Testura.Android.Device.Ui.Server
     public class UiAutomatorServer : IUiAutomatorServer
     {
         /// <summary>
+        /// Get the server package name
+        /// </summary>
+        private const string AndroidPackageName = "com.testura.server";
+
+        /// <summary>
         /// Get the device port.
         /// </summary>
-        public const int DevicePort = 9020;
+        private const int DevicePort = 9020;
 
         /// <summary>
         /// Get the timeout in seconds.
@@ -45,8 +50,6 @@ namespace Testura.Android.Device.Ui.Server
             _terminal = terminal;
         }
 
-        private const string AndroidPackageName = "com.testura.helper";
-
         private string BaseUrl => $"http://localhost:{_localPort}";
 
         private string PingUrl => $"{BaseUrl}/ping";
@@ -62,14 +65,14 @@ namespace Testura.Android.Device.Ui.Server
         public void Start()
         {
             DeviceLogger.Log("Starting server..");
-            ForwardPorts();
             if (_currentServerProcess == null || _currentServerProcess.Process.HasExited)
             {
+                ForwardPorts();
                 KillAndroidProcess();
                 DeviceLogger.Log("Starting instrumental");
                 _currentServerProcess = _terminal.StartAdbProcess(
                     "shell",
-                    "am instrument -w -r -e debug false -e class com.testura.helper.Start com.testura.helper.test/android.support.test.runner.AndroidJUnitRunner");
+                    $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
             }
             else
             {
@@ -102,7 +105,7 @@ namespace Testura.Android.Device.Ui.Server
 
             if (_currentServerProcess != null)
             {
-                KillProcessAndChildrens(_currentServerProcess.Process.Id);
+                KillLocalProcess(_currentServerProcess.Process.Id);
             }
 
             // Kill android process just to be safe..
@@ -136,7 +139,7 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>The screen content as a xml string.</returns>
         public string DumpUi()
         {
-            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3)})
+            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3) })
             {
                 try
                 {
@@ -174,7 +177,7 @@ namespace Testura.Android.Device.Ui.Server
         {
             try
             {
-                using (var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5)})
+                using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) })
                 {
                     var repsonse = client.GetAsync(PingUrl);
                     return repsonse.Result.Content.ReadAsStringAsync().Result == "Hello human.";
@@ -187,7 +190,11 @@ namespace Testura.Android.Device.Ui.Server
             }
         }
 
-        private void KillProcessAndChildrens(int pid)
+        /// <summary>
+        /// Kill the local process and it's children.
+        /// </summary>
+        /// <param name="pid">The process id.</param>
+        private void KillLocalProcess(int pid)
         {
             var processSearcher =
                 new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
@@ -210,27 +217,25 @@ namespace Testura.Android.Device.Ui.Server
             {
                 foreach (var mo in processCollection)
                 {
-                    KillProcessAndChildrens(Convert.ToInt32(mo["ProcessID"]));
+                    KillLocalProcess(Convert.ToInt32(mo["ProcessID"]));
                 }
             }
         }
 
+        /// <summary>
+        /// Kill the android process.
+        /// </summary>
         private void KillAndroidProcess()
         {
-            var androidProcess = string.Empty;
-
             try
             {
-                androidProcess = _terminal.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
+                _terminal.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
+                DeviceLogger.Log("Killing testura helper process on the device.");
+                _terminal.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
             }
             catch (Exception)
             {
-            }
-
-            if (androidProcess.Contains(AndroidPackageName))
-            {
-                DeviceLogger.Log("Killing testura helper process.");
-                _terminal.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
+                // The terminal throw an exception if we can't find anything with grep.
             }
         }
     }

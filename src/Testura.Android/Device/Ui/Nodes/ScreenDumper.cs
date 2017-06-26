@@ -87,6 +87,8 @@ namespace Testura.Android.Device.Ui.Nodes
                         DeviceLogger.Log($"Failed to dump UI, trying {tries} more times");
                         Thread.Sleep(1500);
                         tries--;
+                        /* In some cases we get stuck and the server is alive
+                           but we can't dump the UI. So lets stop it to be safe. */
                         _server.Stop();
                         continue;
                     }

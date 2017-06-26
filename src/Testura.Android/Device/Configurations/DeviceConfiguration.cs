@@ -13,12 +13,12 @@ namespace Testura.Android.Device.Configurations
         /// <summary>
         /// Name of the Testura helper APK file.
         /// </summary>
-        public const string HelperApkName = "Testura.Android.Helper.apk";
+        public const string ServerApkName = "Testura.Android.Server.apk";
 
         /// <summary>
         /// Name of the Testura server APK file.
         /// </summary>
-        public const string ServerApkName = "Testura.Android.Server.apk";
+        public const string ServerUiAutomatorApkName = "Testura.Android.Server-UiAutomator.apk";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceConfiguration"/> class.
@@ -55,7 +55,7 @@ namespace Testura.Android.Device.Configurations
         public string DependenciesDirectory { get; set; }
 
         /// <summary>
-        /// Gets or sets the local port to the device.
+        /// Gets or sets the local port.
         /// </summary>
         public int Port { get; set; }
 
@@ -64,6 +64,5 @@ namespace Testura.Android.Device.Configurations
         /// sending exception.
         /// </summary>
         public int DumpTries { get; set; }
-
     }
 }

@@ -10,18 +10,18 @@ namespace Testura.Android.Util
         public void InstallDependencies(IAdbService adbService, DeviceConfiguration configuration)
         {
             DeviceLogger.Log("Installing all dependencies..");
-            adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.HelperApkName));
             adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.ServerApkName));
+            adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.ServerUiAutomatorApkName));
         }
 
         public void InstallDependenciesIfMissing(IAdbService adbService, IActivityService activityService, DeviceConfiguration configuration)
         {
             DeviceLogger.Log("Checking if helper is installed..");
-            if (!activityService.IsPackagedInstalled("com.testura.helper"))
+            if (!activityService.IsPackagedInstalled("com.testura.server"))
             {
                 DeviceLogger.Log("..not installed, installing..");
-                adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.HelperApkName));
                 adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.ServerApkName));
+                adbService.InstallApp(Path.Combine(configuration.DependenciesDirectory, DeviceConfiguration.ServerUiAutomatorApkName));
             }
             else
             {
