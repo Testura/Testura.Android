@@ -15,6 +15,7 @@ namespace Testura.Android.Device.Ui.Server
     /// </summary>
     public class UiAutomatorServer : IUiAutomatorServer
     {
+
         /// <summary>
         /// Get the server package name
         /// </summary>
@@ -33,6 +34,7 @@ namespace Testura.Android.Device.Ui.Server
         private readonly int _localPort;
         private readonly ITerminal _terminal;
         private Command _currentServerProcess;
+        private Object _thisLock;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UiAutomatorServer"/> class.
@@ -48,6 +50,7 @@ namespace Testura.Android.Device.Ui.Server
 
             _localPort = port;
             _terminal = terminal;
+            _thisLock = new object();
         }
 
         private string BaseUrl => $"http://localhost:{_localPort}";
@@ -64,24 +67,27 @@ namespace Testura.Android.Device.Ui.Server
         /// <exception cref="UiAutomatorServerException">The exception thrown if we can't server.</exception>
         public void Start()
         {
-            DeviceLogger.Log("Starting server..");
-            if (_currentServerProcess == null || _currentServerProcess.Process.HasExited)
+            lock (_thisLock)
             {
-                ForwardPorts();
-                KillAndroidProcess();
-                DeviceLogger.Log("Starting instrumental");
-                _currentServerProcess = _terminal.StartAdbProcess(
-                    "shell",
-                    $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
-            }
-            else
-            {
-                DeviceLogger.Log("Server already started");
-            }
+                DeviceLogger.Log("Starting server..");
+                if (_currentServerProcess == null || _currentServerProcess.Process.HasExited)
+                {
+                    ForwardPorts();
+                    KillAndroidProcess();
+                    DeviceLogger.Log("Starting instrumental");
+                    _currentServerProcess = _terminal.StartAdbProcess(
+                        "shell",
+                        $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
+                }
+                else
+                {
+                    DeviceLogger.Log("Server already started");
+                }
 
-            if (!Alive(5))
-            {
-                throw new UiAutomatorServerException("Could not start server");
+                if (!Alive(5))
+                {
+                    throw new UiAutomatorServerException("Could not start server");
+                }
             }
         }
 
@@ -90,26 +96,29 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         public void Stop()
         {
-            DeviceLogger.Log("Stopping server");
-            try
+            lock (_thisLock)
             {
-                using (var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) })
+                DeviceLogger.Log("Stopping server");
+                try
                 {
-                    client.GetAsync(StopUrl);
+                    using (var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) })
+                    {
+                        client.GetAsync(StopUrl);
+                    }
                 }
-            }
-            catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
-            {
-                DeviceLogger.Log($"Failed stop server, already closed? {ex.Message}");
-            }
+                catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
+                {
+                    DeviceLogger.Log($"Failed stop server, already closed? {ex.Message}");
+                }
 
-            if (_currentServerProcess != null)
-            {
-                KillLocalProcess(_currentServerProcess.Process.Id);
-            }
+                if (_currentServerProcess != null)
+                {
+                    KillLocalProcess(_currentServerProcess.Process.Id);
+                }
 
-            // Kill android process just to be safe..
-            KillAndroidProcess();
+                // Kill android process just to be safe..
+                KillAndroidProcess();
+            }
         }
 
         /// <summary>
