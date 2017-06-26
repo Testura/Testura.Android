@@ -185,7 +185,6 @@ namespace Testura.Android.Device.Ui.Server
             }
             catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
             {
-                DeviceLogger.Log($"Failed to ping server: {ex.Message}");
                 return false;
             }
         }
