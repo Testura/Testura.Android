@@ -82,40 +82,31 @@ namespace Testura.Android.Device.Ui.Server
             }
         }
 
-        private void KillAndroidProcess()
-        {
-            var androidProcess = string.Empty;
-
-            try
-            {
-                androidProcess = _terminal.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
-            }
-            catch (Exception)
-            {
-            }
-
-            if (androidProcess.Contains(AndroidPackageName))
-            {
-                DeviceLogger.Log("Killing testura helper process.");
-                _terminal.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
-            }
-        }
-
         /// <summary>
         /// Stop the ui automator server on the android device.
         /// </summary>
         public void Stop()
         {
             DeviceLogger.Log("Stopping server");
-            using (var client = new HttpClient())
+            try
             {
-                client.GetAsync(StopUrl);
+                using (var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) })
+                {
+                    client.GetAsync(StopUrl);
+                }
+            }
+            catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
+            {
+                DeviceLogger.Log($"Failed stop server, already closed? {ex.Message}");
             }
 
             if (_currentServerProcess != null)
             {
                 KillProcessAndChildrens(_currentServerProcess.Process.Id);
             }
+
+            // Kill android process just to be safe..
+            KillAndroidProcess();
         }
 
         /// <summary>
@@ -145,17 +136,24 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>The screen content as a xml string.</returns>
         public string DumpUi()
         {
-            using (var client = new HttpClient())
+            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3)})
             {
-                var repsonse = client.GetAsync(DumpUrl);
-                var dump = repsonse.Result.Content.ReadAsStringAsync().Result;
-                if (string.IsNullOrEmpty(dump))
+                try
                 {
-                    DeviceLogger.Log("Failed to dump!");
-                    throw new UiAutomatorServerException("Could connect to server but the dumped ui was empty");
+                    var repsonse = client.GetAsync(DumpUrl);
+                    var dump = repsonse.Result.Content.ReadAsStringAsync().Result;
+                    if (string.IsNullOrEmpty(dump))
+                    {
+                        DeviceLogger.Log("Failed to dump!");
+                        throw new UiAutomatorServerException("Could connect to server but the dumped ui was empty");
+                    }
+
+                    return dump.Replace("\\\"", "\"");
                 }
-                
-                return dump.Replace("\\\"", "\"");
+                catch (AggregateException ex)
+                {
+                    throw new UiAutomatorServerException("Faild to dump screen.", ex);
+                }
             }
         }
 
@@ -176,7 +174,7 @@ namespace Testura.Android.Device.Ui.Server
         {
             try
             {
-                using (var client = new HttpClient())
+                using (var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5)})
                 {
                     var repsonse = client.GetAsync(PingUrl);
                     return repsonse.Result.Content.ReadAsStringAsync().Result == "Hello human.";
@@ -214,6 +212,25 @@ namespace Testura.Android.Device.Ui.Server
                 {
                     KillProcessAndChildrens(Convert.ToInt32(mo["ProcessID"]));
                 }
+            }
+        }
+
+        private void KillAndroidProcess()
+        {
+            var androidProcess = string.Empty;
+
+            try
+            {
+                androidProcess = _terminal.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
+            }
+            catch (Exception)
+            {
+            }
+
+            if (androidProcess.Contains(AndroidPackageName))
+            {
+                DeviceLogger.Log("Killing testura helper process.");
+                _terminal.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
             }
         }
     }

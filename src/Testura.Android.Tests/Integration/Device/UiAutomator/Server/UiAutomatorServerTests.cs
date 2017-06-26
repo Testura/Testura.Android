@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
@@ -35,17 +36,35 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
         [Test]
         public void UiAUtomatorServer_WhenDumpingUi_ShouldGetContentBack()
         {
+            var random = new Random();
+
+            var d1 = new AndroidDevice(new DeviceConfiguration() { Serial = "ZY223TFQ63", Port = 9021});
+            //var d2 = new AndroidDevice(new DeviceConfiguration() { Serial = "163545225D0178", Port = 9022});
+
+            var u1 = d1.Ui.CreateUiObject(With.Index(0));
+            //var u2 = d2.Ui.CreateUiObject(With.Index(0));
+
             var count = 1;
             while (true)
             {
-                _server.Start();
-                var ui = _server.DumpUi();
-                Assert.IsNotNull(ui);
+                u1.IsVisible();
+                //u2.IsVisible();
 
                 count++;
-                _server.Stop();
+
+                if (random.Next(0, 100) > 25)
+                {
+                   d1.Ui.StopUiServer();
+                }
+
+                //if (random.Next(0, 100) > 25)
+                //{
+                //    d2.Ui.StopUiServer();
+                //}
+
+
                 Thread.Sleep(3000);
-                Debug.Write(count);
+                Debug.WriteLine("Cound: " + count);
             }
         }
     }
