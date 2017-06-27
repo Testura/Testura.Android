@@ -78,6 +78,43 @@ namespace Testura.Android.Tests.Device
 
 In the example we can see how we map different nodes on the screen to "UI objects". We can then interact with the nodes through the mapped UI object.
 
+It it also possible to create objects through attributes (required the PageObject package): 
+
+```c#
+using Testura.Android.Device;
+using Testura.Android.Device.Ui.Objects;
+using Testura.Android.PageObject;
+using Testura.Android.PageObject.Attributes;
+using Testura.Android.Util;
+
+namespace Testura.Android.Tests.Device
+{
+    public class ExampleView : View
+    {
+        [Create(with: AttributeTags.ResourceId, value: "usernameTextbox")]
+        private readonly UiObject _usernameTextbox;
+
+        [Create(with: AttributeTags.ContentDesc, value: "passwordTextbox")]
+        private readonly UiObject _passwordTextbox;
+
+        [Create(with: AttributeTags.Text, value: "Login")]
+        private readonly UiObject _logInButton;
+
+        public ExampleView(IAndroidDevice device)
+            : base(device)
+        {
+        }
+
+        public void Login(string username, string password)
+        {
+            _usernameTextbox.InputText(username);
+            _passwordTextbox.InputText(password);
+            _logInButton.Tap();
+        }
+    }
+}
+```
+
 ## Selecting nodes with `With`
 
 If you have used Selenium, Appium or any other big test automation framework I'm sure you are familiar with the `By` keyword. Testura.Android has something similiar called `With`.
