@@ -37,6 +37,11 @@ namespace Testura.Android.Device.Ui.Objects
 
         protected override IList<Node> TryFindNode(int timeout)
         {
+            if (timeout == -1)
+            {
+                return Device.Ui.FindNodesFromCache(Withs);
+            }
+
             return Device.Ui.FindNodes(timeout, Withs);
         }
     }

@@ -61,6 +61,15 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
+        /// Check if node(s) is visible in cache.
+        /// </summary>
+        /// <returns>True if visible in cache, otherwise false.</returns>
+        public bool IsVisibleInCache()
+        {
+            return IsVisible(-1);
+        }
+
+        /// <summary>
         /// Wait for the node(s) to be hidden.
         /// </summary>
         /// <param name="timeout">Timeout in seconds.</param>
@@ -82,6 +91,23 @@ namespace Testura.Android.Device.Ui.Objects
                 {
                     return true;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Check if node(s) is hidden in cache.
+        /// </summary>
+        /// <returns>True if hidden, otherwise false.</returns>
+        public bool IsHiddenInCache()
+        {
+            try
+            {
+                TryFindNode(-1);
+                return false;
+            }
+            catch (UiNodeNotFoundException)
+            {
+                return true;
             }
         }
 
