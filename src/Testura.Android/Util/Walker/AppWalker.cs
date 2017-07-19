@@ -174,7 +174,8 @@ namespace Testura.Android.Util.Walker
             {
                 try
                 {
-                    return uiService.GetAllNodesOnScreen();
+                    uiService.UpdateCachedNodes();
+                    return uiService.CachedNodes;
                 }
                 catch (UiNodeNotFoundException)
                 {

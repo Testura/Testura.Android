@@ -49,6 +49,11 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
+        /// Gets the latest cached nodes
+        /// </summary>
+        internal IList<Node> CachedNodes { get; private set; }
+
+        /// <summary>
         /// Gets a list of ui extensions
         /// </summary>
         public IList<IUiExtension> Extensions { get; }
@@ -84,16 +89,16 @@ namespace Testura.Android.Device.Services.Default
             {
                 try
                 {
-                    var nodes = GetAllNodesOnScreen();
+                    UpdateCachedNodes();
                     foreach (var uiExtension in Extensions)
                     {
-                        if (uiExtension.CheckNodes(nodes, Device))
+                        if (uiExtension.CheckNodes(CachedNodes, Device))
                         {
                             startTime = DateTime.Now;
                         }
                     }
 
-                    return _nodeFinder.FindNodes(nodes, with);
+                    return _nodeFinder.FindNodes(CachedNodes, with);
                 }
                 catch (UiNodeNotFoundException)
                 {
@@ -103,6 +108,33 @@ namespace Testura.Android.Device.Services.Default
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Find a node on the screen by using the latest dump.
+        /// </summary>
+        /// <param name="with">Find node with</param>
+        /// <returns>Returns found node.</returns>
+        /// <exception cref="UiNodeNotFoundException">The exception that is thrown when we can't find any node in the cached dump.</exception>
+        public Node FindNodeFromCache(params With[] with)
+        {
+            return FindNodesFromCache(with).First();
+        }
+
+        /// <summary>
+        /// Find multiple nodes on the screen by using the latest dump.
+        /// </summary>
+        /// <param name="with">Find node with</param>
+        /// <returns>Returns found nodes.</returns>
+        /// <exception cref="UiNodeNotFoundException">The exception that is thrown when we can't find any node in the cached dump.</exception>
+        public IList<Node> FindNodesFromCache(params With[] with)
+        {
+            if (CachedNodes == null)
+            {
+                return FindNodes(5, with);
+            }
+
+            return _nodeFinder.FindNodes(CachedNodes, with);
         }
 
         /// <summary>
@@ -145,10 +177,10 @@ namespace Testura.Android.Device.Services.Default
         /// Get all nodes on the screen
         /// </summary>
         /// <returns>A list with all nodes on the screen</returns>
-        internal IList<Node> GetAllNodesOnScreen()
+        internal void UpdateCachedNodes()
         {
             var screenDump = _screenDumper.DumpUi();
-            return _nodeParser.ParseNodes(screenDump);
+            CachedNodes = _nodeParser.ParseNodes(screenDump);
         }
     }
 }

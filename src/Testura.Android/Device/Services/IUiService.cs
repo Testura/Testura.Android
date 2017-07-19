@@ -29,15 +29,31 @@ namespace Testura.Android.Device.Services
         Node FindNode(int timeout, params With[] with);
 
         /// <summary>
+        /// Find a node on the screen by using the latest dump.
+        /// </summary>
+        /// <param name="with">Find node with</param>
+        /// <returns>Returns found node.</returns>
+        /// <exception cref="UiNodeNotFoundException">The exception that is thrown when we can't find any node in the cached dump.</exception>
+        Node FindNodeFromCache(params With[] with);
+
+        /// <summary>
         /// Find multiple nodes on the screen
         /// </summary>
         /// <param name="timeout">Timeout in seconds.</param>
         /// <param name="with">Find node with.</param>
-        /// <returns>Returns found node.</returns>
+        /// <returns>Returns found nodes.</returns>
         /// <exception cref="UiNodeNotFoundException">The exception that is thrown when we timeout and can't find any nodes</exception>
         IList<Node> FindNodes(int timeout, params With[] with);
 
         /// <summary>
+        /// Find multiple nodes on the screen by using the latest dump.
+        /// </summary>
+        /// <param name="with">Find node with</param>
+        /// <returns>Returns found nodes.</returns>
+        /// <exception cref="UiNodeNotFoundException">The exception that is thrown when we can't find any node in the cached dump.</exception>
+        IList<Node> FindNodesFromCache(params With[] with);
+
+            /// <summary>
         /// Create a new ui object that wraps around a node that match a specific search criteria
         /// </summary>
         /// <param name="with">Find node with.</param>

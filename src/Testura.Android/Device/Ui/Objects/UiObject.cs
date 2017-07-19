@@ -54,6 +54,15 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
+        /// Get the node values from the latest cached dump.
+        /// </summary>
+        /// <returns>A node object with all values of this node.</returns>
+        public Node ValuesFromCache()
+        {
+            return Device.Ui.FindNodeFromCache(Withs);
+        }
+
+        /// <summary>
         /// Wait for node values to match.
         /// </summary>
         /// <param name="expectedValues">Expected values on the node.</param>

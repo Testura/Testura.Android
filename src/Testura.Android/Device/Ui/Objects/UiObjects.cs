@@ -25,6 +25,16 @@ namespace Testura.Android.Device.Ui.Objects
             return TryFindNode(timeout);
         }
 
+        /// <summary>
+        /// Get a list of nodes from the latest cached dump that contain all values.
+        /// </summary>
+        /// <param name="timeout">Timeout in seconds.</param>
+        /// <returns>A list of nodes that contain all values.</returns>
+        public IList<Node> ValuesFromCache()
+        {
+            return Device.Ui.FindNodesFromCache(Withs);
+        }
+
         protected override IList<Node> TryFindNode(int timeout)
         {
             return Device.Ui.FindNodes(timeout, Withs);
