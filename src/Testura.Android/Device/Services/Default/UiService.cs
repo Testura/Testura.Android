@@ -49,14 +49,14 @@ namespace Testura.Android.Device.Services.Default
         }
 
         /// <summary>
-        /// Gets the latest cached nodes
-        /// </summary>
-        internal IList<Node> CachedNodes { get; private set; }
-
-        /// <summary>
         /// Gets a list of ui extensions
         /// </summary>
         public IList<IUiExtension> Extensions { get; }
+
+        /// <summary>
+        /// Gets the latest cached nodes
+        /// </summary>
+        internal IList<Node> CachedNodes { get; private set; }
 
         /// <summary>
         /// Find a node on the screen
@@ -173,10 +173,15 @@ namespace Testura.Android.Device.Services.Default
             _screenDumper.StopUiServer();
         }
 
+        /// <inheritdoc/>
+        public void ClearCache()
+        {
+            CachedNodes = null;
+        }
+
         /// <summary>
         /// Get all nodes on the screen
         /// </summary>
-        /// <returns>A list with all nodes on the screen</returns>
         internal void UpdateCachedNodes()
         {
             var screenDump = _screenDumper.DumpUi();

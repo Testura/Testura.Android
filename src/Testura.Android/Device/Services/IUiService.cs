@@ -76,5 +76,10 @@ namespace Testura.Android.Device.Services
         /// Force stop the ui server.
         /// </summary>
         void StopUiServer();
+
+        /// <summary>
+        /// Clear the UI cache
+        /// </summary>
+        void ClearCache();
     }
 }

@@ -24,6 +24,7 @@ namespace Testura.Android.Device.Services.Default
         public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
             Device.Adb.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
+            Device.Ui.ClearCache();
         }
 
         /// <summary>
@@ -83,6 +84,7 @@ namespace Testura.Android.Device.Services.Default
         public void Tap(int x, int y)
         {
             Device.Adb.Shell($"input tap {x} {y}");
+            Device.Ui.ClearCache();
         }
 
         /// <summary>
@@ -97,6 +99,7 @@ namespace Testura.Android.Device.Services.Default
             }
 
             Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
+            Device.Ui.ClearCache();
         }
 
         /// <summary>
@@ -106,6 +109,7 @@ namespace Testura.Android.Device.Services.Default
         public void InputKeyEvent(KeyEvents keyEvent)
         {
             Device.Adb.Shell($"input keyevent {(int)keyEvent}");
+            Device.Ui.ClearCache();
         }
 
         private void SetScreenHeightAndWidth()

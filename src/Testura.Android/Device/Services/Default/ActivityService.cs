@@ -50,6 +50,8 @@ namespace Testura.Android.Device.Services.Default
             {
                 throw new AdbException(result);
             }
+
+            Device.Ui.ClearCache();
         }
 
         /// <summary>
