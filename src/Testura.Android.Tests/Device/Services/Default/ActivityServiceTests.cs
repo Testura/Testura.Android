@@ -21,6 +21,7 @@ namespace Testura.Android.Tests.Device.Services.Default
             _adbServiceMock = new Mock<IAdbService>();
             _androidMock = new Mock<IAndroidDevice>();
             _androidMock.Setup(a => a.Adb).Returns(_adbServiceMock.Object);
+            _androidMock.Setup(a => a.Ui).Returns(new Mock<IUiService>().Object);
 
             _activityService = new ActivityService();
             _activityService.InitializeServiceOwner(_androidMock.Object);
