@@ -173,7 +173,9 @@ namespace Testura.Android.Device.Services.Default
             _screenDumper.StopUiServer();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Clear the UI cache
+        /// </summary>
         public void ClearCache()
         {
             CachedNodes = null;
