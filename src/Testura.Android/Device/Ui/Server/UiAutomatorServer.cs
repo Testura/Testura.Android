@@ -31,7 +31,7 @@ namespace Testura.Android.Device.Ui.Server
         private const int Timeout = 5;
 
         private readonly int _localPort;
-        private readonly object _thisLock;
+        private readonly object _serverLock;
         private readonly ITerminal _terminal;
         private Command _currentServerProcess;
 
@@ -49,7 +49,7 @@ namespace Testura.Android.Device.Ui.Server
 
             _localPort = port;
             _terminal = terminal;
-            _thisLock = new object();
+            _serverLock = new object();
         }
 
         private string BaseUrl => $"http://localhost:{_localPort}";
@@ -66,7 +66,7 @@ namespace Testura.Android.Device.Ui.Server
         /// <exception cref="UiAutomatorServerException">The exception thrown if we can't server.</exception>
         public void Start()
         {
-            lock (_thisLock)
+            lock (_serverLock)
             {
                 DeviceLogger.Log("Starting server..");
                 if (_currentServerProcess == null || _currentServerProcess.Process.HasExited)
@@ -95,7 +95,7 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         public void Stop()
         {
-            lock (_thisLock)
+            lock (_serverLock)
             {
                 DeviceLogger.Log("Stopping server");
                 try

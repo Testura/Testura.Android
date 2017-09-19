@@ -13,6 +13,7 @@ namespace Testura.Android.Device.Ui.Nodes
     /// </summary>
     public class ScreenDumper : IScreenDumper
     {
+        private readonly object _dumpLock;
         private readonly IUiAutomatorServer _server;
         private readonly int _dumpTries;
 
@@ -30,6 +31,7 @@ namespace Testura.Android.Device.Ui.Nodes
 
             _server = server;
             _dumpTries = dumpTries;
+            _dumpLock = new object();
         }
 
         /// <summary>
@@ -68,38 +70,41 @@ namespace Testura.Android.Device.Ui.Nodes
 
         private string GetDump()
         {
-            int tries = _dumpTries;
-            while (true)
+            lock (_dumpLock)
             {
-                try
+                int tries = _dumpTries;
+                while (true)
                 {
-                    if (!_server.Alive(2))
+                    try
                     {
-                        _server.Start();
-                    }
-
-                    return _server.DumpUi();
-                }
-                catch (UiAutomatorServerException)
-                {
-                    if (tries > 0)
-                    {
-                        DeviceLogger.Log($"Failed to dump UI, trying {tries} more times");
-                        Thread.Sleep(750);
-                        tries--;
-
-                        if (tries == 0)
+                        if (!_server.Alive(2))
                         {
-                            /* In some cases we get stuck and the server is alive
-                               but we can't dump the UI. So lets stop it once to be safe. */
-                            _server.Stop();
+                            _server.Start();
                         }
 
-                        continue;
+                        return _server.DumpUi();
                     }
+                    catch (UiAutomatorServerException)
+                    {
+                        if (tries > 0)
+                        {
+                            DeviceLogger.Log($"Failed to dump UI, trying {tries} more times");
+                            Thread.Sleep(500);
+                            tries--;
 
-                    DeviceLogger.Log("Failed to dump UI!");
-                    throw;
+                            if (tries == 0)
+                            {
+                                /* In some cases we get stuck and the server is alive
+                                   but we can't dump the UI. So lets stop it once to be safe. */
+                                _server.Stop();
+                            }
+
+                            continue;
+                        }
+
+                        DeviceLogger.Log("Failed to dump UI!");
+                        throw;
+                    }
                 }
             }
         }
