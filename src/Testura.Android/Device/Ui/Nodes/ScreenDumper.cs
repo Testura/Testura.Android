@@ -57,54 +57,55 @@ namespace Testura.Android.Device.Ui.Nodes
         /// <returns>An xmldocument containing all information about the current android screen</returns>
         public XDocument DumpUi()
         {
-            var dump = GetDump();
-            try
+            lock (_dumpLock)
             {
-                return XDocument.Parse(dump);
-            }
-            catch (XmlException ex)
-            {
-                throw new UiNodeNotFoundException("Could not parse nodes from dump", ex);
+                var dump = GetDump();
+
+                try
+                {
+                    return XDocument.Parse(dump);
+                }
+                catch (XmlException ex)
+                {
+                    throw new UiNodeNotFoundException("Could not parse nodes from dump", ex);
+                }
             }
         }
 
         private string GetDump()
         {
-            lock (_dumpLock)
+            int tries = _dumpTries;
+            while (true)
             {
-                int tries = _dumpTries;
-                while (true)
+                try
                 {
-                    try
+                    if (!_server.Alive(2))
                     {
-                        if (!_server.Alive(2))
+                        _server.Start();
+                    }
+
+                    return _server.DumpUi();
+                }
+                catch (UiAutomatorServerException)
+                {
+                    if (tries > 0)
+                    {
+                        DeviceLogger.Log($"Failed to dump UI, trying {tries} more times");
+                        Thread.Sleep(500);
+                        tries--;
+
+                        if (tries < 2)
                         {
-                            _server.Start();
+                            /* In some cases we get stuck and the server is alive
+                                but we can't dump the UI. So lets stop it once to be safe. */
+                            _server.Stop();
                         }
 
-                        return _server.DumpUi();
+                        continue;
                     }
-                    catch (UiAutomatorServerException)
-                    {
-                        if (tries > 0)
-                        {
-                            DeviceLogger.Log($"Failed to dump UI, trying {tries} more times");
-                            Thread.Sleep(500);
-                            tries--;
 
-                            if (tries == 0)
-                            {
-                                /* In some cases we get stuck and the server is alive
-                                   but we can't dump the UI. So lets stop it once to be safe. */
-                                _server.Stop();
-                            }
-
-                            continue;
-                        }
-
-                        DeviceLogger.Log("Failed to dump UI!");
-                        throw;
-                    }
+                    DeviceLogger.Log("Failed to dump UI!");
+                    throw;
                 }
             }
         }

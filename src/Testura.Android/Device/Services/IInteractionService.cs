@@ -42,7 +42,8 @@ namespace Testura.Android.Device.Services
         /// Input text into the selected node.
         /// </summary>
         /// <param name="text">The text to input into the selected node.</param>
-        void InputText(string text);
+        /// <param name="useSlowInput">If true we use adb input, otherwise set text through server.</param>
+        void InputText(string text, bool useSlowInput = false);
 
         /// <summary>
         /// Input key event to the device

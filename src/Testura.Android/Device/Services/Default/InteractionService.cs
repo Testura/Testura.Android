@@ -1,5 +1,6 @@
 ﻿using System;
 using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
@@ -11,7 +12,18 @@ namespace Testura.Android.Device.Services.Default
     /// </summary>
     public class InteractionService : Service, IInteractionService
     {
+        private readonly IInteractionUiAutomatorServer _interactionServer;
         private NodeBounds _screenBounds;
+
+        public InteractionService(IInteractionUiAutomatorServer interactionServer)
+        {
+            if (interactionServer == null)
+            {
+                throw new ArgumentNullException(nameof(interactionServer));
+            }
+
+            _interactionServer = interactionServer;
+        }
 
         /// <summary>
         /// Perform a swipe motion on the screen.
@@ -23,7 +35,7 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="duration">Duration of the swipe in milliseconds</param>
         public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
-            Device.Adb.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
+            _interactionServer.Swipe(fromX, fromY, toX, toY, duration);
             Device.Ui.ClearCache();
         }
 
@@ -83,7 +95,7 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="y">The y position</param>
         public void Tap(int x, int y)
         {
-            Device.Adb.Shell($"input tap {x} {y}");
+            _interactionServer.Tap(x, y);
             Device.Ui.ClearCache();
         }
 
@@ -91,14 +103,23 @@ namespace Testura.Android.Device.Services.Default
         /// Input text into the node
         /// </summary>
         /// <param name="text">The text to input into the node</param>
-        public void InputText(string text)
+        /// <param name="useSlowInput">If true we use adb input, otherwise set text through server.</param>
+        public void InputText(string text, bool useSlowInput = false)
         {
             if (text == null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
 
-            Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
+            if (useSlowInput)
+            {
+                Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
+            }
+            else
+            {
+                _interactionServer.InputText(text);
+            }
+
             Device.Ui.ClearCache();
         }
 

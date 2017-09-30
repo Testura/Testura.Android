@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using Medallion.Shell;
+using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
@@ -13,7 +15,7 @@ namespace Testura.Android.Device.Ui.Server
     /// <summary>
     /// Provides functionality to interact with the UI automator server
     /// </summary>
-    public class UiAutomatorServer : IUiAutomatorServer
+    public class UiAutomatorServer : IUiAutomatorServer, IInteractionUiAutomatorServer
     {
         /// <summary>
         /// Get the server package name
@@ -57,6 +59,14 @@ namespace Testura.Android.Device.Ui.Server
         private string PingUrl => $"{BaseUrl}/ping";
 
         private string DumpUrl => $"{BaseUrl}/dump";
+
+        private string TapUrl => $"{BaseUrl}/tap";
+
+        private string SwipeUrl => $"{BaseUrl}/swipe";
+
+        private string InputTextUrl => $"{BaseUrl}/inputText";
+
+        private string InputKeyEventUrl => $"{BaseUrl}/inputKeyEvent";
 
         private string StopUrl => $"{BaseUrl}/stop";
 
@@ -164,6 +174,73 @@ namespace Testura.Android.Device.Ui.Server
                 catch (AggregateException ex)
                 {
                     throw new UiAutomatorServerException("Faild to dump screen.", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Send a tap request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="x">The x coordinate</param>
+        /// <param name="y">The y coordinate</param>
+        public void Tap(int x, int y)
+        {
+            SendInteractionRequest($"{TapUrl}?x={x}&y={y}", TimeSpan.FromMilliseconds(3000));
+        }
+
+        /// <summary>
+        /// Send a swipe request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="fromX">Swipe from this x coordinate</param>
+        /// <param name="fromY">Swipe from this y coordinate</param>
+        /// <param name="toX">Swipe to this x coordinate</param>
+        /// <param name="toY">Swipe to this y coordinate</param>
+        /// <param name="duration">Swipe duration in miliseconds</param>
+        public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
+        {
+            SendInteractionRequest(
+                $"{SwipeUrl}?startX={fromX}&startY={fromY}&endX={toX}&endY={toY}&step={duration / 25}", 
+                TimeSpan.FromMilliseconds(3000 + duration));
+        }
+
+        /// <summary>
+        /// Send a key event request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="keyEvent">Key event to send to the device</param>
+        public void InputKeyEvent(KeyEvents keyEvent)
+        {
+            SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int)keyEvent}", TimeSpan.FromMilliseconds(3000));
+        }
+
+        /// <summary>
+        /// Send a input text request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="text">Text to send</param>
+        public void InputText(string text)
+        {
+            text = HttpUtility.UrlEncode(text);
+            SendInteractionRequest($"{InputTextUrl}?text={text}", TimeSpan.FromMilliseconds(3000));
+        }
+
+        /// <summary>
+        /// Send interaction request to server
+        /// </summary>
+        /// <param name="url">Url of the request</param>
+        /// <param name="timeout">Timeout of request</param>
+        private void SendInteractionRequest(string url, TimeSpan timeout)
+        {
+            if (!Alive(5))
+            {
+                Start();
+            }
+
+            using (var client = new HttpClient {Timeout = timeout})
+            {
+                var repsonse = client.GetAsync(url);
+                var result = repsonse.Result.Content.ReadAsStringAsync().Result;
+                if (result != "success")
+                {
+                    throw new UiAutomatorServerException("Failed to send interaction request..");
                 }
             }
         }
