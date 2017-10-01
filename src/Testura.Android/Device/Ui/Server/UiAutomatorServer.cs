@@ -203,7 +203,7 @@ namespace Testura.Android.Device.Ui.Server
         public bool Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
             return SendInteractionRequest(
-                $"{SwipeUrl}?startX={fromX}&startY={fromY}&endX={toX}&endY={toY}&step={duration / 25}", 
+                $"{SwipeUrl}?startX={fromX}&startY={fromY}&endX={toX}&endY={toY}&step={duration / 25}",
                 TimeSpan.FromMilliseconds(3000 + duration));
         }
 

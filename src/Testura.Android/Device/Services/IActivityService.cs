@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0005 // Using directive is unnecessary.
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Testura.Android.Util.Exceptions;
@@ -39,5 +40,12 @@ namespace Testura.Android.Device.Services
         /// <param name="packageName">Name of the package.</param>
         /// <returns>True if package are installed, otherwise false</returns>
         bool IsPackagedInstalled(string packageName);
+
+        /// <summary>
+        /// Get the package name.
+        /// </summary>
+        /// <param name="packageName">Name of package.</param>
+        /// <returns>The package version</returns>
+        Version GetPackageVersion(string packageName);
     }
 }

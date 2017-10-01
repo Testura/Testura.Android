@@ -15,6 +15,11 @@ namespace Testura.Android.Device.Services.Default
         private readonly IInteractionUiAutomatorServer _interactionServer;
         private NodeBounds _screenBounds;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InteractionService"/> class.
+        /// </summary>
+        /// <param name="interactionServer">An implementation of the interaction server interface.</param>
+        /// <exception cref="ArgumentNullException">Thrown if interaction service is null.</exception>
         public InteractionService(IInteractionUiAutomatorServer interactionServer)
         {
             if (interactionServer == null)

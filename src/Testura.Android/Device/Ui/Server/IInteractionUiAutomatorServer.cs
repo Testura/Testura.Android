@@ -2,6 +2,9 @@
 
 namespace Testura.Android.Device.Ui.Server
 {
+    /// <summary>
+    /// Defines methods to send interaction requests to the ui automator server.
+    /// </summary>
     public interface IInteractionUiAutomatorServer
     {
         /// <summary>
