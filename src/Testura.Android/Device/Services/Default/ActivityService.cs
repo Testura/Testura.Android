@@ -101,12 +101,18 @@ namespace Testura.Android.Device.Services.Default
         public Version GetPackageVersion(string packageName)
         {
             var version = Device.Adb.Shell($"dumpsys package {packageName} | grep versionName");
-            if (string.IsNullOrEmpty(version))
+            var versionSplit = version
+                .Trim()
+                .Replace("\n", string.Empty)
+                .Replace("\r", string.Empty)
+                .Split('=');
+
+            if (versionSplit.Length != 2)
             {
                 return new Version(0, 0);
             }
 
-            return Version.Parse(version);
+            return Version.Parse(versionSplit[1]);
         }
     }
 }

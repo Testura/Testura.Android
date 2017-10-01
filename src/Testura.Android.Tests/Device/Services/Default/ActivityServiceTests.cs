@@ -72,7 +72,7 @@ namespace Testura.Android.Tests.Device.Services.Default
         [Test]
         public void GetPackageVersion_WhenGetVersionFromPackageThatExist_ShouldReturnVersion()
         {
-            _adbServiceMock.Setup(s => s.Shell(It.IsAny<string>())).Returns("1.1");
+            _adbServiceMock.Setup(s => s.Shell(It.IsAny<string>())).Returns("versionName=1.1");
             var version = _activityService.GetPackageVersion("test");
             Assert.AreEqual(new Version(1, 1), version);
         }

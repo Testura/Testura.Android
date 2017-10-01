@@ -118,7 +118,9 @@
     <None Include="Dependencies\Testura.Android.Server.apk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Dependencies\Testura.Android.Server-UiAutomator.apk" />
+    <None Include="Dependencies\Testura.Android.Server-UiAutomator.apk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
