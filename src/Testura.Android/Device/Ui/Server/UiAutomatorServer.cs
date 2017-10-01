@@ -243,6 +243,8 @@ namespace Testura.Android.Device.Ui.Server
                 Start();
             }
 
+            DeviceLogger.Log($"Sending interaction request to server: {url}");
+
             using (var client = new HttpClient { Timeout = timeout })
             {
                 var repsonse = client.GetAsync(url).Result;
