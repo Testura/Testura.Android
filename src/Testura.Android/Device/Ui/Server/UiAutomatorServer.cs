@@ -161,11 +161,13 @@ namespace Testura.Android.Device.Ui.Server
             {
                 try
                 {
-                    var repsonse = client.GetAsync(DumpUrl);
-                    var dump = repsonse.Result.Content.ReadAsStringAsync().Result;
+                    var repsonse = client.GetAsync(DumpUrl).Result;
+                    var dump = repsonse.Content.ReadAsStringAsync().Result;
                     if (string.IsNullOrEmpty(dump))
                     {
                         DeviceLogger.Log("Failed to dump!");
+                        DeviceLogger.Log($"Status code: {repsonse.StatusCode}");
+                        DeviceLogger.Log($"Reason phrase: {repsonse.ReasonPhrase}");
                         throw new UiAutomatorServerException("Could connect to server but the dumped ui was empty");
                     }
 
@@ -173,7 +175,7 @@ namespace Testura.Android.Device.Ui.Server
                 }
                 catch (AggregateException ex)
                 {
-                    throw new UiAutomatorServerException("Faild to dump screen.", ex);
+                    throw new UiAutomatorServerException($"Failed to dump screen: {ex}", ex);
                 }
             }
         }
@@ -241,8 +243,18 @@ namespace Testura.Android.Device.Ui.Server
 
             using (var client = new HttpClient { Timeout = timeout })
             {
-                var repsonse = client.GetAsync(url);
-                var result = repsonse.Result.Content.ReadAsStringAsync().Result;
+                var repsonse = client.GetAsync(url).Result;
+                if (!repsonse.IsSuccessStatusCode)
+                {
+                    if (repsonse.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new UiAutomatorServerException("Server responded with 404, make sure that you have the latest Testura server app.");
+                    }
+
+                    return false;
+                }
+
+                var result = repsonse.Content.ReadAsStringAsync().Result;
                 return result == "success";
             }
         }
