@@ -35,7 +35,12 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="duration">Duration of the swipe in milliseconds</param>
         public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
-            _interactionServer.Swipe(fromX, fromY, toX, toY, duration);
+            if (!_interactionServer.Swipe(fromX, fromY, toX, toY, duration))
+            {
+                DeviceLogger.Log("Failed to swipe through server, trying through adb.");
+                Device.Adb.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
+            }
+
             Device.Ui.ClearCache();
         }
 
@@ -95,7 +100,12 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="y">The y position</param>
         public void Tap(int x, int y)
         {
-            _interactionServer.Tap(x, y);
+            if (!_interactionServer.Tap(x, y))
+            {
+                DeviceLogger.Log("Failed to tap through server, trying through adb.");
+                Device.Adb.Shell($"input tap {x} {y}");
+            }
+
             Device.Ui.ClearCache();
         }
 
@@ -103,21 +113,17 @@ namespace Testura.Android.Device.Services.Default
         /// Input text into the node
         /// </summary>
         /// <param name="text">The text to input into the node</param>
-        /// <param name="useSlowInput">If true we use adb input, otherwise set text through server.</param>
-        public void InputText(string text, bool useSlowInput = false)
+        public void InputText(string text)
         {
             if (text == null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
 
-            if (useSlowInput)
+            if (!_interactionServer.InputText(text))
             {
+                DeviceLogger.Log("Failed to input text through server, trying through adb.");
                 Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
-            }
-            else
-            {
-                _interactionServer.InputText(text);
             }
 
             Device.Ui.ClearCache();
@@ -129,7 +135,12 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="keyEvent">Key event to send to the device</param>
         public void InputKeyEvent(KeyEvents keyEvent)
         {
-            Device.Adb.Shell($"input keyevent {(int)keyEvent}");
+            if (!_interactionServer.InputKeyEvent(keyEvent))
+            {
+                DeviceLogger.Log("Failed to input key event through server, trying through adb.");
+                Device.Adb.Shell($"input keyevent {(int)keyEvent}");
+            }
+
             Device.Ui.ClearCache();
         }
 

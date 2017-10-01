@@ -183,9 +183,10 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         /// <param name="x">The x coordinate</param>
         /// <param name="y">The y coordinate</param>
-        public void Tap(int x, int y)
+        /// <returns>True if we successfully tapped, otherwise false.</returns>
+        public bool Tap(int x, int y)
         {
-            SendInteractionRequest($"{TapUrl}?x={x}&y={y}", TimeSpan.FromMilliseconds(3000));
+            return SendInteractionRequest($"{TapUrl}?x={x}&y={y}", TimeSpan.FromMilliseconds(3000));
         }
 
         /// <summary>
@@ -196,9 +197,10 @@ namespace Testura.Android.Device.Ui.Server
         /// <param name="toX">Swipe to this x coordinate</param>
         /// <param name="toY">Swipe to this y coordinate</param>
         /// <param name="duration">Swipe duration in miliseconds</param>
-        public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
+        /// <returns>True if we successfully swiped, otherwise false.</returns>
+        public bool Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
-            SendInteractionRequest(
+            return SendInteractionRequest(
                 $"{SwipeUrl}?startX={fromX}&startY={fromY}&endX={toX}&endY={toY}&step={duration / 25}", 
                 TimeSpan.FromMilliseconds(3000 + duration));
         }
@@ -207,19 +209,21 @@ namespace Testura.Android.Device.Ui.Server
         /// Send a key event request to the ui automator server on the android device.
         /// </summary>
         /// <param name="keyEvent">Key event to send to the device</param>
-        public void InputKeyEvent(KeyEvents keyEvent)
+        /// <returns>True if we successfully input key event, otherwise false.</returns>
+        public bool InputKeyEvent(KeyEvents keyEvent)
         {
-            SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int)keyEvent}", TimeSpan.FromMilliseconds(3000));
+            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int)keyEvent}", TimeSpan.FromMilliseconds(3000));
         }
 
         /// <summary>
         /// Send a input text request to the ui automator server on the android device.
         /// </summary>
         /// <param name="text">Text to send</param>
-        public void InputText(string text)
+        /// <returns>True if we successfully input text, otherwise false.</returns>
+        public bool InputText(string text)
         {
             text = HttpUtility.UrlEncode(text);
-            SendInteractionRequest($"{InputTextUrl}?text={text}", TimeSpan.FromMilliseconds(3000));
+            return SendInteractionRequest($"{InputTextUrl}?text={text}", TimeSpan.FromMilliseconds(3000));
         }
 
         /// <summary>
@@ -227,21 +231,19 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         /// <param name="url">Url of the request</param>
         /// <param name="timeout">Timeout of request</param>
-        private void SendInteractionRequest(string url, TimeSpan timeout)
+        /// <returns>True if we managed to perform interaction, otherwise false.</returns>
+        private bool SendInteractionRequest(string url, TimeSpan timeout)
         {
             if (!Alive(5))
             {
                 Start();
             }
 
-            using (var client = new HttpClient {Timeout = timeout})
+            using (var client = new HttpClient { Timeout = timeout })
             {
                 var repsonse = client.GetAsync(url);
                 var result = repsonse.Result.Content.ReadAsStringAsync().Result;
-                if (result != "success")
-                {
-                    throw new UiAutomatorServerException("Failed to send interaction request..");
-                }
+                return result == "success";
             }
         }
 
