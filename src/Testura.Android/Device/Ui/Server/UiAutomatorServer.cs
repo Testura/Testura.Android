@@ -165,7 +165,7 @@ namespace Testura.Android.Device.Ui.Server
                     var dump = repsonse.Content.ReadAsStringAsync().Result;
                     if (string.IsNullOrEmpty(dump))
                     {
-                        DeviceLogger.Log("Failed to dump!");
+                        DeviceLogger.Log("Empty dump from server!");
                         DeviceLogger.Log($"Status code: {repsonse.StatusCode}");
                         DeviceLogger.Log($"Reason phrase: {repsonse.ReasonPhrase}");
                         throw new UiAutomatorServerException("Could connect to server but the dumped ui was empty");
@@ -175,7 +175,9 @@ namespace Testura.Android.Device.Ui.Server
                 }
                 catch (AggregateException ex)
                 {
-                    throw new UiAutomatorServerException($"Failed to dump screen: {ex}", ex);
+                    DeviceLogger.Log("Unexpected error when trying to dump: ");
+                    DeviceLogger.Log(ex.ToString());
+                    throw new UiAutomatorServerException("Failed to dump screen", ex);
                 }
             }
         }
