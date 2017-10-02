@@ -92,5 +92,27 @@ namespace Testura.Android.Device.Services.Default
             var packages = GetPackages();
             return packages.Contains(packageName);
         }
+
+        /// <summary>
+        /// Get the package name.
+        /// </summary>
+        /// <param name="packageName">Name of package.</param>
+        /// <returns>The package version if package exist, otherwise version 0.</returns>
+        public Version GetPackageVersion(string packageName)
+        {
+            var version = Device.Adb.Shell($"dumpsys package {packageName} | grep versionName");
+            var versionSplit = version
+                .Trim()
+                .Replace("\n", string.Empty)
+                .Replace("\r", string.Empty)
+                .Split('=');
+
+            if (versionSplit.Length != 2)
+            {
+                return new Version(0, 0);
+            }
+
+            return Version.Parse(versionSplit[1]);
+        }
     }
 }

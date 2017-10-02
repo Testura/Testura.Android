@@ -48,14 +48,15 @@ namespace Testura.Android.Device
         public AndroidDevice(DeviceConfiguration configuration)
         {
             Configuration = configuration;
+            var server = new UiAutomatorServer(new Terminal(configuration), configuration.Port);
             Adb = new AdbService(new Terminal(configuration));
             Ui = new UiService(
-                new ScreenDumper(new UiAutomatorServer(new Terminal(configuration), configuration.Port), configuration.DumpTries),
+                new ScreenDumper(server, configuration.DumpTries),
                 new NodeParser(),
                 new NodeFinder());
             Settings = new SettingsService();
             Activity = new ActivityService();
-            Interaction = new InteractionService();
+            Interaction = new InteractionService(server);
             SetOwner();
             InstallHelperApks();
         }

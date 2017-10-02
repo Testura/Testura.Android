@@ -21,6 +21,11 @@ namespace Testura.Android.Device.Configurations
         public const string ServerUiAutomatorApkName = "Testura.Android.Server-UiAutomator.apk";
 
         /// <summary>
+        /// Latest Testura server apk version
+        /// </summary>
+        public const string ServerApkVersion = "1.1";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DeviceConfiguration"/> class.
         /// </summary>
         public DeviceConfiguration()

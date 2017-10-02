@@ -1,5 +1,6 @@
 ﻿using System;
 using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
@@ -11,7 +12,23 @@ namespace Testura.Android.Device.Services.Default
     /// </summary>
     public class InteractionService : Service, IInteractionService
     {
+        private readonly IInteractionUiAutomatorServer _interactionServer;
         private NodeBounds _screenBounds;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InteractionService"/> class.
+        /// </summary>
+        /// <param name="interactionServer">An implementation of the interaction server interface.</param>
+        /// <exception cref="ArgumentNullException">Thrown if interaction service is null.</exception>
+        public InteractionService(IInteractionUiAutomatorServer interactionServer)
+        {
+            if (interactionServer == null)
+            {
+                throw new ArgumentNullException(nameof(interactionServer));
+            }
+
+            _interactionServer = interactionServer;
+        }
 
         /// <summary>
         /// Perform a swipe motion on the screen.
@@ -23,7 +40,12 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="duration">Duration of the swipe in milliseconds</param>
         public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
-            Device.Adb.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
+            if (!_interactionServer.Swipe(fromX, fromY, toX, toY, duration))
+            {
+                DeviceLogger.Log("Failed to swipe through server, trying through adb.");
+                Device.Adb.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
+            }
+
             Device.Ui.ClearCache();
         }
 
@@ -83,7 +105,12 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="y">The y position</param>
         public void Tap(int x, int y)
         {
-            Device.Adb.Shell($"input tap {x} {y}");
+            if (!_interactionServer.Tap(x, y))
+            {
+                DeviceLogger.Log("Failed to tap through server, trying through adb.");
+                Device.Adb.Shell($"input tap {x} {y}");
+            }
+
             Device.Ui.ClearCache();
         }
 
@@ -98,7 +125,12 @@ namespace Testura.Android.Device.Services.Default
                 throw new ArgumentNullException(nameof(text));
             }
 
-            Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
+            if (!_interactionServer.InputText(text))
+            {
+                DeviceLogger.Log("Failed to input text through server, trying through adb.");
+                Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
+            }
+
             Device.Ui.ClearCache();
         }
 
@@ -108,7 +140,12 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="keyEvent">Key event to send to the device</param>
         public void InputKeyEvent(KeyEvents keyEvent)
         {
-            Device.Adb.Shell($"input keyevent {(int)keyEvent}");
+            if (!_interactionServer.InputKeyEvent(keyEvent))
+            {
+                DeviceLogger.Log("Failed to input key event through server, trying through adb.");
+                Device.Adb.Shell($"input keyevent {(int)keyEvent}");
+            }
+
             Device.Ui.ClearCache();
         }
 

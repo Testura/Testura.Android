@@ -68,5 +68,21 @@ namespace Testura.Android.Tests.Device.Services.Default
             _adbServiceMock.Setup(s => s.Shell(It.IsAny<string>())).Returns("223232ddad");
             Assert.AreEqual("Unknown activity", _activityService.GetCurrent());
         }
+
+        [Test]
+        public void GetPackageVersion_WhenGetVersionFromPackageThatExist_ShouldReturnVersion()
+        {
+            _adbServiceMock.Setup(s => s.Shell(It.IsAny<string>())).Returns("versionName=1.1");
+            var version = _activityService.GetPackageVersion("test");
+            Assert.AreEqual(new Version(1, 1), version);
+        }
+
+        [Test]
+        public void GetPackageVersion_WhenGetVersionFromPackageThatDontExist_ShouldReturnVersion0()
+        {
+            _adbServiceMock.Setup(s => s.Shell(It.IsAny<string>())).Returns("");
+            var version = _activityService.GetPackageVersion("test");
+            Assert.AreEqual(new Version(0, 0), version);
+        }
     }
 }

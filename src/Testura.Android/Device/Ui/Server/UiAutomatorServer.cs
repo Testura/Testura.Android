@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using Medallion.Shell;
+using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
@@ -13,7 +15,7 @@ namespace Testura.Android.Device.Ui.Server
     /// <summary>
     /// Provides functionality to interact with the UI automator server
     /// </summary>
-    public class UiAutomatorServer : IUiAutomatorServer
+    public class UiAutomatorServer : IUiAutomatorServer, IInteractionUiAutomatorServer
     {
         /// <summary>
         /// Get the server package name
@@ -57,6 +59,14 @@ namespace Testura.Android.Device.Ui.Server
         private string PingUrl => $"{BaseUrl}/ping";
 
         private string DumpUrl => $"{BaseUrl}/dump";
+
+        private string TapUrl => $"{BaseUrl}/tap";
+
+        private string SwipeUrl => $"{BaseUrl}/swipe";
+
+        private string InputTextUrl => $"{BaseUrl}/inputText";
+
+        private string InputKeyEventUrl => $"{BaseUrl}/inputKeyEvent";
 
         private string StopUrl => $"{BaseUrl}/stop";
 
@@ -151,11 +161,13 @@ namespace Testura.Android.Device.Ui.Server
             {
                 try
                 {
-                    var repsonse = client.GetAsync(DumpUrl);
-                    var dump = repsonse.Result.Content.ReadAsStringAsync().Result;
+                    var repsonse = client.GetAsync(DumpUrl).Result;
+                    var dump = repsonse.Content.ReadAsStringAsync().Result;
                     if (string.IsNullOrEmpty(dump))
                     {
-                        DeviceLogger.Log("Failed to dump!");
+                        DeviceLogger.Log("Empty dump from server!");
+                        DeviceLogger.Log($"Status code: {repsonse.StatusCode}");
+                        DeviceLogger.Log($"Reason phrase: {repsonse.ReasonPhrase}");
                         throw new UiAutomatorServerException("Could connect to server but the dumped ui was empty");
                     }
 
@@ -163,8 +175,91 @@ namespace Testura.Android.Device.Ui.Server
                 }
                 catch (AggregateException ex)
                 {
-                    throw new UiAutomatorServerException("Faild to dump screen.", ex);
+                    DeviceLogger.Log("Unexpected error when trying to dump: ");
+                    DeviceLogger.Log(ex.ToString());
+                    throw new UiAutomatorServerException("Failed to dump screen", ex);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Send a tap request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="x">The x coordinate</param>
+        /// <param name="y">The y coordinate</param>
+        /// <returns>True if we successfully tapped, otherwise false.</returns>
+        public bool Tap(int x, int y)
+        {
+            return SendInteractionRequest($"{TapUrl}?x={x}&y={y}", TimeSpan.FromMilliseconds(3000));
+        }
+
+        /// <summary>
+        /// Send a swipe request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="fromX">Swipe from this x coordinate</param>
+        /// <param name="fromY">Swipe from this y coordinate</param>
+        /// <param name="toX">Swipe to this x coordinate</param>
+        /// <param name="toY">Swipe to this y coordinate</param>
+        /// <param name="duration">Swipe duration in miliseconds</param>
+        /// <returns>True if we successfully swiped, otherwise false.</returns>
+        public bool Swipe(int fromX, int fromY, int toX, int toY, int duration)
+        {
+            return SendInteractionRequest(
+                $"{SwipeUrl}?startX={fromX}&startY={fromY}&endX={toX}&endY={toY}&step={duration / 25}",
+                TimeSpan.FromMilliseconds(3000 + duration));
+        }
+
+        /// <summary>
+        /// Send a key event request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="keyEvent">Key event to send to the device</param>
+        /// <returns>True if we successfully input key event, otherwise false.</returns>
+        public bool InputKeyEvent(KeyEvents keyEvent)
+        {
+            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int)keyEvent}", TimeSpan.FromMilliseconds(3000));
+        }
+
+        /// <summary>
+        /// Send a input text request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="text">Text to send</param>
+        /// <returns>True if we successfully input text, otherwise false.</returns>
+        public bool InputText(string text)
+        {
+            text = HttpUtility.UrlEncode(text);
+            return SendInteractionRequest($"{InputTextUrl}?text={text}", TimeSpan.FromMilliseconds(3000));
+        }
+
+        /// <summary>
+        /// Send interaction request to server
+        /// </summary>
+        /// <param name="url">Url of the request</param>
+        /// <param name="timeout">Timeout of request</param>
+        /// <returns>True if we managed to perform interaction, otherwise false.</returns>
+        private bool SendInteractionRequest(string url, TimeSpan timeout)
+        {
+            if (!Alive(5))
+            {
+                Start();
+            }
+
+            DeviceLogger.Log($"Sending interaction request to server: {url}");
+
+            using (var client = new HttpClient { Timeout = timeout })
+            {
+                var repsonse = client.GetAsync(url).Result;
+                if (!repsonse.IsSuccessStatusCode)
+                {
+                    if (repsonse.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new UiAutomatorServerException("Server responded with 404, make sure that you have the latest Testura server app.");
+                    }
+
+                    return false;
+                }
+
+                var result = repsonse.Content.ReadAsStringAsync().Result;
+                return result == "success";
             }
         }
 
