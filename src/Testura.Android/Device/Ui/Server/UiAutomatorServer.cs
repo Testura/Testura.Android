@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Management;
 using System.Net;
@@ -27,12 +28,8 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         private const int DevicePort = 9020;
 
-        /// <summary>
-        /// Get the timeout in seconds.
-        /// </summary>
-        private const int Timeout = 5;
-
         private readonly int _localPort;
+        private readonly int _dumpTimeout;
         private readonly object _serverLock;
         private readonly ITerminal _terminal;
         private Command _currentServerProcess;
@@ -42,7 +39,8 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         /// <param name="terminal">Object to interact with the terminal.</param>
         /// <param name="port">The local port.</param>
-        public UiAutomatorServer(ITerminal terminal, int port)
+        /// <param name="dumpTimeout">Dump timeout in sec</param>
+        public UiAutomatorServer(ITerminal terminal, int port, int dumpTimeout)
         {
             if (terminal == null)
             {
@@ -50,6 +48,7 @@ namespace Testura.Android.Device.Ui.Server
             }
 
             _localPort = port;
+            _dumpTimeout = dumpTimeout;
             _terminal = terminal;
             _serverLock = new object();
         }
@@ -157,7 +156,7 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>The screen content as a xml string.</returns>
         public string DumpUi()
         {
-            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3) })
+            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(_dumpTimeout) })
             {
                 try
                 {
@@ -175,7 +174,7 @@ namespace Testura.Android.Device.Ui.Server
                 }
                 catch (AggregateException ex)
                 {
-                    DeviceLogger.Log("Unexpected error when trying to dump: ");
+                    DeviceLogger.Log("Unexpected error/timed out when trying to dump: ");
                     DeviceLogger.Log(ex.ToString());
                     throw new UiAutomatorServerException("Failed to dump screen", ex);
                 }
@@ -313,6 +312,10 @@ namespace Testura.Android.Device.Ui.Server
             catch (ArgumentException)
             {
                 // Process already exited.
+            }
+            catch (Exception ex)
+            {
+                DeviceLogger.Log($"Something went wrong when trying to kill local process: {ex}");
             }
 
             if (processCollection != null)
