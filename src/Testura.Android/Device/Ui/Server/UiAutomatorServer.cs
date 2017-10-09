@@ -246,19 +246,28 @@ namespace Testura.Android.Device.Ui.Server
 
             using (var client = new HttpClient { Timeout = timeout })
             {
-                var repsonse = client.GetAsync(url).Result;
-                if (!repsonse.IsSuccessStatusCode)
+                try
                 {
-                    if (repsonse.StatusCode == HttpStatusCode.NotFound)
+                    var repsonse = client.GetAsync(url).Result;
+                    if (!repsonse.IsSuccessStatusCode)
                     {
-                        throw new UiAutomatorServerException("Server responded with 404, make sure that you have the latest Testura server app.");
+                        if (repsonse.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            throw new UiAutomatorServerException(
+                                "Server responded with 404, make sure that you have the latest Testura server app.");
+                        }
+
+                        return false;
                     }
 
+                    var result = repsonse.Content.ReadAsStringAsync().Result;
+                    return result == "success";
+                }
+                catch (AggregateException)
+                {
+                    DeviceLogger.Log("interaction request timed out");
                     return false;
                 }
-
-                var result = repsonse.Content.ReadAsStringAsync().Result;
-                return result == "success";
             }
         }
 
