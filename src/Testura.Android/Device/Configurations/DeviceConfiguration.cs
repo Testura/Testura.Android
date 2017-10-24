@@ -36,6 +36,7 @@ namespace Testura.Android.Device.Configurations
             DependenciesDirectory = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Dependencies");
             Port = 9008;
             DumpTries = 5;
+            DumpTimeout = 15;
         }
 
         /// <summary>
@@ -69,5 +70,10 @@ namespace Testura.Android.Device.Configurations
         /// sending exception.
         /// </summary>
         public int DumpTries { get; set; }
+
+        /// <summary>
+        /// Gets or sets the dump timeout in seconds
+        /// </summary>
+        public int DumpTimeout { get; set; }
     }
 }
