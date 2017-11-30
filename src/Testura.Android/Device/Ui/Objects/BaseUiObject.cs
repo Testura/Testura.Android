@@ -82,7 +82,7 @@ namespace Testura.Android.Device.Ui.Objects
                 try
                 {
                     TryFindNode(1);
-                    if ((DateTime.Now - startTime).Seconds > timeout)
+                    if ((DateTime.Now - startTime).TotalSeconds > timeout)
                     {
                         return false;
                     }
