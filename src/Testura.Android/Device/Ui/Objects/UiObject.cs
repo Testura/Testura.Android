@@ -80,7 +80,7 @@ namespace Testura.Android.Device.Ui.Objects
                     return true;
                 }
 
-                if ((DateTime.Now - startTime).Seconds > timeout)
+                if ((DateTime.Now - startTime).TotalSeconds > timeout)
                 {
                     return false;
                 }

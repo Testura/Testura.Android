@@ -102,7 +102,7 @@ namespace Testura.Android.Device.Services.Default
                 }
                 catch (UiNodeNotFoundException)
                 {
-                    if ((DateTime.Now - startTime).Seconds > timeout)
+                    if ((DateTime.Now - startTime).TotalSeconds > timeout)
                     {
                         throw;
                     }

@@ -137,7 +137,7 @@ namespace Testura.Android.Device.Ui.Server
         public bool Alive(int timeout)
         {
             var time = DateTime.Now;
-            while ((DateTime.Now - time).Seconds < timeout)
+            while ((DateTime.Now - time).TotalSeconds < timeout)
             {
                 var result = Ping();
                 if (result)
