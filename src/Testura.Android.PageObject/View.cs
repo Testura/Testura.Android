@@ -43,7 +43,10 @@ namespace Testura.Android.PageObject
                 InitializeUiObjectsFromProperties(type.BaseType);
             }
 
-            var properties = type.GetProperties();
+            var properties = type.GetProperties(BindingFlags.Instance |
+                                                BindingFlags.NonPublic |
+                                                BindingFlags.Public);
+
             foreach (var property in properties)
             {
                 if (property.PropertyType != typeof(UiObject) && property.PropertyType != typeof(UiObjects))

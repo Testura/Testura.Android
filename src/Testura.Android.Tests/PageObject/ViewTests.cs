@@ -24,7 +24,7 @@ namespace Testura.Android.Tests.PageObject
             [Create(with: AttributeTags.Text, value: "test")]
             private UiObjects _fieldObjects;
 
-            public ExampleClass(IAndroidDevice device) 
+            public ExampleClass(IAndroidDevice device)
                 : base(device)
             {
             }
@@ -34,6 +34,9 @@ namespace Testura.Android.Tests.PageObject
 
             [Create(with: AttributeTags.Class, value: "test")]
             public UiObjects PropertyObjects { get; private set; }
+
+            [Create(with: AttributeTags.Class, value: "test")]
+            internal UiObject InternalProperty { get; private set; }
         }
 
         [SetUp]
@@ -49,6 +52,15 @@ namespace Testura.Android.Tests.PageObject
             _testHelper.UiServiceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
             var example = new ExampleClass(_testHelper.DeviceMock.Object);
             Assert.IsNotNull(example.PropertyObject);
+        }
+
+        [Test]
+        public void InitializeUiObjects_WhenHavingClassWithInternalPropertiesThatUseAttribute_ShouldInitializeUiObject()
+        {
+            var uiObject = _testHelper.CreateUiObject(With.Text("test"), 0);
+            _testHelper.UiServiceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
+            var example = new ExampleClass(_testHelper.DeviceMock.Object);
+            Assert.IsNotNull(example.InternalProperty);
         }
 
         [Test]
@@ -81,5 +93,5 @@ namespace Testura.Android.Tests.PageObject
         }
     }
 
-    
+
 }
