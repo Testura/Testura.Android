@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Medallion.Shell;
 using Testura.Android.Device;
 using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
@@ -18,7 +17,6 @@ namespace Testura.Android.Util.Recording
         private readonly string _temporaryDeviceDirectory;
         private readonly ITerminal _terminal;
         private string _lastFullTemporaryRecordingPath;
-        private Command _recordProcess;
 
         internal ScreenRecorderTask(IAndroidDevice device, string temporaryDeviceDirectory)
         {
@@ -52,7 +50,6 @@ namespace Testura.Android.Util.Recording
             RemoveTemporaryRecordingOnDevice(removeRecordingFromDevice);
         }
 
-
         internal void StartRecording(ScreenRecordConfiguration configurations)
         {
             if (configurations == null)
@@ -72,13 +69,12 @@ namespace Testura.Android.Util.Recording
                 _lastFullTemporaryRecordingPath,
             };
             commands.AddRange(configurations.GetArguments());
-            _recordProcess = _terminal.StartAdbProcessWithoutShell(commands.ToArray());
+            _terminal.StartAdbProcessWithoutShell(commands.ToArray());
         }
 
         private void StopRecordingProcess()
         {
             TerminateAllCurrentRecordings();
-            _recordProcess.Kill();
         }
 
         private void RemoveTemporaryRecordingOnDevice(bool removeRecordingFromDevice)
