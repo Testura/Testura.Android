@@ -94,6 +94,9 @@
     <Compile Include="Util\Logging\DeviceLogger.cs" />
     <Compile Include="Util\LogcatWatchers\EventLogcatWatcher.cs" />
     <Compile Include="Util\LogcatWatchers\LogcatWatcher.cs" />
+    <Compile Include="Util\Logging\ListLogListener.cs" />
+    <Compile Include="Util\Recording\ScreenRecorderTask.cs" />
+    <Compile Include="Util\Recording\ScreenRecordConfiguration.cs" />
     <Compile Include="Util\Walker\AppWalkerConfiguration.cs" />
     <Compile Include="Util\Walker\Cases\Stop\StopCase.cs" />
     <Compile Include="Util\Walker\Cases\Stop\FuncStopCase.cs" />
