@@ -195,7 +195,10 @@ namespace Testura.Android.Util
         Menu2,
         Notification,
         Search,
-        TagLastKeycode
+        TagLastKeycode,
+        Sleep = 223,
+        WakeUp = 224,
+        SoftSleep = 276
     }
 
     /// <summary>

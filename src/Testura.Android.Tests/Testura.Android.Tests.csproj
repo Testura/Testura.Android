@@ -68,12 +68,12 @@
     <Compile Include="Device\Services\Default\InteractionServiceTests.cs" />
     <Compile Include="Device\UiAutomator\Ui\Objects\UiObjectTests.cs" />
     <Compile Include="Device\UiAutomator\Ui\Util\NodeParserTests.cs" />
+    <Compile Include="Integration\Device\UiAutomator\Server\UiAutomatorServerTests.cs" />
     <Compile Include="PageObject\ViewTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Device\Services\Default\UiServiceTests.cs" />
     <Compile Include="Device\UiAutomator\Ui\Util\NodeFinderTests.cs" />
     <Compile Include="Device\UiAutomator\Ui\Util\ScreenDumperTests.cs" />
-    <Compile Include="Integration\Device\UiAutomator\Server\UiAutomatorServerTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Util\Exceptions\UiNodeNotFoundExceptionTests.cs" />
     <Compile Include="Util\Helpers\UiFindTests.cs" />

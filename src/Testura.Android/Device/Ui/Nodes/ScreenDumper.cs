@@ -98,6 +98,7 @@ namespace Testura.Android.Device.Ui.Nodes
                         {
                             DeviceLogger.Log("Server alive but we can't dump.. trying a reboot.");
                             _server.Stop();
+                            _server.Start();
                         }
 
                         continue;

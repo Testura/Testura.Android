@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Testura.Android.Util;
+using Testura.Android.Util.Recording;
 #pragma warning disable IDE0005 // Using directive is unnecessary.
 using Testura.Android.Util.Exceptions;
 #pragma warning restore IDE0005 // Using directive is unnecessary.
@@ -147,6 +149,33 @@ namespace Testura.Android.Device.Services.Default
             ExecuteCommand("shell", "screencap", remotePath);
             Pull(remotePath, localPath);
             ExecuteCommand("shell", "rm", remotePath);
+        }
+
+        /// <summary>
+        /// Recording the display of device with 3 min time limit.
+        ///
+        /// Will terminate any ongoing recordings.
+        /// </summary>
+        /// <param name="temporaryDeviceDirectory">Path to directory on device to temporary store the recording file before pulling.</param>
+        /// <returns>The created screen recorder task (later used to stop the recording)</returns>
+        public ScreenRecorderTask RecordScreen(string temporaryDeviceDirectory = "/sdcard/")
+        {
+            return RecordScreen(new ScreenRecordConfiguration(), temporaryDeviceDirectory);
+        }
+
+        /// <summary>
+        /// Recording the display of device
+        /// 
+        /// Will terminate any ongoing recordings.
+        /// </summary>
+        /// <param name="configuration">Screen recording configuration (time limit, bit rate and size)</param>
+        /// <param name="temporaryDeviceDirectory">Path to directory on device to temporary store the recording file before pulling.</param>
+        /// <returns>The created screen recorder task (later used to stop the recording)</returns>
+        public ScreenRecorderTask RecordScreen(ScreenRecordConfiguration configuration, string temporaryDeviceDirectory = "/sdcard/")
+        {
+            var screenRecorderTask = new ScreenRecorderTask(Device, temporaryDeviceDirectory);
+            screenRecorderTask.StartRecording(configuration);
+            return screenRecorderTask;
         }
 
         private string ExecuteCommand(params string[] arguments)

@@ -1,5 +1,9 @@
 ﻿#pragma warning disable IDE0005 // Using directive is unnecessary.
+using System;
+using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Recording;
+
 #pragma warning restore IDE0005 // Using directive is unnecessary.
 
 namespace Testura.Android.Device.Services
@@ -51,5 +55,25 @@ namespace Testura.Android.Device.Services
         /// </summary>
         /// <param name="localPath">Save path for file.</param>
         void Screencap(string localPath);
+
+
+        /// <summary>
+        /// Recording the display of device with 3 min time limit.
+        ///
+        /// Will terminate any ongoing recordings.
+        /// </summary>
+        /// <param name="temporaryDeviceDirectory">Path to directory on device to temporary store the recording file before pulling.</param>
+        /// <returns>The created screen recorder task (later used to stop the recording)</returns>
+        ScreenRecorderTask RecordScreen(string temporaryDeviceDirectory = "/sdcard/");
+
+        /// <summary>
+        /// Recording the display of device
+        /// 
+        /// Will terminate any ongoing recordings.
+        /// </summary>
+        /// <param name="configuration">Screen recording settings (time limit, bit rate and size)</param>
+        /// <param name="temporaryDeviceDirectory">Path to directory on device to temporary store the recording file before pulling.</param>
+        /// <returns>The created screen recorder task (later used to stop the recording)</returns>
+        ScreenRecorderTask RecordScreen(ScreenRecordConfiguration configuration, string temporaryDeviceDirectory = "/sdcard/");
     }
 }
