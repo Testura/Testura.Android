@@ -267,59 +267,7 @@ namespace Testura.Android.Device.Ui.Server
                 {
                     DeviceLogger.Log("interaction request timed out");
                     return false;
-        }
-
-        /// <summary>
-        /// Send a key event request to the ui automator server on the android device.
-        /// </summary>
-        /// <param name="keyEvent">Key event to send to the device</param>
-        /// <returns>True if we successfully input key event, otherwise false.</returns>
-        public bool InputKeyEvent(KeyEvents keyEvent)
-        {
-            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int)keyEvent}", TimeSpan.FromMilliseconds(3000));
-        }
-
-        /// <summary>
-        /// Send a input text request to the ui automator server on the android device.
-        /// </summary>
-        /// <param name="text">Text to send</param>
-        /// <returns>True if we successfully input text, otherwise false.</returns>
-        public bool InputText(string text)
-        {
-            text = HttpUtility.UrlEncode(text);
-            return SendInteractionRequest($"{InputTextUrl}?text={text}", TimeSpan.FromMilliseconds(3000));
-        }
-
-        /// <summary>
-        /// Send interaction request to server
-        /// </summary>
-        /// <param name="url">Url of the request</param>
-        /// <param name="timeout">Timeout of request</param>
-        /// <returns>True if we managed to perform interaction, otherwise false.</returns>
-        private bool SendInteractionRequest(string url, TimeSpan timeout)
-        {
-            if (!Alive(5))
-            {
-                Start();
-            }
-
-            DeviceLogger.Log($"Sending interaction request to server: {url}");
-
-            using (var client = new HttpClient { Timeout = timeout })
-            {
-                var repsonse = client.GetAsync(url).Result;
-                if (!repsonse.IsSuccessStatusCode)
-                {
-                    if (repsonse.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        throw new UiAutomatorServerException("Server responded with 404, make sure that you have the latest Testura server app.");
-                    }
-
-                    return false;
                 }
-
-                var result = repsonse.Content.ReadAsStringAsync().Result;
-                return result == "success";
             }
         }
 
