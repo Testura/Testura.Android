@@ -48,7 +48,7 @@ namespace Testura.Android.Device
         public AndroidDevice(DeviceConfiguration configuration)
         {
             Configuration = configuration;
-            var server = new UiAutomatorServer(new Terminal(configuration), configuration.Port);
+            var server = new UiAutomatorServer(new Terminal(configuration), configuration.Port, configuration.DumpTimeout);
             Adb = new AdbService(new Terminal(configuration));
             Ui = new UiService(
                 new ScreenDumper(server, configuration.DumpTries),

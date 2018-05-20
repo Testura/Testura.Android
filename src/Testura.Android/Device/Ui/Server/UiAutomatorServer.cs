@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Management;
 using System.Net;
@@ -27,12 +28,8 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         private const int DevicePort = 9020;
 
-        /// <summary>
-        /// Get the timeout in seconds.
-        /// </summary>
-        private const int Timeout = 5;
-
         private readonly int _localPort;
+        private readonly int _dumpTimeout;
         private readonly object _serverLock;
         private readonly ITerminal _terminal;
         private Command _currentServerProcess;
@@ -42,7 +39,8 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         /// <param name="terminal">Object to interact with the terminal.</param>
         /// <param name="port">The local port.</param>
-        public UiAutomatorServer(ITerminal terminal, int port)
+        /// <param name="dumpTimeout">Dump timeout in sec</param>
+        public UiAutomatorServer(ITerminal terminal, int port, int dumpTimeout)
         {
             if (terminal == null)
             {
@@ -50,6 +48,7 @@ namespace Testura.Android.Device.Ui.Server
             }
 
             _localPort = port;
+            _dumpTimeout = dumpTimeout;
             _terminal = terminal;
             _serverLock = new object();
         }
@@ -138,7 +137,7 @@ namespace Testura.Android.Device.Ui.Server
         public bool Alive(int timeout)
         {
             var time = DateTime.Now;
-            while ((DateTime.Now - time).Seconds < timeout)
+            while ((DateTime.Now - time).TotalSeconds < timeout)
             {
                 var result = Ping();
                 if (result)
@@ -157,7 +156,7 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>The screen content as a xml string.</returns>
         public string DumpUi()
         {
-            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3) })
+            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(_dumpTimeout) })
             {
                 try
                 {
@@ -175,7 +174,7 @@ namespace Testura.Android.Device.Ui.Server
                 }
                 catch (AggregateException ex)
                 {
-                    DeviceLogger.Log("Unexpected error when trying to dump: ");
+                    DeviceLogger.Log("Unexpected error/timed out when trying to dump: ");
                     DeviceLogger.Log(ex.ToString());
                     throw new UiAutomatorServerException("Failed to dump screen", ex);
                 }
@@ -207,6 +206,67 @@ namespace Testura.Android.Device.Ui.Server
             return SendInteractionRequest(
                 $"{SwipeUrl}?startX={fromX}&startY={fromY}&endX={toX}&endY={toY}&step={duration / 25}",
                 TimeSpan.FromMilliseconds(3000 + duration));
+        }
+
+        /// <summary>
+        /// Send a key event request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="keyEvent">Key event to send to the device</param>
+        /// <returns>True if we successfully input key event, otherwise false.</returns>
+        public bool InputKeyEvent(KeyEvents keyEvent)
+        {
+            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int)keyEvent}", TimeSpan.FromMilliseconds(3000));
+        }
+
+        /// <summary>
+        /// Send a input text request to the ui automator server on the android device.
+        /// </summary>
+        /// <param name="text">Text to send</param>
+        /// <returns>True if we successfully input text, otherwise false.</returns>
+        public bool InputText(string text)
+        {
+            text = HttpUtility.UrlEncode(text);
+            return SendInteractionRequest($"{InputTextUrl}?text={text}", TimeSpan.FromMilliseconds(3000));
+        }
+
+        /// <summary>
+        /// Send interaction request to server
+        /// </summary>
+        /// <param name="url">Url of the request</param>
+        /// <param name="timeout">Timeout of request</param>
+        /// <returns>True if we managed to perform interaction, otherwise false.</returns>
+        private bool SendInteractionRequest(string url, TimeSpan timeout)
+        {
+            if (!Alive(5))
+            {
+                Start();
+            }
+
+            DeviceLogger.Log($"Sending interaction request to server: {url}");
+
+            using (var client = new HttpClient { Timeout = timeout })
+            {
+                try
+                {
+                    var repsonse = client.GetAsync(url).Result;
+                    if (!repsonse.IsSuccessStatusCode)
+                    {
+                        if (repsonse.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            throw new UiAutomatorServerException(
+                                "Server responded with 404, make sure that you have the latest Testura server app.");
+                        }
+
+                        return false;
+                    }
+
+                    var result = repsonse.Content.ReadAsStringAsync().Result;
+                    return result == "success";
+                }
+                catch (AggregateException)
+                {
+                    DeviceLogger.Log("interaction request timed out");
+                    return false;
         }
 
         /// <summary>
@@ -313,6 +373,10 @@ namespace Testura.Android.Device.Ui.Server
             catch (ArgumentException)
             {
                 // Process already exited.
+            }
+            catch (Exception ex)
+            {
+                DeviceLogger.Log($"Something went wrong when trying to kill local process: {ex}");
             }
 
             if (processCollection != null)

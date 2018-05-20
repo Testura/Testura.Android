@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Testura.Android.Device;
 using Testura.Android.Device.Ui.Objects;
 using Testura.Android.PageObject.Attributes;
@@ -31,13 +32,21 @@ namespace Testura.Android.PageObject
         /// </summary>
         private void InitializeUiObjects()
         {
-            InitializeUiObjectsFromProperties();
-            InitializeUiObjectsFromFields();
+            InitializeUiObjectsFromProperties(GetType());
+            InitializeUiObjectsFromFields(GetType());
         }
 
-        private void InitializeUiObjectsFromProperties()
+        private void InitializeUiObjectsFromProperties(Type type)
         {
-            var properties = GetType().GetProperties();
+            if (type.BaseType != null)
+            {
+                InitializeUiObjectsFromProperties(type.BaseType);
+            }
+
+            var properties = type.GetProperties(BindingFlags.Instance |
+                                                BindingFlags.NonPublic |
+                                                BindingFlags.Public);
+
             foreach (var property in properties)
             {
                 if (property.PropertyType != typeof(UiObject) && property.PropertyType != typeof(UiObjects))
@@ -61,9 +70,14 @@ namespace Testura.Android.PageObject
             }
         }
 
-        private void InitializeUiObjectsFromFields()
+        private void InitializeUiObjectsFromFields(Type type)
         {
-            var fields = GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+            if (type.BaseType != null)
+            {
+                InitializeUiObjectsFromFields(type.BaseType);
+            }
+
+            var fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var field in fields)
             {
                 if (field.FieldType != typeof(UiObject) && field.FieldType != typeof(UiObjects))
