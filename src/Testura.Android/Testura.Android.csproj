@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MedallionShell, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MedallionShell.1.3.0\lib\net45\MedallionShell.dll</HintPath>
+    <Reference Include="MedallionShell, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MedallionShell.1.5.1\lib\net45\MedallionShell.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -89,6 +90,8 @@
     <Compile Include="Util\Extensions\AssemblyExtensions.cs" />
     <Compile Include="Util\Helpers\UiFind.cs" />
     <Compile Include="Util\Helpers\UiWait.cs" />
+    <Compile Include="Util\Http\HttpRequestExtensions.cs" />
+    <Compile Include="Util\Http\TimeoutHandler.cs" />
     <Compile Include="Util\Logging\ConsoleLogListener.cs" />
     <Compile Include="Util\Logging\ILogListener.cs" />
     <Compile Include="Util\Logging\DeviceLogger.cs" />

@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web;
 using Medallion.Shell;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Http;
 using Testura.Android.Util.Logging;
 using Testura.Android.Util.Terminal;
 
@@ -32,6 +34,7 @@ namespace Testura.Android.Device.Ui.Server
         private readonly int _dumpTimeout;
         private readonly object _serverLock;
         private readonly ITerminal _terminal;
+        private readonly HttpClient _httpClient;
         private Command _currentServerProcess;
 
         /// <summary>
@@ -51,6 +54,7 @@ namespace Testura.Android.Device.Ui.Server
             _dumpTimeout = dumpTimeout;
             _terminal = terminal;
             _serverLock = new object();
+            _httpClient = new HttpClient(new TimeoutHandler(TimeSpan.FromSeconds(10), new HttpClientHandler()));
         }
 
         private string BaseUrl => $"http://localhost:{_localPort}";
@@ -109,10 +113,9 @@ namespace Testura.Android.Device.Ui.Server
                 DeviceLogger.Log("Stopping server");
                 try
                 {
-                    using (var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) })
-                    {
-                        client.GetAsync(StopUrl);
-                    }
+                    var request = new HttpRequestMessage(HttpMethod.Get, StopUrl);
+                    request.SetTimeout(TimeSpan.FromSeconds(5));
+                    _httpClient.SendAsync(request);
                 }
                 catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
                 {
@@ -156,28 +159,28 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>The screen content as a xml string.</returns>
         public string DumpUi()
         {
-            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(_dumpTimeout) })
+            try
             {
-                try
-                {
-                    var repsonse = client.GetAsync(DumpUrl).Result;
-                    var dump = repsonse.Content.ReadAsStringAsync().Result;
-                    if (string.IsNullOrEmpty(dump))
-                    {
-                        DeviceLogger.Log("Empty dump from server!");
-                        DeviceLogger.Log($"Status code: {repsonse.StatusCode}");
-                        DeviceLogger.Log($"Reason phrase: {repsonse.ReasonPhrase}");
-                        throw new UiAutomatorServerException("Could connect to server but the dumped ui was empty");
-                    }
+                var request = new HttpRequestMessage(HttpMethod.Get, DumpUrl);
+                request.SetTimeout(TimeSpan.FromSeconds(_dumpTimeout));
+                var repsonse = _httpClient.SendAsync(request).Result;
+                var dump = repsonse.Content.ReadAsStringAsync().Result;
 
-                    return dump.Replace("\\\"", "\"");
-                }
-                catch (AggregateException ex)
+                if (string.IsNullOrEmpty(dump))
                 {
-                    DeviceLogger.Log("Unexpected error/timed out when trying to dump: ");
-                    DeviceLogger.Log(ex.ToString());
-                    throw new UiAutomatorServerException("Failed to dump screen", ex);
+                    DeviceLogger.Log("Empty dump from server!");
+                    DeviceLogger.Log($"Status code: {repsonse.StatusCode}");
+                    DeviceLogger.Log($"Reason phrase: {repsonse.ReasonPhrase}");
+                    throw new UiAutomatorServerException("Could connect to server but the dumped ui was empty");
                 }
+
+                return dump.Replace("\\\"", "\"");
+            }
+            catch (Exception ex)
+            {
+                DeviceLogger.Log("Unexpected error/timed out when trying to dump: ");
+                DeviceLogger.Log(ex.ToString());
+                throw new UiAutomatorServerException("Failed to dump screen", ex);
             }
         }
 
@@ -215,7 +218,8 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>True if we successfully input key event, otherwise false.</returns>
         public bool InputKeyEvent(KeyEvents keyEvent)
         {
-            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int)keyEvent}", TimeSpan.FromMilliseconds(3000));
+            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int) keyEvent}",
+                TimeSpan.FromMilliseconds(3000));
         }
 
         /// <summary>
@@ -244,30 +248,30 @@ namespace Testura.Android.Device.Ui.Server
 
             DeviceLogger.Log($"Sending interaction request to server: {url}");
 
-            using (var client = new HttpClient { Timeout = timeout })
+            try
             {
-                try
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.SetTimeout(timeout);
+                var response = _httpClient.SendAsync(request).Result;
+                if (!response.IsSuccessStatusCode)
                 {
-                    var repsonse = client.GetAsync(url).Result;
-                    if (!repsonse.IsSuccessStatusCode)
+                    if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        if (repsonse.StatusCode == HttpStatusCode.NotFound)
-                        {
-                            throw new UiAutomatorServerException(
-                                "Server responded with 404, make sure that you have the latest Testura server app.");
-                        }
-
-                        return false;
+                        throw new UiAutomatorServerException(
+                            "Server responded with 404, make sure that you have the latest Testura server app.");
                     }
 
-                    var result = repsonse.Content.ReadAsStringAsync().Result;
-                    return result == "success";
-                }
-                catch (AggregateException)
-                {
-                    DeviceLogger.Log("interaction request timed out");
                     return false;
                 }
+
+                var result = response.Content.ReadAsStringAsync().Result;
+                return result == "success";
+            }
+            catch (Exception ex)
+            {
+                DeviceLogger.Log("interaction request timed out");
+                DeviceLogger.Log(ex.Message);
+                return false;
             }
         }
 
@@ -288,10 +292,15 @@ namespace Testura.Android.Device.Ui.Server
         {
             try
             {
-                using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) })
+                // Use a token just to make sure we don't get stuck..
+                using (var cts = new CancellationTokenSource())
                 {
-                    var repsonse = client.GetAsync(PingUrl);
-                    return repsonse.Result.Content.ReadAsStringAsync().Result == "Hello human.";
+                    var request = new HttpRequestMessage(HttpMethod.Get, PingUrl);
+
+                    cts.CancelAfter(TimeSpan.FromSeconds(15));
+                    request.SetTimeout(TimeSpan.FromSeconds(10));
+
+                    return _httpClient.SendAsync(request, cts.Token).Result.Content.ReadAsStringAsync().Result == "Hello human.";
                 }
             }
             catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
