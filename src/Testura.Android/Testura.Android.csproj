@@ -89,6 +89,8 @@
     <Compile Include="Util\Extensions\AssemblyExtensions.cs" />
     <Compile Include="Util\Helpers\UiFind.cs" />
     <Compile Include="Util\Helpers\UiWait.cs" />
+    <Compile Include="Util\Http\HttpRequestExtensions.cs" />
+    <Compile Include="Util\Http\TimeoutHandler.cs" />
     <Compile Include="Util\Logging\ConsoleLogListener.cs" />
     <Compile Include="Util\Logging\ILogListener.cs" />
     <Compile Include="Util\Logging\DeviceLogger.cs" />
