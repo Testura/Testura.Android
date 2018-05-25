@@ -87,7 +87,7 @@ namespace Testura.Android.Device.Ui.Server
                     ForwardPorts();
                     KillAndroidProcess();
                     DeviceLogger.Log("Starting instrumental");
-                    _currentServerProcess = _terminal.StartAdbProcess(
+                    _currentServerProcess = _terminal.StartAdbProcessWithoutShell(
                         "shell",
                         $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
                 }
