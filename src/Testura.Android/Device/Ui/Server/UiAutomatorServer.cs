@@ -82,19 +82,13 @@ namespace Testura.Android.Device.Ui.Server
             lock (_serverLock)
             {
                 DeviceLogger.Log("Starting server..");
-                if (_currentServerProcess == null || _currentServerProcess.Process.HasExited)
-                {
-                    ForwardPorts();
-                    KillAndroidProcess();
-                    DeviceLogger.Log("Starting instrumental");
-                    _currentServerProcess = _terminal.StartAdbProcess(
-                        "shell",
-                        $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
-                }
-                else
-                {
-                    DeviceLogger.Log("Server already started");
-                }
+
+                ForwardPorts();
+                KillAndroidProcess();
+                DeviceLogger.Log("Starting instrumental");
+                _currentServerProcess = _terminal.StartAdbProcessWithoutShell(
+                    "shell",
+                    $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
 
                 if (!Alive(5))
                 {
@@ -122,13 +116,8 @@ namespace Testura.Android.Device.Ui.Server
                     DeviceLogger.Log($"Failed stop server, already closed? {ex.Message}");
                 }
 
-                if (_currentServerProcess != null)
-                {
-                    KillLocalProcess(_currentServerProcess.Process.Id);
-                }
-
-                // Kill android process just to be safe..
-                KillAndroidProcess();
+               _currentServerProcess.Kill();
+               KillAndroidProcess();
             }
         }
 
@@ -306,42 +295,6 @@ namespace Testura.Android.Device.Ui.Server
             catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
             {
                 return false;
-            }
-        }
-
-        /// <summary>
-        /// Kill the local process and it's children.
-        /// </summary>
-        /// <param name="pid">The process id.</param>
-        private void KillLocalProcess(int pid)
-        {
-            var processSearcher =
-                new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
-            var processCollection = processSearcher.Get();
-
-            try
-            {
-                var proc = Process.GetProcessById(pid);
-                if (!proc.HasExited)
-                {
-                    proc.Kill();
-                }
-            }
-            catch (ArgumentException)
-            {
-                // Process already exited.
-            }
-            catch (Exception ex)
-            {
-                DeviceLogger.Log($"Something went wrong when trying to kill local process: {ex}");
-            }
-
-            if (processCollection != null)
-            {
-                foreach (var mo in processCollection)
-                {
-                    KillLocalProcess(Convert.ToInt32(mo["ProcessID"]));
-                }
             }
         }
 

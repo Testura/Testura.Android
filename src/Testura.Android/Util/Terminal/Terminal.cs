@@ -77,7 +77,7 @@ namespace Testura.Android.Util.Terminal
         /// <returns>The command that contains the started process.</returns>
         public Command StartAdbProcess(params string[] arguments)
         {
-            var allArguments = new List<string> { "/c", GetAdbExe() };
+            var allArguments = new List<string>();
 
             if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
             {
@@ -92,7 +92,7 @@ namespace Testura.Android.Util.Terminal
             try
             {
                 var command = Command.Run(
-                    "cmd.exe",
+                    GetAdbExe(),
                     allArguments.ToArray(),
                     o =>
                     {
@@ -121,7 +121,7 @@ namespace Testura.Android.Util.Terminal
         /// <returns>The command that contains the started process.</returns>
         public Command StartAdbProcessWithoutShell(params string[] arguments)
         {
-            var allArguments = new List<string> { "/c", GetAdbExe() };
+            var allArguments = new List<string>();
 
             if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
             {
@@ -136,7 +136,7 @@ namespace Testura.Android.Util.Terminal
             try
             {
                 var command = Command.Run(
-                    "cmd.exe",
+                    GetAdbExe(),
                     allArguments.ToArray(),
                     o =>
                     {
