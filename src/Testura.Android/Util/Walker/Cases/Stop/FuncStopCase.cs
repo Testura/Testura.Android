@@ -10,15 +10,15 @@ namespace Testura.Android.Util.Walker.Cases.Stop
     /// </summary>
     public class FuncStopCase : StopCase
     {
-        private readonly Func<IAndroidDevice, bool> _case;
+        private readonly Func<AndroidDevice, bool> _case;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FuncStopCase"/> class.
         /// </summary>
-        /// <param name="withs">Withs to find the node in our case</param>
+        /// <param name="bys">Withs to find the node in our case</param>
         /// <param name="case">A func which take the current device and return if we should stop the run or not</param>
-        public FuncStopCase(IList<With> withs, Func<IAndroidDevice, bool> @case)
-            : base(withs)
+        public FuncStopCase(IList<With> bys, Func<AndroidDevice, bool> @case)
+            : base(bys)
         {
             _case = @case;
         }
@@ -28,7 +28,7 @@ namespace Testura.Android.Util.Walker.Cases.Stop
         /// </summary>
         /// <param name="device">The current device</param>
         /// <returns>True if we should stop the app walker run, false otherwise</returns>
-        public override bool Execute(IAndroidDevice device)
+        public override bool Execute(AndroidDevice device)
         {
             return _case.Invoke(device);
         }

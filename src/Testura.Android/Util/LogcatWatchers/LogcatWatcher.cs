@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Util.Logging;
-using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Util.LogcatWatchers
 {
@@ -13,7 +12,7 @@ namespace Testura.Android.Util.LogcatWatchers
     /// </summary>
     public abstract class LogcatWatcher
     {
-        private readonly ITerminal _terminal;
+        private readonly Terminal _terminal;
         private readonly IEnumerable<string> _tags;
         private readonly bool _flushLogcat;
         private Task _task;
@@ -25,9 +24,9 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <param name="deviceConfiguration">Current device configuration.</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
-        protected LogcatWatcher(DeviceConfiguration deviceConfiguration, IEnumerable<string> tags, bool flushLogcat = false)
+        protected LogcatWatcher(Terminal terminal, IEnumerable<string> tags, bool flushLogcat = false)
         {
-            _terminal = new Terminal.Terminal(deviceConfiguration);
+            _terminal = terminal;
             _tags = tags;
             _flushLogcat = flushLogcat;
         }

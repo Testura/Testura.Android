@@ -1,14 +1,21 @@
-﻿using Testura.Android.Util;
+﻿using Testura.Android.Device.Services.Adb;
+using Testura.Android.Util;
 using Testura.Android.Util.Logging;
 
-namespace Testura.Android.Device.Services.Default
+namespace Testura.Android.Device.Services
 {
     /// <summary>
     /// Provides functionality to change settings on android device.
     /// </summary>
-    public class SettingsService : Service, ISettingsService
+    public class SettingsService
     {
+        private readonly IAdbShellService _adbShellService;
         private const string PackageName = "com.testura.server";
+
+        public SettingsService(IAdbShellService adbShellService)
+        {
+            _adbShellService = adbShellService;
+        }
 
         /// <summary>
         /// Enable or disable wifi
@@ -17,7 +24,7 @@ namespace Testura.Android.Device.Services.Default
         public void Wifi(State state)
         {
             DeviceLogger.Log("Changing wifi state");
-            Device.Adb.Shell(state == State.Enable
+            _adbShellService.Shell(state == State.Enable
                 ? $"am startservice -n {PackageName}/{PackageName}.services.settings.WifiService -e enable 1"
                 : $"am startservice -n {PackageName}/{PackageName}.services.settings.WifiService  -e enable 0");
         }
@@ -29,7 +36,7 @@ namespace Testura.Android.Device.Services.Default
         public void Bluetooth(State state)
         {
             DeviceLogger.Log("Changing wifi state");
-            Device.Adb.Shell(state == State.Enable
+            _adbShellService.Shell(state == State.Enable
                 ? $"am startservice -n {PackageName}/{PackageName}.services.settings.BluetoothService -e enable 1"
                 : $"am startservice -n {PackageName}/{PackageName}.services.settings.BluetoothService  -e enable 0");
         }
@@ -43,15 +50,15 @@ namespace Testura.Android.Device.Services.Default
             DeviceLogger.Log("Changing gps state");
             if (state == State.Enable)
             {
-                Device.Adb.Shell("settings put secure location_providers_allowed +gps");
-                Device.Adb.Shell("settings put secure location_providers_allowed +network");
-                Device.Adb.Shell("settings put secure location_providers_allowed +wifi");
+                _adbShellService.Shell("settings put secure location_providers_allowed +gps");
+                _adbShellService.Shell("settings put secure location_providers_allowed +network");
+                _adbShellService.Shell("settings put secure location_providers_allowed +wifi");
             }
             else
             {
-                Device.Adb.Shell("settings put secure location_providers_allowed -gps");
-                Device.Adb.Shell("settings put secure location_providers_allowed -network");
-                Device.Adb.Shell("settings put secure location_providers_allowed -wifi");
+                _adbShellService.Shell("settings put secure location_providers_allowed -gps");
+                _adbShellService.Shell("settings put secure location_providers_allowed -network");
+                _adbShellService.Shell("settings put secure location_providers_allowed -wifi");
             }
         }
 
@@ -62,11 +69,11 @@ namespace Testura.Android.Device.Services.Default
         public void AirplaneMode(State state)
         {
             DeviceLogger.Log("Changing airplane mode state");
-            Device.Adb.Shell(state == State.Enable
+            _adbShellService.Shell(state == State.Enable
                 ? "settings put global airplane_mode_on 1"
                 : "settings put global airplane_mode_on 0");
 
-            Device.Adb.Shell("am broadcast -a android.intent.action.AIRPLANE_MODE");
+            _adbShellService.Shell("am broadcast -a android.intent.action.AIRPLANE_MODE");
         }
     }
 }

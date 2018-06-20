@@ -15,7 +15,7 @@ namespace Testura.Android.PageObject
         /// Initializes a new instance of the <see cref="View"/> class.
         /// </summary>
         /// <param name="device">Current android device</param>
-        protected View(IAndroidDevice device)
+        protected View(AndroidDevice device)
         {
             Device = device;
             InitializeUiObjects();
@@ -24,7 +24,7 @@ namespace Testura.Android.PageObject
         /// <summary>
         /// Gets or sets the current android device
         /// </summary>
-        protected IAndroidDevice Device { get; set; }
+        protected AndroidDevice Device { get; set; }
 
         /// <summary>
         /// Go through all properties and fields and check for those that implement the
@@ -60,11 +60,11 @@ namespace Testura.Android.PageObject
                     var attribute = attributes[0] as CreateAttribute;
                     if (property.PropertyType == typeof(UiObject))
                     {
-                        property.SetValue(this, Device.Ui.CreateUiObject(attribute.With));
+                        property.SetValue(this, Device.CreateUiObject(attribute.With));
                     }
                     else
                     {
-                        property.SetValue(this, Device.Ui.CreateUiObjects(attribute.With));
+                        property.SetValue(this, Device.CreateUiObjects(attribute.With));
                     }
                 }
             }
@@ -91,11 +91,11 @@ namespace Testura.Android.PageObject
                     var attribute = attributes[0] as CreateAttribute;
                     if (field.FieldType == typeof(UiObject))
                     {
-                        field.SetValue(this, Device.Ui.CreateUiObject(attribute.With));
+                        field.SetValue(this, Device.CreateUiObject(attribute.With));
                     }
                     else
                     {
-                        field.SetValue(this, Device.Ui.CreateUiObjects(attribute.With));
+                        field.SetValue(this, Device.CreateUiObjects(attribute.With));
                     }
                 }
             }

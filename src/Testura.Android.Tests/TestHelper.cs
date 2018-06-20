@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using System.Xml.Linq;
 using Moq;
 using Testura.Android.Device;
-using Testura.Android.Device.Services;
-using Testura.Android.Device.Services.Default;
+using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Objects;
@@ -23,20 +17,19 @@ namespace Testura.Android.Tests
 
         public TestHelper()
         {
-            DeviceMock = new Mock<IAndroidDevice>();
-            UiServiceMock = new Mock<IUiService>();
+            DeviceMock = new Mock<AndroidDevice>();
+            UiServiceMock = new Mock<INodeFinderService>();
             DeviceMock.SetupGet(d => d.Ui).Returns(UiServiceMock.Object);
 
             _uiService = new UiService(
                 new Mock<IScreenDumper>().Object,
                 new Mock<INodeParser>().Object,
                 new Mock<INodeFinder>().Object);
-            _uiService.InitializeServiceOwner(DeviceMock.Object);
         }
 
-        public Mock<IUiService> UiServiceMock { get; private set; }
+        public Mock<INodeFinderService> UiServiceMock { get; }
 
-        public Mock<IAndroidDevice> DeviceMock { get; private set; }
+        public Mock<AndroidDevice> DeviceMock { get; }
 
         public UiObject CreateUiObject(With with, int delayInMiliSec, bool shouldThrowExeception = false)
         {
@@ -52,7 +45,7 @@ namespace Testura.Android.Tests
                    .Callback(() => Thread.Sleep(delayInMiliSec))
                    .Returns(new Node(new XElement("mm"), null));
             }
-            return _uiService.CreateUiObject(with);
+            return DeviceMock.Object.CreateUiObject(with);
         }
 
         public UiObjects CreateUiObjects(With with, int delayInMiliSec, bool shouldThrowExeception = false)
@@ -69,7 +62,7 @@ namespace Testura.Android.Tests
                    .Callback(() => Thread.Sleep(delayInMiliSec))
                    .Returns(new Node(new XElement("mm"), null));
             }
-            return _uiService.CreateUiObjects(with);
+            return DeviceMock.Object.CreateUiObjects(with);
         }
     }
 }

@@ -14,6 +14,6 @@ namespace Testura.Android.Util.Walker.Input
         /// </summary>
         /// <param name="device">The current device</param>
         /// <param name="nodes">All nodes on current screen</param>
-        void PerformInput(IAndroidDevice device, IList<Node> nodes);
+        void PerformInput(AndroidDevice device, IList<Node> nodes);
     }
 }

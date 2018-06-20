@@ -8,14 +8,14 @@ namespace Testura.Android.Util.Walker.Cases.Time
     /// </summary>
     public class ActionTimeCase : TimeCase
     {
-        private readonly Action<IAndroidDevice> _timeCase;
+        private readonly Action<AndroidDevice> _timeCase;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionTimeCase"/> class.
         /// </summary>
         /// <param name="interval">Time between each second in milliseconds</param>
         /// <param name="timeCase">Action to invoke</param>
-        public ActionTimeCase(double interval, Action<IAndroidDevice> timeCase)
+        public ActionTimeCase(double interval, Action<AndroidDevice> timeCase)
             : base(interval)
         {
             _timeCase = timeCase;

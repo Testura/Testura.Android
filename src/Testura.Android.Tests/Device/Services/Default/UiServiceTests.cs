@@ -4,7 +4,8 @@ using System.Xml.Linq;
 using Moq;
 using NUnit.Framework;
 using Testura.Android.Device;
-using Testura.Android.Device.Services.Default;
+using Testura.Android.Device.Services;
+using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
@@ -14,7 +15,6 @@ namespace Testura.Android.Tests.Device.Services.Default
     [TestFixture]
     public class UiServiceTests
     {
-        private Mock<IAndroidDevice> _deviceComponentOwner;
         private Mock<IScreenDumper> _screenDumper;
         private Mock<INodeFinder> _nodeFinder;
         private Mock<INodeParser> _nodeParser;
@@ -23,12 +23,10 @@ namespace Testura.Android.Tests.Device.Services.Default
         [SetUp]
         public void SetUp()
         {
-            _deviceComponentOwner = new Mock<IAndroidDevice>();
             _screenDumper = new Mock<IScreenDumper>();
             _nodeParser = new Mock<INodeParser>();
             _nodeFinder = new Mock<INodeFinder>();
             _uiComponent = new UiService(_screenDumper.Object, _nodeParser.Object, _nodeFinder.Object);
-            _uiComponent.InitializeServiceOwner(_deviceComponentOwner.Object);
         }
 
         [Test]

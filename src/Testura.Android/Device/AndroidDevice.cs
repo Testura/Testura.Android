@@ -1,70 +1,44 @@
 ﻿using System.Linq;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Services;
-using Testura.Android.Device.Services.Default;
+using Testura.Android.Device.Services.Activity;
+using Testura.Android.Device.Services.Adb;
+using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes;
+using Testura.Android.Device.Ui.Objects;
+using Testura.Android.Device.Ui.Search;
 using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util;
-using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device
 {
     /// <summary>
     /// Provides functionality to interact with an Android Device through multiple service objects
     /// </summary>
-    public class AndroidDevice : IAndroidDevice
+    public class AndroidDevice
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
         /// </summary>
         /// <param name="configuration">Device Configuration</param>
-        /// <param name="adbService">Service to handle communication with adb</param>
-        /// <param name="uiService">Service to handle UI</param>
-        /// <param name="settingsService">Service to handle settings</param>
-        /// <param name="activityService">Service to handle activities</param>
-        /// <param name="interactionService">Service to handle interaction with the device</param>
-        public AndroidDevice(
-            DeviceConfiguration configuration,
-            IAdbService adbService,
-            IUiService uiService,
-            ISettingsService settingsService,
-            IActivityService activityService,
-            IInteractionService interactionService)
+        internal AndroidDevice(DeviceConfiguration configuration)
         {
             Configuration = configuration;
-            Adb = adbService;
-            Ui = uiService;
-            Settings = settingsService;
-            Activity = activityService;
-            Interaction = interactionService;
-            SetOwner();
+            var terminal = new Terminal(configuration.Serial, configuration.AdbPath);
+            var server = new UiAutomatorServer(terminal, configuration.Port.Value, configuration.DumpTimeout);
+
+            Adb = new AdbService(terminal);
+            Ui = new UiService(new ScreenDumper(server, configuration.DumpTries), new NodeParser(), new NodeFinder());
+            Settings = new SettingsService(Adb);
+            Activity = new ActivityService(Adb);
+            Interaction = new InteractionService(Adb, server);
             InstallHelperApks();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
         /// </summary>
-        /// <param name="configuration">Device Configuration</param>
-        public AndroidDevice(DeviceConfiguration configuration)
-        {
-            Configuration = configuration;
-            var server = new UiAutomatorServer(new Terminal(configuration), configuration.Port, configuration.DumpTimeout);
-            Adb = new AdbService(new Terminal(configuration));
-            Ui = new UiService(
-                new ScreenDumper(server, configuration.DumpTries),
-                new NodeParser(),
-                new NodeFinder());
-            Settings = new SettingsService();
-            Activity = new ActivityService();
-            Interaction = new InteractionService(server);
-            SetOwner();
-            InstallHelperApks();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
-        /// </summary>
-        public AndroidDevice()
+        internal AndroidDevice()
             : this(new DeviceConfiguration())
         {
         }
@@ -77,35 +51,46 @@ namespace Testura.Android.Device
         /// <summary>
         /// Gets the adb service of an android device.
         /// </summary>
-        public IAdbService Adb { get; }
+        public AdbService Adb { get; }
 
         /// <summary>
         /// Gets the ui service of an android device.
         /// </summary>
-        public IUiService Ui { get; }
+        public UiService Ui { get; }
 
         /// <summary>
         /// Gets the settings service of an android device.
         /// </summary>
-        public ISettingsService Settings { get; }
+        public SettingsService Settings { get; }
 
         /// <summary>
         /// Gets the activity service of an android device.
         /// </summary>
-        public IActivityService Activity { get; }
+        public ActivityService Activity { get; }
 
         /// <summary>
         /// Gets the interaction service of an android device.
         /// </summary>
-        public IInteractionService Interaction { get; }
+        public InteractionService Interaction { get; }
 
-        private void SetOwner()
+        /// <summary>
+        /// Create a new ui object that wraps around a node that match a specific search criteria
+        /// </summary>
+        /// <param name="with">Find node with</param>
+        /// <returns>The mapped ui object</returns>
+        public UiObject CreateUiObject(params With[] with)
         {
-            var components = GetType().GetProperties().Where(p => p.PropertyType.IsInterface);
-            foreach (var component in components)
-            {
-                ((Service)component.GetValue(this)).InitializeServiceOwner(this);
-            }
+            return new UiObject(Interaction, Ui, with.ToArray());
+        }
+
+        /// <summary>
+        /// Create a new ui object that wraps around multiple nodes that match a specific search criteria
+        /// </summary>
+        /// <param name="with">Find nodes with</param>
+        /// <returns>The mapped ui object</returns>
+        public UiObjects CreateUiObjects(params With[] with)
+        {
+            return new UiObjects(Ui, with.ToArray());
         }
 
         private void InstallHelperApks()

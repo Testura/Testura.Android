@@ -3,8 +3,9 @@ using Moq;
 using NUnit.Framework;
 using Testura.Android.Device;
 using Testura.Android.Device.Configurations;
-using Testura.Android.Device.Services.Default;
-using Testura.Android.Util.Terminal;
+using Testura.Android.Device.Services;
+using Testura.Android.Device.Services.Adb;
+using Testura.Android.Util;
 
 namespace Testura.Android.Tests.Device.Services.Default
 {
@@ -12,20 +13,11 @@ namespace Testura.Android.Tests.Device.Services.Default
     public class AdbServiceTests
     {
         private AdbService _adbService;
-        private Mock<ITerminal> _terminalMock;
-        private Mock<IAndroidDevice> _androidMock;
-        private DeviceConfiguration _deviceConfiguration;
 
         [SetUp]
         public void SetUp()
         {
-            _deviceConfiguration = new DeviceConfiguration();
-            _terminalMock = new Mock<ITerminal>();
-            _androidMock = new Mock<IAndroidDevice>();
-            _androidMock.Setup(a => a.Configuration).Returns(_deviceConfiguration);
-
-            _adbService = new AdbService(_terminalMock.Object);
-            _adbService.InitializeServiceOwner(_androidMock.Object);
+            _adbService = new AdbService(new Terminal());
         }
 
         [Test]

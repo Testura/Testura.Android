@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
 
 namespace Testura.Android.PageObject
 {
@@ -14,13 +12,13 @@ namespace Testura.Android.PageObject
         /// </summary>
         protected Application()
         {
-            Container = new UnityContainer();
+            Container = default(IDependencyContainer);
         }
 
         /// <summary>
         /// Gets or sets the unity container
         /// </summary>
-        protected UnityContainer Container { get; set; }
+        protected IDependencyContainer Container { get; set; }
 
         /// <summary>
         /// Go through all properties in the class that inherit from the view class
@@ -29,7 +27,11 @@ namespace Testura.Android.PageObject
         protected void RegisterViewDependencies()
         {
             var pages = GetType().GetProperties().Where(p => p.PropertyType.IsSubclassOf(typeof(View)));
-            pages.ForEach(p => Container.RegisterType(p.PropertyType));
+
+            foreach (var propertyInfo in pages)
+            {
+                Container.RegisterType(propertyInfo.PropertyType);
+            }
         }
 
         /// <summary>

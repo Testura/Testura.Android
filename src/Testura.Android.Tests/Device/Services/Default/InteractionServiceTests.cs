@@ -3,7 +3,7 @@ using Moq;
 using NUnit.Framework;
 using Testura.Android.Device;
 using Testura.Android.Device.Services;
-using Testura.Android.Device.Services.Default;
+using Testura.Android.Device.Services.Adb;
 using Testura.Android.Device.Ui.Server;
 
 namespace Testura.Android.Tests.Device.Services.Default
@@ -13,17 +13,13 @@ namespace Testura.Android.Tests.Device.Services.Default
     {
         
         private InteractionService _interactionService;
-        private Mock<IAdbService> _adbServiceMock;
-        private Mock<IAndroidDevice> _androidMock;
+        private Mock<IAdbShellService> _adbServiceMock;
 
         [SetUp]
         public void SetUp()
         {
-            _androidMock = new Mock<IAndroidDevice>();
-            _adbServiceMock = new Mock<IAdbService>();
-            _androidMock.Setup(a => a.Adb).Returns(_adbServiceMock.Object);
-
-            _interactionService = new InteractionService(new Mock<IInteractionUiAutomatorServer>().Object);
+            _adbServiceMock = new Mock<IAdbShellService>();
+            _interactionService = new InteractionService(_adbServiceMock.Object, new Mock<IInteractionUiAutomatorServer>().Object);
         }
 
         [Test]

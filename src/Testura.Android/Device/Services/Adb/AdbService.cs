@@ -1,33 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using Testura.Android.Util;
-using Testura.Android.Util.Recording;
-#pragma warning disable IDE0005 // Using directive is unnecessary.
 using Testura.Android.Util.Exceptions;
-#pragma warning restore IDE0005 // Using directive is unnecessary.
-using Testura.Android.Util.Terminal;
+using Testura.Android.Util.Recording;
 
-namespace Testura.Android.Device.Services.Default
+namespace Testura.Android.Device.Services.Adb
 {
     /// <summary>
     /// Provides functionality to interact with adb on an android device.
     /// </summary>
-    public class AdbService : Service, IAdbService
+    public class AdbService : IAdbShellService, IAdbInstallService
     {
-        private readonly ITerminal _terminal;
+        private readonly Terminal _terminal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdbService"/> class.
         /// </summary>
         /// <param name="terminal">Object to interact with terminal</param>
-        public AdbService(ITerminal terminal)
+        public AdbService(Terminal terminal)
         {
-            if (terminal == null)
+            _terminal = terminal ?? throw new ArgumentNullException(nameof(terminal));
+        }
+
+        /// <summary>
+        /// Issue an adb command in the target emulator/device instance
+        /// </summary>
+        /// <param name="command">Command to execute</param>
+        /// <returns>The result from executing the command</returns>
+        public string Execute(string command)
+        {
+            if (string.IsNullOrEmpty(command))
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentException("Argument is null or empty", nameof(command));
             }
 
-            _terminal = terminal;
+            return ExecuteCommand(command);
         }
 
         /// <summary>
@@ -173,7 +180,7 @@ namespace Testura.Android.Device.Services.Default
         /// <returns>The created screen recorder task (later used to stop the recording)</returns>
         public ScreenRecorderTask RecordScreen(ScreenRecordConfiguration configuration, string temporaryDeviceDirectory = "/sdcard/")
         {
-            var screenRecorderTask = new ScreenRecorderTask(Device, temporaryDeviceDirectory);
+            var screenRecorderTask = new ScreenRecorderTask(this, _terminal, temporaryDeviceDirectory);
             screenRecorderTask.StartRecording(configuration);
             return screenRecorderTask;
         }

@@ -43,7 +43,7 @@ namespace Testura.Android.Util.Walker.Input
         /// </summary>
         /// <param name="device">The current device</param>
         /// <param name="nodes">All nodes on current screen</param>
-        public void PerformInput(IAndroidDevice device, IList<Node> nodes)
+        public void PerformInput(AndroidDevice device, IList<Node> nodes)
         {
             if (_shouldOnlyTapClickAbleNodes)
             {
@@ -77,7 +77,7 @@ namespace Testura.Android.Util.Walker.Input
         /// <param name="tapCases">List of provided tap cases.</param>
         /// <param name="selectedNode">The currently selected node.</param>
         /// <returns>True if we still should tap the node, false otherwise.</returns>
-        private bool CheckTapCases(IAndroidDevice device, IEnumerable<TapCase> tapCases, Node selectedNode)
+        private bool CheckTapCases(AndroidDevice device, IEnumerable<TapCase> tapCases, Node selectedNode)
         {
             var shouldStillTap = true;
             var matchingTapCase = tapCases.FirstOrDefault(t => t.IsMatching(selectedNode));

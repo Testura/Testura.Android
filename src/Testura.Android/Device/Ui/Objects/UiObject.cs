@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Testura.Android.Device.Services;
+using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
 
@@ -10,9 +12,14 @@ namespace Testura.Android.Device.Ui.Objects
     /// </summary>
     public class UiObject : BaseUiObject
     {
-        internal UiObject(IAndroidDevice device, params With[] withs)
-            : base(device, withs)
+        private readonly InteractionService _interactionService;
+        private readonly INodeFinderService _nodeFinderService;
+
+        internal UiObject(InteractionService interactionService, INodeFinderService nodeFinderService, params With[] withs)
+            : base(withs)
         {
+            _interactionService = interactionService;
+            _nodeFinderService = nodeFinderService;
         }
 
         /// <summary>
@@ -21,8 +28,8 @@ namespace Testura.Android.Device.Ui.Objects
         /// <param name="timeout">Timeout in seconds.</param>
         public void Tap(int timeout = 20)
         {
-            var node = Device.Ui.FindNode(timeout, Withs);
-            Device.Interaction.Tap(node);
+            var node = _nodeFinderService.FindNode(timeout, Withs);
+            _interactionService.Tap(node);
         }
 
         /// <summary>
@@ -40,7 +47,7 @@ namespace Testura.Android.Device.Ui.Objects
                 tries++;
             }
 
-            Device.Interaction.InputText(text);
+            _interactionService.InputText(text);
         }
 
         /// <summary>
@@ -50,16 +57,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns>A node object with all values of this node.</returns>
         public Node Values(int timeout = 2)
         {
-            return Device.Ui.FindNode(timeout, Withs);
-        }
-
-        /// <summary>
-        /// Get the node values from the latest cached dump.
-        /// </summary>
-        /// <returns>A node object with all values of this node.</returns>
-        public Node ValuesFromCache()
-        {
-            return Device.Ui.FindNodeFromCache(Withs);
+            return _nodeFinderService.FindNode(timeout, Withs);
         }
 
         /// <summary>
@@ -94,12 +92,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns>All found node(s)</returns>
         protected override IList<Node> TryFindNode(int timeout)
         {
-            if (timeout == -1)
-            {
-                return new List<Node> { Device.Ui.FindNodeFromCache(Withs) };
-            }
-
-            return new List<Node> { Device.Ui.FindNode(timeout, Withs) };
+            return new List<Node> { _nodeFinderService.FindNode(timeout, Withs) };
         }
     }
 }

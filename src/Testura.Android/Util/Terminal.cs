@@ -2,27 +2,29 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Medallion.Shell;
-using Testura.Android.Device.Configurations;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
 
-namespace Testura.Android.Util.Terminal
+namespace Testura.Android.Util
 {
     /// <summary>
     /// Provides functionality to interact with the terminal.
     /// </summary>
-    public class Terminal : ITerminal
+    public class Terminal
     {
         private const string AdbNotFoundError = "Could not find adb.exe. Make sure that Android SDK are installed and that you have adb in your windows environment variables or specified the path to adb.exe inside your device configuration.";
-        private readonly DeviceConfiguration _deviceConfiguration;
+        private readonly string _serial;
+        private readonly string _adbPath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Terminal"/> class.
         /// </summary>
-        /// <param name="deviceConfiguration">Current device configuration.</param>
-        public Terminal(DeviceConfiguration deviceConfiguration)
+        /// <param name="serial">Serial number of device</param>
+        /// <param name="adbPath">Path to adb.exe</param>
+        public Terminal(string serial = null, string adbPath = null )
         {
-            _deviceConfiguration = deviceConfiguration;
+            _serial = serial;
+            _adbPath = adbPath;
         }
 
         /// <summary>
@@ -34,10 +36,10 @@ namespace Testura.Android.Util.Terminal
         {
             var allArguments = new List<string>();
 
-            if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
+            if (!string.IsNullOrEmpty(_serial))
             {
                 allArguments.Add("-s");
-                allArguments.Add(_deviceConfiguration.Serial);
+                allArguments.Add(_serial);
             }
 
             allArguments.AddRange(arguments);
@@ -79,10 +81,10 @@ namespace Testura.Android.Util.Terminal
         {
             var allArguments = new List<string>();
 
-            if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
+            if (!string.IsNullOrEmpty(_serial))
             {
                 allArguments.Add("-s");
-                allArguments.Add(_deviceConfiguration.Serial);
+                allArguments.Add(_serial);
             }
 
             allArguments.AddRange(arguments);
@@ -123,10 +125,10 @@ namespace Testura.Android.Util.Terminal
         {
             var allArguments = new List<string>();
 
-            if (!string.IsNullOrEmpty(_deviceConfiguration.Serial))
+            if (!string.IsNullOrEmpty(_serial))
             {
                 allArguments.Add("-s");
-                allArguments.Add(_deviceConfiguration.Serial);
+                allArguments.Add(_serial);
             }
 
             allArguments.AddRange(arguments);
@@ -160,12 +162,12 @@ namespace Testura.Android.Util.Terminal
 
         private string GetAdbExe()
         {
-            if (string.IsNullOrEmpty(_deviceConfiguration.AdbPath))
+            if (string.IsNullOrEmpty(_adbPath))
             {
                 return "adb.exe";
             }
 
-            return _deviceConfiguration.AdbPath;
+            return _adbPath;
         }
     }
 }

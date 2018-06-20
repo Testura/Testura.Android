@@ -48,7 +48,7 @@ namespace Testura.Android.Util.Walker.Input
         /// </summary>
         /// <param name="device">The current device</param>
         /// <param name="nodes">All nodes on current screen</param>
-        public void PerformInput(IAndroidDevice device, IList<Node> nodes)
+        public void PerformInput(AndroidDevice device, IList<Node> nodes)
         {
             device.Interaction.Swipe(_swipeDirectionses[_rnd.Next(0, _swipeDirectionses.Count)], _duration);
         }

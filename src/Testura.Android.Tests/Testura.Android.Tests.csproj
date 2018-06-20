@@ -80,10 +80,6 @@
     <Compile Include="Util\Helpers\UiWaitTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Testura.Android.PageObject\Testura.Android.PageObject.csproj">
-      <Project>{8fadcea7-d70c-49d6-b017-ebbab5a709e4}</Project>
-      <Name>Testura.Android.PageObject</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Testura.Android\Testura.Android.csproj">
       <Project>{3b7023c4-a593-4f29-ab0c-ea07992fe1bc}</Project>
       <Name>Testura.Android</Name>

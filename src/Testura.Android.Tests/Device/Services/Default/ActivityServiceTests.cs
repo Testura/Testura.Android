@@ -2,8 +2,9 @@
 using Moq;
 using NUnit.Framework;
 using Testura.Android.Device;
-using Testura.Android.Device.Services;
-using Testura.Android.Device.Services.Default;
+using Testura.Android.Device.Services.Activity;
+using Testura.Android.Device.Services.Adb;
+using Testura.Android.Device.Services.Ui;
 using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Tests.Device.Services.Default
@@ -12,19 +13,13 @@ namespace Testura.Android.Tests.Device.Services.Default
     public class ActivityServiceTests
     {
         private ActivityService _activityService;
-        private Mock<IAdbService> _adbServiceMock;
-        private Mock<IAndroidDevice> _androidMock;
+        private Mock<IAdbShellService> _adbServiceMock;
 
         [SetUp]
         public void SetUp()
         {
-            _adbServiceMock = new Mock<IAdbService>();
-            _androidMock = new Mock<IAndroidDevice>();
-            _androidMock.Setup(a => a.Adb).Returns(_adbServiceMock.Object);
-            _androidMock.Setup(a => a.Ui).Returns(new Mock<IUiService>().Object);
-
-            _activityService = new ActivityService();
-            _activityService.InitializeServiceOwner(_androidMock.Object);
+            _adbServiceMock = new Mock<IAdbShellService>();
+            _activityService = new ActivityService(_adbServiceMock.Object);
         }
 
         [Test]

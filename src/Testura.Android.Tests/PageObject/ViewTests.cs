@@ -24,7 +24,7 @@ namespace Testura.Android.Tests.PageObject
             [Create(with: AttributeTags.Text, value: "test")]
             private UiObjects _fieldObjects;
 
-            public ExampleClass(IAndroidDevice device)
+            public ExampleClass(AndroidDevice device)
                 : base(device)
             {
             }
@@ -49,7 +49,7 @@ namespace Testura.Android.Tests.PageObject
         public void InitializeUiObjects_WhenHavingClassWithPropertiesThatUseAttribute_ShouldInitializeUiObject()
         {
             var uiObject = _testHelper.CreateUiObject(With.Text("test"), 0);
-            _testHelper.UiServiceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
+            _testHelper.DeviceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
             var example = new ExampleClass(_testHelper.DeviceMock.Object);
             Assert.IsNotNull(example.PropertyObject);
         }
@@ -58,7 +58,7 @@ namespace Testura.Android.Tests.PageObject
         public void InitializeUiObjects_WhenHavingClassWithInternalPropertiesThatUseAttribute_ShouldInitializeUiObject()
         {
             var uiObject = _testHelper.CreateUiObject(With.Text("test"), 0);
-            _testHelper.UiServiceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
+            _testHelper.DeviceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
             var example = new ExampleClass(_testHelper.DeviceMock.Object);
             Assert.IsNotNull(example.InternalProperty);
         }
@@ -67,7 +67,7 @@ namespace Testura.Android.Tests.PageObject
         public void InitializeUiObjects_WhenHavingClassWithFieldsThatUseAttribute_ShouldInitializeUiObject()
         {
             var uiObject = _testHelper.CreateUiObject(With.Text("test"), 0);
-            _testHelper.UiServiceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
+            _testHelper.DeviceMock.Setup(u => u.CreateUiObject(It.IsAny<With>())).Returns(uiObject);
             var example = new ExampleClass(_testHelper.DeviceMock.Object);
             var field = typeof(ExampleClass).GetField("_fieldObject", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(example);
             Assert.IsNotNull(field);
@@ -77,7 +77,7 @@ namespace Testura.Android.Tests.PageObject
         public void InitializeUiObjects_WhenHavingClassWithPropertiesThatUseAttribute_ShouldInitializeUiObjects()
         {
             var uiObject = _testHelper.CreateUiObjects(With.Text("test"), 0);
-            _testHelper.UiServiceMock.Setup(u => u.CreateUiObjects(It.IsAny<With>())).Returns(uiObject);
+            _testHelper.DeviceMock.Setup(u => u.CreateUiObjects(It.IsAny<With>())).Returns(uiObject);
             var example = new ExampleClass(_testHelper.DeviceMock.Object);
             Assert.IsNotNull(example.PropertyObjects);
         }
@@ -86,7 +86,7 @@ namespace Testura.Android.Tests.PageObject
         public void InitializeUiObjects_WhenHavingClassWithFieldsThatUseAttribute_ShouldInitializeUiObjects()
         {
             var uiObject = _testHelper.CreateUiObjects(With.Text("test"), 0);
-            _testHelper.UiServiceMock.Setup(u => u.CreateUiObjects(It.IsAny<With>())).Returns(uiObject);
+            _testHelper.DeviceMock.Setup(u => u.CreateUiObjects(It.IsAny<With>())).Returns(uiObject);
             var example = new ExampleClass(_testHelper.DeviceMock.Object);
             var fields = typeof(ExampleClass).GetField("_fieldObjects", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(example);
             Assert.IsNotNull(fields);

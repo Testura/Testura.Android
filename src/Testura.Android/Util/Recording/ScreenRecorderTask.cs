@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Testura.Android.Device;
+using Testura.Android.Device.Services.Adb;
 using Testura.Android.Util.Logging;
-using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Util.Recording
 {
@@ -13,16 +12,16 @@ namespace Testura.Android.Util.Recording
     /// </summary>
     public class ScreenRecorderTask
     {
-        private readonly IAndroidDevice _device;
+        private readonly AdbService _adbService;
+        private readonly Terminal _terminal;
         private readonly string _temporaryDeviceDirectory;
-        private readonly ITerminal _terminal;
         private string _lastFullTemporaryRecordingPath;
 
-        internal ScreenRecorderTask(IAndroidDevice device, string temporaryDeviceDirectory)
+        internal ScreenRecorderTask(AdbService adbService, Terminal terminal, string temporaryDeviceDirectory)
         {
-            _device = device;
+            _adbService = adbService;
+            _terminal = terminal;
             _temporaryDeviceDirectory = temporaryDeviceDirectory;
-            _terminal = new Terminal.Terminal(device.Configuration);
         }
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace Testura.Android.Util.Recording
             DeviceLogger.Log("Request to stop recording..");
             StopRecordingProcess();
             DeviceLogger.Log($"Pulling recording to {savePath}");
-            _device.Adb.Pull(_lastFullTemporaryRecordingPath, savePath);
+            _adbService.Pull(_lastFullTemporaryRecordingPath, savePath);
             RemoveTemporaryRecordingOnDevice(removeRecordingFromDevice);
         }
 
@@ -81,7 +80,7 @@ namespace Testura.Android.Util.Recording
         {
             if (removeRecordingFromDevice)
             {
-                _device.Adb.Shell($"rm -f {_lastFullTemporaryRecordingPath}");
+                _adbService.Shell($"rm -f {_lastFullTemporaryRecordingPath}");
             }
         }
 
@@ -91,7 +90,7 @@ namespace Testura.Android.Util.Recording
 
             try
             {
-                var screenRecordings = _device.Adb.Shell("ps | grep screenrecord")
+                var screenRecordings = _adbService.Shell("ps | grep screenrecord")
                     .Split(new[] {"\r\r\n"}, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var screenRecording in screenRecordings)
@@ -100,7 +99,7 @@ namespace Testura.Android.Util.Recording
                     if (fixedRow.Any())
                     {
                         var pid = fixedRow.First();
-                        _device.Adb.Shell($"kill -2 {pid}");
+                        _adbService.Shell($"kill -2 {pid}");
                     }
                 }
             }

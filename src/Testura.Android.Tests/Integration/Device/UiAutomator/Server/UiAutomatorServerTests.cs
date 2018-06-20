@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Ui.Server;
-using Testura.Android.Util.Terminal;
+using Testura.Android.Util;
 using Assert = NUnit.Framework.Assert;
 
 namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
@@ -15,7 +15,7 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
         [SetUp]
         public void SetUp()
         {
-            _server = new UiAutomatorServer(new Terminal(new DeviceConfiguration()), 9008, 10);
+            _server = new UiAutomatorServer(new Terminal(), 9008, 10);
         }
 
         [Test]

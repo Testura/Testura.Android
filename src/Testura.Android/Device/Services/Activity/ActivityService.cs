@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Testura.Android.Device.Services.Adb;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
 
-namespace Testura.Android.Device.Services.Default
+namespace Testura.Android.Device.Services.Activity
 {
     /// <summary>
     /// Provides functionality to interact with activities on an android device
     /// </summary>
-    public class ActivityService : Service, IActivityService
+    public class ActivityService : IPackageService
     {
+        private readonly IAdbShellService _adbShellService;
+
+        public ActivityService(IAdbShellService adbShellService)
+        {
+            _adbShellService = adbShellService;
+        }
+
         /// <summary>
         /// Start an Activity specified by package and activity name
         /// </summary>
@@ -45,13 +53,11 @@ namespace Testura.Android.Device.Services.Default
                 commandBuilder.Append(" --activity-clear-task");
             }
 
-            var result = Device.Adb.Shell(commandBuilder.ToString());
+            var result = _adbShellService.Shell(commandBuilder.ToString());
             if (result.Contains("Error") || result.Contains("does not exist") || result.Contains("Exception"))
             {
                 throw new AdbException(result);
             }
-
-            Device.Ui.ClearCache();
         }
 
         /// <summary>
@@ -61,7 +67,7 @@ namespace Testura.Android.Device.Services.Default
         public string GetCurrent()
         {
             DeviceLogger.Log("Getting current activity");
-            var activity = Device.Adb.Shell("dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp'");
+            var activity = _adbShellService.Shell("dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp'");
             var regex = new Regex(@"(?<=\{)[^}]*(?=\})");
             var matches = regex.Matches(activity);
             if (matches.Count == 0)
@@ -78,7 +84,7 @@ namespace Testura.Android.Device.Services.Default
         /// <returns>A list with all installed packages</returns>
         public IList<string> GetPackages()
         {
-            var packages = Device.Adb.Shell("pm list packages").Split(new[] { "\r\r\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var packages = _adbShellService.Shell("pm list packages").Split(new[] { "\r\r\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             return packages.Select(p => p.Replace("package:", string.Empty)).ToList();
         }
 
@@ -100,7 +106,7 @@ namespace Testura.Android.Device.Services.Default
         /// <returns>The package version if package exist, otherwise version 0.</returns>
         public Version GetPackageVersion(string packageName)
         {
-            var version = Device.Adb.Shell($"dumpsys package {packageName} | grep versionName");
+            var version = _adbShellService.Shell($"dumpsys package {packageName} | grep versionName");
             var versionSplit = version
                 .Trim()
                 .Replace("\n", string.Empty)

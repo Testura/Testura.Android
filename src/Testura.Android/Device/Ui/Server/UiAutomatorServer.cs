@@ -1,7 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Management;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -11,7 +8,6 @@ using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Http;
 using Testura.Android.Util.Logging;
-using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device.Ui.Server
 {
@@ -33,7 +29,7 @@ namespace Testura.Android.Device.Ui.Server
         private readonly int _localPort;
         private readonly int _dumpTimeout;
         private readonly object _serverLock;
-        private readonly ITerminal _terminal;
+        private readonly Terminal _terminal;
         private readonly HttpClient _httpClient;
         private Command _currentServerProcess;
 
@@ -43,16 +39,11 @@ namespace Testura.Android.Device.Ui.Server
         /// <param name="terminal">Object to interact with the terminal.</param>
         /// <param name="port">The local port.</param>
         /// <param name="dumpTimeout">Dump timeout in sec</param>
-        public UiAutomatorServer(ITerminal terminal, int port, int dumpTimeout)
+        public UiAutomatorServer(Terminal terminal, int port, int dumpTimeout)
         {
-            if (terminal == null)
-            {
-                throw new ArgumentNullException(nameof(terminal));
-            }
-
             _localPort = port;
             _dumpTimeout = dumpTimeout;
-            _terminal = terminal;
+            _terminal = terminal ?? throw new ArgumentNullException(nameof(terminal));
             _serverLock = new object();
             _httpClient = new HttpClient(new TimeoutHandler(TimeSpan.FromSeconds(10), new HttpClientHandler()));
         }

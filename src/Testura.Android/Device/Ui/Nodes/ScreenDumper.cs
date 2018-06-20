@@ -23,12 +23,7 @@ namespace Testura.Android.Device.Ui.Nodes
         /// <param name="dumpTries">Number of times we try to dump the screen before throwing exception.</param>
         public ScreenDumper(IUiAutomatorServer server, int dumpTries)
         {
-            if (server == null)
-            {
-                throw new ArgumentNullException(nameof(server));
-            }
-
-            _server = server;
+            _server = server ?? throw new ArgumentNullException(nameof(server));
             _dumpTries = dumpTries;
             _dumpLock = new object();
         }

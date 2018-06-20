@@ -1,17 +1,19 @@
 ﻿using System;
+using Testura.Android.Device.Services.Adb;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
 
-namespace Testura.Android.Device.Services.Default
+namespace Testura.Android.Device.Services
 {
     /// <summary>
     /// Provides functionality to interact with the screen with an android device.
     /// </summary>
-    public class InteractionService : Service, IInteractionService
+    public class InteractionService
     {
+        private readonly IAdbShellService _adbShellService;
         private readonly IInteractionUiAutomatorServer _interactionServer;
         private NodeBounds _screenBounds;
 
@@ -20,14 +22,10 @@ namespace Testura.Android.Device.Services.Default
         /// </summary>
         /// <param name="interactionServer">An implementation of the interaction server interface.</param>
         /// <exception cref="ArgumentNullException">Thrown if interaction service is null.</exception>
-        public InteractionService(IInteractionUiAutomatorServer interactionServer)
+        public InteractionService(IAdbShellService adbShellService, IInteractionUiAutomatorServer interactionServer)
         {
-            if (interactionServer == null)
-            {
-                throw new ArgumentNullException(nameof(interactionServer));
-            }
-
-            _interactionServer = interactionServer;
+            _adbShellService = adbShellService ?? throw new ArgumentNullException(nameof(adbShellService));
+            _interactionServer = interactionServer ?? throw new ArgumentNullException(nameof(interactionServer));
         }
 
         /// <summary>
@@ -43,10 +41,8 @@ namespace Testura.Android.Device.Services.Default
             if (!_interactionServer.Swipe(fromX, fromY, toX, toY, duration))
             {
                 DeviceLogger.Log("Failed to swipe through server, trying through adb.");
-                Device.Adb.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
+                _adbShellService.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
             }
-
-            Device.Ui.ClearCache();
         }
 
         /// <summary>
@@ -105,13 +101,7 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="y">The y position</param>
         public void Tap(int x, int y)
         {
-            if (!_interactionServer.Tap(x, y))
-            {
-                DeviceLogger.Log("Failed to tap through server, trying through adb.");
-                Device.Adb.Shell($"input tap {x} {y}");
-            }
-
-            Device.Ui.ClearCache();
+            _interactionServer.Tap(x, y);
         }
 
         /// <summary>
@@ -125,13 +115,7 @@ namespace Testura.Android.Device.Services.Default
                 throw new ArgumentNullException(nameof(text));
             }
 
-            if (!_interactionServer.InputText(text))
-            {
-                DeviceLogger.Log("Failed to input text through server, trying through adb.");
-                Device.Adb.Shell($"input text {text.Replace(" ", "%s")}");
-            }
-
-            Device.Ui.ClearCache();
+            _interactionServer.InputText(text);
         }
 
         /// <summary>
@@ -140,19 +124,13 @@ namespace Testura.Android.Device.Services.Default
         /// <param name="keyEvent">Key event to send to the device</param>
         public void InputKeyEvent(KeyEvents keyEvent)
         {
-            if (!_interactionServer.InputKeyEvent(keyEvent))
-            {
-                DeviceLogger.Log("Failed to input key event through server, trying through adb.");
-                Device.Adb.Shell($"input keyevent {(int)keyEvent}");
-            }
-
-            Device.Ui.ClearCache();
+            _interactionServer.InputKeyEvent(keyEvent);
         }
 
         private void SetScreenHeightAndWidth()
         {
             DeviceLogger.Log("Getting width and height");
-            var widthAndHeight = Device.Adb.Shell("wm size");
+            var widthAndHeight = _adbShellService.Shell("wm size");
             if (string.IsNullOrEmpty(widthAndHeight))
             {
                 throw new AdbException("Could not get screen width and height");

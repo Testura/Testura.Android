@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Testura.Android.Device;
-using Testura.Android.Device.Services.Default;
+using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Walker.Cases.Stop;
@@ -28,13 +28,8 @@ namespace Testura.Android.Util.Walker
         /// <param name="inputs">A set of allowed inputs.</param>
         public AppWalker(AppWalkerConfiguration appWalkerConfiguration, IList<IAppWalkerInput> inputs)
         {
-            if (appWalkerConfiguration == null)
-            {
-                throw new ArgumentNullException(nameof(appWalkerConfiguration));
-            }
-
             _inputs = inputs ?? new List<IAppWalkerInput> { new TapAppWalkerInput(true) };
-            _appWalkerConfiguration = appWalkerConfiguration;
+            _appWalkerConfiguration = appWalkerConfiguration ?? throw new ArgumentNullException(nameof(appWalkerConfiguration));
             _rnd = new Random();
         }
 
@@ -53,7 +48,7 @@ namespace Testura.Android.Util.Walker
         /// <param name="device">Device to run walk with</param>
         /// <param name="package">Package to app walk. If null we start from current screen</param>
         /// <param name="activity">Activity to app walk. If null we start from current screen</param>
-        public void Start(IAndroidDevice device, string package, string activity)
+        public void Start(AndroidDevice device, string package, string activity)
         {
             Start(device, package, activity, new List<TimeCase>(), new List<StopCase>());
         }
@@ -66,7 +61,7 @@ namespace Testura.Android.Util.Walker
         /// <param name="activity">Activity to app walk. If null we start from current screen</param>
         /// <param name="timeCases">Time cases with specific actions that we want to perform in intervals</param>
         /// <param name="stopCases">Stop cases to decide if we should stop the run</param>
-        public void Start(IAndroidDevice device, string package, string activity, IEnumerable<TimeCase> timeCases, IEnumerable<StopCase> stopCases)
+        public void Start(AndroidDevice device, string package, string activity, IEnumerable<TimeCase> timeCases, IEnumerable<StopCase> stopCases)
         {
             if (device == null)
             {
@@ -150,7 +145,7 @@ namespace Testura.Android.Util.Walker
         /// <param name="stopCases">A list of provided stop cases</param>
         /// <param name="nodes">All nodes on the screen</param>
         /// <returns>True if we should stop the walk, false otherwise</returns>
-        private bool StopWalk(IAndroidDevice device, IEnumerable<StopCase> stopCases, IList<Node> nodes)
+        private bool StopWalk(AndroidDevice device, IEnumerable<StopCase> stopCases, IList<Node> nodes)
         {
             var stopCase = stopCases.FirstOrDefault(s => s.IsMatching(nodes));
             if (stopCase != null)
@@ -174,8 +169,7 @@ namespace Testura.Android.Util.Walker
             {
                 try
                 {
-                    uiService.UpdateCachedNodes();
-                    return uiService.CachedNodes;
+                    return uiService.AllNodes();
                 }
                 catch (UiNodeNotFoundException)
                 {
