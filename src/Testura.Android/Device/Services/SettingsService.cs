@@ -9,9 +9,13 @@ namespace Testura.Android.Device.Services
     /// </summary>
     public class SettingsService
     {
-        private readonly IAdbShellService _adbShellService;
         private const string PackageName = "com.testura.server";
+        private readonly IAdbShellService _adbShellService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SettingsService"/> class.
+        /// </summary>
+        /// <param name="adbShellService">Service to execute adb commands</param>
         public SettingsService(IAdbShellService adbShellService)
         {
             _adbShellService = adbShellService;
@@ -23,7 +27,7 @@ namespace Testura.Android.Device.Services
         /// <param name="state">Wanted state of wifi</param>
         public void Wifi(State state)
         {
-            DeviceLogger.Log("Changing wifi state");
+            DeviceLogger.Log($"Changing wifi state to {state.ToString()}", DeviceLogger.LogLevels.Info);
             _adbShellService.Shell(state == State.Enable
                 ? $"am startservice -n {PackageName}/{PackageName}.services.settings.WifiService -e enable 1"
                 : $"am startservice -n {PackageName}/{PackageName}.services.settings.WifiService  -e enable 0");
@@ -35,7 +39,7 @@ namespace Testura.Android.Device.Services
         /// <param name="state">Wanted state of bluetooth.</param>
         public void Bluetooth(State state)
         {
-            DeviceLogger.Log("Changing wifi state");
+            DeviceLogger.Log($"Changing bluetooth state to {state.ToString()}", DeviceLogger.LogLevels.Info);
             _adbShellService.Shell(state == State.Enable
                 ? $"am startservice -n {PackageName}/{PackageName}.services.settings.BluetoothService -e enable 1"
                 : $"am startservice -n {PackageName}/{PackageName}.services.settings.BluetoothService  -e enable 0");
@@ -47,7 +51,7 @@ namespace Testura.Android.Device.Services
         /// <param name="state">Wanted state of gps</param>
         public void Gps(State state)
         {
-            DeviceLogger.Log("Changing gps state");
+            DeviceLogger.Log($"Changing gps state to {state.ToString()}", DeviceLogger.LogLevels.Info);
             if (state == State.Enable)
             {
                 _adbShellService.Shell("settings put secure location_providers_allowed +gps");
@@ -68,7 +72,7 @@ namespace Testura.Android.Device.Services
         /// <param name="state">Wanted state of airplane mode</param>
         public void AirplaneMode(State state)
         {
-            DeviceLogger.Log("Changing airplane mode state");
+            DeviceLogger.Log($"Changing airplane mode state to {state == State.Enable}", DeviceLogger.LogLevels.Info);
             _adbShellService.Shell(state == State.Enable
                 ? "settings put global airplane_mode_on 1"
                 : "settings put global airplane_mode_on 0");

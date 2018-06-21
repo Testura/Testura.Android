@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Testura.Android.Device.Services;
+﻿using System;
+using System.Collections.Generic;
 using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
@@ -14,7 +14,7 @@ namespace Testura.Android.Device.Ui.Objects
     {
         private readonly INodeFinderService _nodeFinderService;
 
-        internal UiObjects(INodeFinderService nodeFinderService, params With[] withs)
+        internal UiObjects(INodeFinderService nodeFinderService, IList<With> withs)
             : base(withs)
         {
             _nodeFinderService = nodeFinderService;
@@ -25,14 +25,14 @@ namespace Testura.Android.Device.Ui.Objects
         /// </summary>
         /// <param name="timeout">Timeout in seconds.</param>
         /// <returns>A list of nodes that contain all values.</returns>
-        public IList<Node> Values(int timeout = 2)
+        public IList<Node> Values(TimeSpan timeout)
         {
             return TryFindNode(timeout);
         }
 
-        protected override IList<Node> TryFindNode(int timeout)
+        protected override IList<Node> TryFindNode(TimeSpan timeout)
         {
-            return _nodeFinderService.FindNodes(timeout, Withs);
+            return _nodeFinderService.FindNodes(Withs, timeout);
         }
     }
 }

@@ -31,9 +31,9 @@ namespace Testura.Android.Util.Recording
         /// <param name="removeRecordingFromDevice">True if we should remove recording from device after pulling.</param>
         public void StopRecording(string savePath, bool removeRecordingFromDevice = true)
         {
-            DeviceLogger.Log("Request to stop recording..");
+            DeviceLogger.Log("Request to stop recording..", DeviceLogger.LogLevels.Info);
             StopRecordingProcess();
-            DeviceLogger.Log($"Pulling recording to {savePath}");
+            DeviceLogger.Log($"Pulling recording to {savePath}", DeviceLogger.LogLevels.Info);
             _adbService.Pull(_lastFullTemporaryRecordingPath, savePath);
             RemoveTemporaryRecordingOnDevice(removeRecordingFromDevice);
         }
@@ -44,7 +44,7 @@ namespace Testura.Android.Util.Recording
         /// <param name="removeRecordingFromDevice">True if we should remove recording from device after pulling.</param>
         public void StopRecording(bool removeRecordingFromDevice = true)
         {
-            DeviceLogger.Log("Request to stop recording without saving movie..");
+            DeviceLogger.Log("Request to stop recording without saving movie..", DeviceLogger.LogLevels.Info);
             StopRecordingProcess();
             RemoveTemporaryRecordingOnDevice(removeRecordingFromDevice);
         }
@@ -57,9 +57,9 @@ namespace Testura.Android.Util.Recording
             }
 
             TerminateAllCurrentRecordings();
-            DeviceLogger.Log($"Starting new screen recording with {configurations.TimeLimit.TotalSeconds} seconds time limit...");
+            DeviceLogger.Log($"Starting new screen recording with {configurations.TimeLimit.TotalSeconds} seconds time limit...", DeviceLogger.LogLevels.Info);
             _lastFullTemporaryRecordingPath = Path.Combine(_temporaryDeviceDirectory, $"{Guid.NewGuid().ToString()}.mp4");
-            DeviceLogger.Log($"Saving temporary recording at {_lastFullTemporaryRecordingPath}");
+            DeviceLogger.Log($"Saving temporary recording at {_lastFullTemporaryRecordingPath}", DeviceLogger.LogLevels.Info);
 
             var commands = new List<string>
             {
@@ -86,7 +86,7 @@ namespace Testura.Android.Util.Recording
 
         private void TerminateAllCurrentRecordings()
         {
-            DeviceLogger.Log("Terminating all current recordings..");
+            DeviceLogger.Log("Terminating all current recordings..", DeviceLogger.LogLevels.Info);
 
             try
             {

@@ -17,12 +17,7 @@ namespace Testura.Android.Device.Ui.Nodes.Data
         /// <param name="parent">Node parent to this node</param>
         public Node(XElement element, Node parent)
         {
-            if (element == null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
-
-            Element = element;
+            Element = element ?? throw new ArgumentNullException(nameof(element));
             Parent = parent;
             Children = new List<Node>();
             Index = element.Attribute("index")?.Value;
@@ -173,8 +168,7 @@ namespace Testura.Android.Device.Ui.Nodes.Data
 
         private bool ParseAttribute(string name)
         {
-            bool value;
-            bool.TryParse(Element.Attribute(name)?.Value, out value);
+            bool.TryParse(Element.Attribute(name)?.Value, out var value);
             return value;
         }
     }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Testura.Android.Device.Services;
-using Testura.Android.Device.Services.Ui;
-using Testura.Android.Device.Ui.Nodes;
+using System.Linq;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
 using Testura.Android.Util.Exceptions;
@@ -19,9 +17,9 @@ namespace Testura.Android.Device.Ui.Objects
         /// </summary>
         /// <param name="device">The current android device object.</param>
         /// <param name="withs">A set of <see cref="With">Withs</see> that tell us how we should find the UI object./></param>
-        protected BaseUiObject(params With[] withs)
+        protected BaseUiObject(IList<With> withs)
         {
-            if (withs == null || withs.Length == 0)
+            if (withs == null || !withs.Any())
             {
                 throw new ArgumentException("Argument is empty collection", nameof(withs));
             }
@@ -29,16 +27,26 @@ namespace Testura.Android.Device.Ui.Objects
             Withs = withs;
         }
 
+        /// <summary>
         /// Gets all search criteria to find this ui object.
         /// </summary>
-        internal With[] Withs { get; }
+        internal IList<With> Withs { get; }
 
         /// <summary>
         /// Wait for the node(s) to be visible.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds.</param>
         /// <returns><c>true</c> if object is visible, otherwise <c>false</c>.</returns>
-        public bool IsVisible(int timeout = 10)
+        public bool IsVisible()
+        {
+            return IsVisible(TimeSpan.FromSeconds(10));
+        }
+
+        /// <summary>
+        /// Wait for the node(s) to be visible.
+        /// </summary>
+        /// <param name="timeout">Timeout</param>
+        /// <returns><c>true</c> if object is visible, otherwise <c>false</c>.</returns>
+        public bool IsVisible(TimeSpan timeout)
         {
             try
             {
@@ -52,28 +60,28 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Check if node(s) is visible in cache.
+        /// Wait for the node(s) to be hidden.
         /// </summary>
-        /// <returns>True if visible in cache, otherwise false.</returns>
-        public bool IsVisibleInCache()
+        /// <returns><c>true</c> if object is hidden, otherwise <c>false</c></returns>
+        public bool IsHidden()
         {
-            return IsVisible(-1);
+            return IsHidden(TimeSpan.FromSeconds(10));
         }
 
         /// <summary>
         /// Wait for the node(s) to be hidden.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds.</param>
+        /// <param name="timeout">Timeout</param>
         /// <returns><c>true</c> if object is hidden, otherwise <c>false</c></returns>
-        public bool IsHidden(int timeout = 10)
+        public bool IsHidden(TimeSpan timeout)
         {
             var startTime = DateTime.Now;
             while (true)
             {
                 try
                 {
-                    TryFindNode(1);
-                    if ((DateTime.Now - startTime).TotalSeconds > timeout)
+                    TryFindNode(TimeSpan.FromSeconds(1));
+                    if ((DateTime.Now - startTime).TotalMilliseconds > timeout.TotalMilliseconds)
                     {
                         return false;
                     }
@@ -86,27 +94,10 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Check if node(s) is hidden in cache.
-        /// </summary>
-        /// <returns>True if hidden, otherwise false.</returns>
-        public bool IsHiddenInCache()
-        {
-            try
-            {
-                TryFindNode(-1);
-                return false;
-            }
-            catch (UiNodeNotFoundException)
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Find node(s) on the screen.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
+        /// <param name="timeout">Timeout</param>
         /// <returns>All found node(s)</returns>
-        protected abstract IList<Node> TryFindNode(int timeout);
+        protected abstract IList<Node> TryFindNode(TimeSpan timeout);
     }
 }

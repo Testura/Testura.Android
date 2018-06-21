@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Services.Activity;
 using Testura.Android.Device.Services.Adb;
 using Testura.Android.Util.Logging;
@@ -24,29 +23,29 @@ namespace Testura.Android.Util
         /// </summary>
         public const string ServerApkVersion = "1.1";
 
-        public void InstallDependencies(IAdbInstallService adbInstallService, DeviceConfiguration configuration)
+        public void InstallDependencies(IAdbInstallService adbInstallService, string dependenciesDirectory)
         {
-            DeviceLogger.Log("Installing all dependencies..");
-            adbInstallService.InstallApp(Path.Combine(configuration.DependenciesDirectory, ServerApkName));
-            adbInstallService.InstallApp(Path.Combine(configuration.DependenciesDirectory, ServerUiAutomatorApkName));
+            DeviceLogger.Log("Installing all dependencies..", DeviceLogger.LogLevels.Info);
+            adbInstallService.InstallApp(Path.Combine(dependenciesDirectory, ServerApkName));
+            adbInstallService.InstallApp(Path.Combine(dependenciesDirectory, ServerUiAutomatorApkName));
         }
 
-        public void InstallDependenciesIfMissing(IAdbInstallService adbInstallService, IPackageService activityService, DeviceConfiguration configuration)
+        public void InstallDependenciesIfMissing(IAdbInstallService adbInstallService, IPackageService activityService, string dependenciesDirectory)
         {
-            DeviceLogger.Log("Checking if helper is installed..");
+            DeviceLogger.Log("Checking if helper is installed..", DeviceLogger.LogLevels.Info);
             if (!activityService.IsPackagedInstalled("com.testura.server"))
             {
-                DeviceLogger.Log("..not installed.");
-                InstallDependencies(adbInstallService, configuration);
+                DeviceLogger.Log("..not installed.", DeviceLogger.LogLevels.Info);
+                InstallDependencies(adbInstallService, dependenciesDirectory);
             }
             else
             {
-                DeviceLogger.Log("..already installed.");
+                DeviceLogger.Log("..already installed.", DeviceLogger.LogLevels.Info);
                 var latestVersion = Version.Parse(ServerApkVersion);
                 if (activityService.GetPackageVersion("com.testura.server") < latestVersion)
                 {
-                    DeviceLogger.Log("But you don't have the current/latest version. Updating your dependencies");
-                    InstallDependencies(adbInstallService, configuration);
+                    DeviceLogger.Log("But you don't have the current/latest version. Updating your dependencies", DeviceLogger.LogLevels.Info);
+                    InstallDependencies(adbInstallService, dependenciesDirectory);
                 }
             }
         }

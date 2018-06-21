@@ -1,5 +1,8 @@
 ﻿namespace Testura.Android.Device.Services.Adb
 {
+    /// <summary>
+    /// Defines method(s) to handle installation of apps
+    /// </summary>
     public interface IAdbInstallService
     {
         /// <summary>

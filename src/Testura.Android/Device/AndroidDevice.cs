@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Testura.Android.Device.Configurations;
+using Testura.Android.Device.Server;
 using Testura.Android.Device.Services;
 using Testura.Android.Device.Services.Activity;
 using Testura.Android.Device.Services.Adb;
@@ -7,7 +8,6 @@ using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Objects;
 using Testura.Android.Device.Ui.Search;
-using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util;
 
 namespace Testura.Android.Device
@@ -17,36 +17,36 @@ namespace Testura.Android.Device
     /// </summary>
     public class AndroidDevice
     {
+        private readonly DeviceConfiguration _configuration;
+        private readonly UiAutomatorServer _uiAutomatorServer;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
         /// </summary>
         /// <param name="configuration">Device Configuration</param>
-        internal AndroidDevice(DeviceConfiguration configuration)
+        public AndroidDevice(DeviceConfiguration configuration)
         {
-            Configuration = configuration;
             var terminal = new Terminal(configuration.Serial, configuration.AdbPath);
-            var server = new UiAutomatorServer(terminal, configuration.Port.Value, configuration.DumpTimeout);
+
+            _configuration = configuration;
+            _uiAutomatorServer = new UiAutomatorServer(terminal, configuration.Port);
 
             Adb = new AdbService(terminal);
-            Ui = new UiService(new ScreenDumper(server, configuration.DumpTries), new NodeParser(), new NodeFinder());
+            Ui = new UiService(_uiAutomatorServer, new NodeParser(), new NodeFinder());
             Settings = new SettingsService(Adb);
             Activity = new ActivityService(Adb);
-            Interaction = new InteractionService(Adb, server);
+            Interaction = new InteractionService(Adb, _uiAutomatorServer);
+
             InstallHelperApks();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
         /// </summary>
-        internal AndroidDevice()
+        public AndroidDevice()
             : this(new DeviceConfiguration())
         {
         }
-
-        /// <summary>
-        /// Gets the current device Configuration.
-        /// </summary>
-        public DeviceConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets the adb service of an android device.
@@ -78,7 +78,7 @@ namespace Testura.Android.Device
         /// </summary>
         /// <param name="with">Find node with</param>
         /// <returns>The mapped ui object</returns>
-        public UiObject CreateUiObject(params With[] with)
+        public virtual UiObject CreateUiObject(params With[] with)
         {
             return new UiObject(Interaction, Ui, with.ToArray());
         }
@@ -88,21 +88,37 @@ namespace Testura.Android.Device
         /// </summary>
         /// <param name="with">Find nodes with</param>
         /// <returns>The mapped ui object</returns>
-        public UiObjects CreateUiObjects(params With[] with)
+        public virtual UiObjects CreateUiObjects(params With[] with)
         {
             return new UiObjects(Ui, with.ToArray());
+        }
+
+        /// <summary>
+        /// Start the ui server
+        /// </summary>
+        public void StartServer()
+        {
+            _uiAutomatorServer.Start();
+        }
+
+        /// <summary>
+        /// Stop the ui server
+        /// </summary>
+        public void StopServer()
+        {
+            _uiAutomatorServer.Stop();
         }
 
         private void InstallHelperApks()
         {
             var dependencyInstaller = new DependencyInstaller();
-            if (Configuration.Dependencies == DependencyHandling.AlwaysInstall)
+            if (_configuration.Dependencies == DependencyHandling.AlwaysInstall)
             {
-                dependencyInstaller.InstallDependencies(Adb, Configuration);
+                dependencyInstaller.InstallDependencies(Adb, _configuration.DependenciesDirectory);
             }
-            else if (Configuration.Dependencies == DependencyHandling.InstallIfMissing)
+            else if (_configuration.Dependencies == DependencyHandling.InstallIfMissing)
             {
-                dependencyInstaller.InstallDependenciesIfMissing(Adb, Activity, Configuration);
+                dependencyInstaller.InstallDependenciesIfMissing(Adb, Activity, _configuration.DependenciesDirectory);
             }
         }
     }

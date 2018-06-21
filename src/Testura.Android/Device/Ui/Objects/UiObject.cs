@@ -15,7 +15,7 @@ namespace Testura.Android.Device.Ui.Objects
         private readonly InteractionService _interactionService;
         private readonly INodeFinderService _nodeFinderService;
 
-        internal UiObject(InteractionService interactionService, INodeFinderService nodeFinderService, params With[] withs)
+        internal UiObject(InteractionService interactionService, INodeFinderService nodeFinderService, IList<With> withs)
             : base(withs)
         {
             _interactionService = interactionService;
@@ -25,10 +25,18 @@ namespace Testura.Android.Device.Ui.Objects
         /// <summary>
         /// Tap in the center of a node.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds.</param>
-        public void Tap(int timeout = 20)
+        public void Tap()
         {
-            var node = _nodeFinderService.FindNode(timeout, Withs);
+            Tap(TimeSpan.FromSeconds(20));
+        }
+
+        /// <summary>
+        /// Tap in the center of a node.
+        /// </summary>
+        /// <param name="timeout">Timeout</param>
+        public void Tap(TimeSpan timeout)
+        {
+            var node = _nodeFinderService.FindNode(Withs, timeout);
             _interactionService.Tap(node);
         }
 
@@ -36,14 +44,23 @@ namespace Testura.Android.Device.Ui.Objects
         /// Input text into the node.
         /// </summary>
         /// <param name="text">The text to input into the nod.e</param>
-        /// <param name="timeout">Timeout in second.</param>
-        public void InputText(string text, int timeout = 20)
+        public void InputText(string text)
+        {
+            InputText(text, TimeSpan.FromSeconds(20));
+        }
+
+        /// <summary>
+        /// Input text into the node.
+        /// </summary>
+        /// <param name="text">The text to input into the nod.e</param>
+        /// <param name="timeout">Timeout</param>
+        public void InputText(string text, TimeSpan timeout)
         {
             Tap(timeout);
             var tries = 0;
-            while (!WaitForValue(n => n.Focused, 1) && tries < 3)
+            while (!WaitForValue(n => n.Focused, TimeSpan.FromSeconds(1)) && tries < 3)
             {
-                Tap(1);
+                Tap(TimeSpan.FromSeconds(1));
                 tries++;
             }
 
@@ -53,20 +70,39 @@ namespace Testura.Android.Device.Ui.Objects
         /// <summary>
         /// Get the node values.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds.</param>
         /// <returns>A node object with all values of this node.</returns>
-        public Node Values(int timeout = 2)
+        public Node Values()
         {
-            return _nodeFinderService.FindNode(timeout, Withs);
+            return Values(TimeSpan.FromSeconds(2));
+        }
+
+        /// <summary>
+        /// Get the node values.
+        /// </summary>
+        /// <param name="timeout">Timeout (default 2 seconds)</param>
+        /// <returns>A node object with all values of this node.</returns>
+        public Node Values(TimeSpan timeout)
+        {
+            return _nodeFinderService.FindNode(Withs, timeout);
         }
 
         /// <summary>
         /// Wait for node values to match.
         /// </summary>
         /// <param name="expectedValues">Expected values on the node.</param>
-        /// <param name="timeout">Timeout in seconds.</param>
         /// <returns>True if node values match before timeout, otherwise false.</returns>
-        public bool WaitForValue(Func<Node, bool> expectedValues, int timeout = 20)
+        public bool WaitForValue(Func<Node, bool> expectedValues)
+        {
+            return WaitForValue(expectedValues, TimeSpan.FromSeconds(20));
+        }
+
+        /// <summary>
+        /// Wait for node values to match.
+        /// </summary>
+        /// <param name="expectedValues">Expected values on the node.</param>
+        /// <param name="timeout">Timeout</param>
+        /// <returns>True if node values match before timeout, otherwise false.</returns>
+        public bool WaitForValue(Func<Node, bool> expectedValues, TimeSpan timeout)
         {
             var startTime = DateTime.Now;
             while (true)
@@ -78,7 +114,7 @@ namespace Testura.Android.Device.Ui.Objects
                     return true;
                 }
 
-                if ((DateTime.Now - startTime).TotalSeconds > timeout)
+                if ((DateTime.Now - startTime).TotalMilliseconds > timeout.TotalMilliseconds)
                 {
                     return false;
                 }
@@ -90,9 +126,9 @@ namespace Testura.Android.Device.Ui.Objects
         /// </summary>
         /// <param name="timeout">Timeout in seconds</param>
         /// <returns>All found node(s)</returns>
-        protected override IList<Node> TryFindNode(int timeout)
+        protected override IList<Node> TryFindNode(TimeSpan timeout)
         {
-            return new List<Node> { _nodeFinderService.FindNode(timeout, Withs) };
+            return new List<Node> { _nodeFinderService.FindNode(Withs, timeout) };
         }
     }
 }

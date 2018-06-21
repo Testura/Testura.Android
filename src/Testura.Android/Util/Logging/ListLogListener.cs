@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 
 namespace Testura.Android.Util.Logging
 {
     public class ListLogListener : ILogListener
     {
-        private List<string> _logMessages;
+        private readonly DeviceLogger.LogLevels _minLogLevel;
+        private readonly List<string> _logMessages;
 
-        public ListLogListener()
+        public ListLogListener(DeviceLogger.LogLevels minLogLevel)
         {
+            _minLogLevel = minLogLevel;
             _logMessages = new List<string>();
         }
 
         public IReadOnlyList<string> LogMessages => _logMessages;
 
-        public void Log(string className, string memberName, string message)
+        public void Log(string className, string memberName, string message, DeviceLogger.LogLevels logLevel)
         {
-            _logMessages.Add($"[{DateTime.Now}][{className}][{memberName}]: {message}");
+            if (logLevel < _minLogLevel)
+            {
+                return;
+            }
+
+            _logMessages.Add($"[{logLevel.ToString()}][{DateTime.Now}][{className}][{memberName}]: {message}");
         }
     }
 }

@@ -92,6 +92,4 @@ namespace Testura.Android.Tests.PageObject
             Assert.IsNotNull(fields);
         }
     }
-
-
 }

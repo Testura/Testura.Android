@@ -9,13 +9,18 @@ using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Http;
 using Testura.Android.Util.Logging;
 
-namespace Testura.Android.Device.Ui.Server
+namespace Testura.Android.Device.Server
 {
     /// <summary>
     /// Provides functionality to interact with the UI automator server
     /// </summary>
     public class UiAutomatorServer : IUiAutomatorServer, IInteractionUiAutomatorServer
     {
+        /// <summary>
+        /// Number of tries to send request to the server
+        /// </summary>
+        private const int RequestTries = 10;
+
         /// <summary>
         /// Get the server package name
         /// </summary>
@@ -26,9 +31,10 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         private const int DevicePort = 9020;
 
-        private readonly int _localPort;
-        private readonly int _dumpTimeout;
         private readonly object _serverLock;
+        private readonly object _dumpLock;
+
+        private readonly int _localPort;
         private readonly Terminal _terminal;
         private readonly HttpClient _httpClient;
         private Command _currentServerProcess;
@@ -38,13 +44,12 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         /// <param name="terminal">Object to interact with the terminal.</param>
         /// <param name="port">The local port.</param>
-        /// <param name="dumpTimeout">Dump timeout in sec</param>
-        public UiAutomatorServer(Terminal terminal, int port, int dumpTimeout)
+        public UiAutomatorServer(Terminal terminal, int port)
         {
             _localPort = port;
-            _dumpTimeout = dumpTimeout;
             _terminal = terminal ?? throw new ArgumentNullException(nameof(terminal));
             _serverLock = new object();
+            _dumpLock = new object();
             _httpClient = new HttpClient(new TimeoutHandler(TimeSpan.FromSeconds(10), new HttpClientHandler()));
         }
 
@@ -72,16 +77,16 @@ namespace Testura.Android.Device.Ui.Server
         {
             lock (_serverLock)
             {
-                DeviceLogger.Log("Starting server..");
+                DeviceLogger.Log("Starting server..", DeviceLogger.LogLevels.Info);
 
                 ForwardPorts();
                 KillAndroidProcess();
-                DeviceLogger.Log("Starting instrumental");
+                DeviceLogger.Log("Starting instrumental", DeviceLogger.LogLevels.Info);
                 _currentServerProcess = _terminal.StartAdbProcessWithoutShell(
                     "shell",
                     $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
 
-                if (!Alive(5))
+                if (!Alive(TimeSpan.FromSeconds(5)))
                 {
                     throw new UiAutomatorServerException("Could not start server");
                 }
@@ -95,7 +100,7 @@ namespace Testura.Android.Device.Ui.Server
         {
             lock (_serverLock)
             {
-                DeviceLogger.Log("Stopping server");
+                DeviceLogger.Log("Stopping server", DeviceLogger.LogLevels.Info);
                 try
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, StopUrl);
@@ -104,23 +109,24 @@ namespace Testura.Android.Device.Ui.Server
                 }
                 catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
                 {
-                    DeviceLogger.Log($"Failed stop server, already closed? {ex.Message}");
+                    DeviceLogger.Log($"Failed stop server, already closed? {ex.Message}", DeviceLogger.LogLevels.Info);
                 }
 
-               _currentServerProcess.Kill();
-               KillAndroidProcess();
+                _currentServerProcess?.Kill();
+                KillAndroidProcess();
             }
         }
 
         /// <summary>
         /// Check if the ui automator server is alive on the android device.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds.</param>
+        /// <param name="timeout">Timeout</param>
         /// <returns>True if server is a alive, false otherwise.</returns>
-        public bool Alive(int timeout)
+        public bool Alive(TimeSpan timeout)
         {
             var time = DateTime.Now;
-            while ((DateTime.Now - time).TotalSeconds < timeout)
+            DeviceLogger.Log("Checking if server is alive..", DeviceLogger.LogLevels.Debug);
+            while ((DateTime.Now - time).TotalSeconds < timeout.TotalSeconds)
             {
                 var result = Ping();
                 if (result)
@@ -129,7 +135,7 @@ namespace Testura.Android.Device.Ui.Server
                 }
             }
 
-            DeviceLogger.Log("Server is not alive!");
+            DeviceLogger.Log("Server is not alive!", DeviceLogger.LogLevels.Error);
             return false;
         }
 
@@ -139,28 +145,34 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>The screen content as a xml string.</returns>
         public string DumpUi()
         {
-            try
+            lock (_dumpLock)
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, DumpUrl);
-                request.SetTimeout(TimeSpan.FromSeconds(_dumpTimeout));
-                var repsonse = _httpClient.SendAsync(request).Result;
-                var dump = repsonse.Content.ReadAsStringAsync().Result;
-
-                if (string.IsNullOrEmpty(dump))
+                var tries = 0;
+                while (tries < RequestTries)
                 {
-                    DeviceLogger.Log("Empty dump from server!");
-                    DeviceLogger.Log($"Status code: {repsonse.StatusCode}");
-                    DeviceLogger.Log($"Reason phrase: {repsonse.ReasonPhrase}");
-                    throw new UiAutomatorServerException("Could connect to server but the dumped ui was empty");
+                    DeviceLogger.Log("Sending screen dump request", DeviceLogger.LogLevels.Debug);
+                    var response = SendServerRequest(DumpUrl, TimeSpan.FromSeconds(15));
+                    if (!string.IsNullOrEmpty(response))
+                    {
+                        return response.Replace("\\\"", "\"");
+                    }
+
+                    DeviceLogger.Log("Empty dump from server!", DeviceLogger.LogLevels.Info);
+
+                    /* In some cases we get stuck and the server is alive
+                       but we can't dump the UI. So try a reboot */
+                    if (Alive(TimeSpan.FromSeconds(2)))
+                    {
+                        Stop();
+                    }
+
+                    tries--;
+                    DeviceLogger.Log(
+                        $"Screen dump request failed, trying {tries} more times",
+                        DeviceLogger.LogLevels.Debug);
                 }
 
-                return dump.Replace("\\\"", "\"");
-            }
-            catch (Exception ex)
-            {
-                DeviceLogger.Log("Unexpected error/timed out when trying to dump: ");
-                DeviceLogger.Log(ex.ToString());
-                throw new UiAutomatorServerException("Failed to dump screen", ex);
+                throw new UiAutomatorServerException("Failed to dump screen");
             }
         }
 
@@ -198,8 +210,7 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>True if we successfully input key event, otherwise false.</returns>
         public bool InputKeyEvent(KeyEvents keyEvent)
         {
-            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int) keyEvent}",
-                TimeSpan.FromMilliseconds(3000));
+            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int) keyEvent}", TimeSpan.FromMilliseconds(3000));
         }
 
         /// <summary>
@@ -221,12 +232,37 @@ namespace Testura.Android.Device.Ui.Server
         /// <returns>True if we managed to perform interaction, otherwise false.</returns>
         private bool SendInteractionRequest(string url, TimeSpan timeout)
         {
-            if (!Alive(5))
+            var tries = 0;
+            while (tries < RequestTries)
+            {
+                DeviceLogger.Log("Sending interaction request", DeviceLogger.LogLevels.Debug);
+                var response = SendServerRequest(url, timeout);
+                if (response == "success")
+                {
+                    DeviceLogger.Log("Interaction request was successful", DeviceLogger.LogLevels.Debug);
+                    return true;
+                }
+
+                tries--;
+                DeviceLogger.Log($"Interaction request failed, trying {tries} more times", DeviceLogger.LogLevels.Debug);
+            }
+
+            DeviceLogger.Log("Failed to send interaction request", DeviceLogger.LogLevels.Error);
+            return false;
+        }
+
+        /// <summary>
+        /// Send interaction request to server
+        /// </summary>
+        /// <param name="url">Url of the request</param>
+        /// <param name="timeout">Timeout of request</param>
+        /// <returns>True if we managed to perform interaction, otherwise false.</returns>
+        private string SendServerRequest(string url, TimeSpan timeout)
+        {
+            if (!Alive(TimeSpan.FromSeconds(5)))
             {
                 Start();
             }
-
-            DeviceLogger.Log($"Sending interaction request to server: {url}");
 
             try
             {
@@ -241,17 +277,16 @@ namespace Testura.Android.Device.Ui.Server
                             "Server responded with 404, make sure that you have the latest Testura server app.");
                     }
 
-                    return false;
+                    DeviceLogger.Log("Server request was unsuccessful", DeviceLogger.LogLevels.Debug);
+                    LogRespone(response);
                 }
 
-                var result = response.Content.ReadAsStringAsync().Result;
-                return result == "success";
+                return response.Content.ReadAsStringAsync().Result;
             }
             catch (Exception ex)
             {
-                DeviceLogger.Log("interaction request timed out");
-                DeviceLogger.Log(ex.Message);
-                return false;
+                DeviceLogger.Log(ex.ToString(), DeviceLogger.LogLevels.Debug);
+                return null;
             }
         }
 
@@ -260,7 +295,7 @@ namespace Testura.Android.Device.Ui.Server
         /// </summary>
         private void ForwardPorts()
         {
-            DeviceLogger.Log("Forwarding ports");
+            DeviceLogger.Log("Forwarding ports", DeviceLogger.LogLevels.Info);
             _terminal.ExecuteAdbCommand("forward", $"tcp:{_localPort}", $"tcp:{DevicePort}");
         }
 
@@ -272,6 +307,8 @@ namespace Testura.Android.Device.Ui.Server
         {
             try
             {
+                DeviceLogger.Log("Ping server..", DeviceLogger.LogLevels.Debug);
+
                 // Use a token just to make sure we don't get stuck..
                 using (var cts = new CancellationTokenSource())
                 {
@@ -280,11 +317,24 @@ namespace Testura.Android.Device.Ui.Server
                     cts.CancelAfter(TimeSpan.FromSeconds(15));
                     request.SetTimeout(TimeSpan.FromSeconds(10));
 
-                    return _httpClient.SendAsync(request, cts.Token).Result.Content.ReadAsStringAsync().Result == "Hello human.";
+                    var response = _httpClient.SendAsync(request, cts.Token).Result;
+
+                    if (response.Content.ReadAsStringAsync().Result ==
+                        "Hello human.")
+                    {
+                        DeviceLogger.Log("..and it was successful!", DeviceLogger.LogLevels.Debug);
+                        return true;
+                    }
+
+                    DeviceLogger.Log("..and it was not successful!", DeviceLogger.LogLevels.Debug);
+                    LogRespone(response);
+                    return false;
                 }
             }
             catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
             {
+                DeviceLogger.Log("..and it was not successful!", DeviceLogger.LogLevels.Debug);
+                DeviceLogger.Log(ex.ToString(), DeviceLogger.LogLevels.Debug);
                 return false;
             }
         }
@@ -297,13 +347,21 @@ namespace Testura.Android.Device.Ui.Server
             try
             {
                 _terminal.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
-                DeviceLogger.Log("Killing testura helper process on the device.");
+                DeviceLogger.Log("Killing testura helper process on the device.", DeviceLogger.LogLevels.Info);
                 _terminal.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
             }
             catch (Exception)
             {
                 // The terminal throw an exception if we can't find anything with grep.
             }
+        }
+
+        private void LogRespone(HttpResponseMessage response)
+        {
+            DeviceLogger.Log("Response from server: ", DeviceLogger.LogLevels.Debug);
+            DeviceLogger.Log($"HTTP status code: {response.StatusCode}", DeviceLogger.LogLevels.Debug);
+            DeviceLogger.Log($"Reason phrase: {response.ReasonPhrase}", DeviceLogger.LogLevels.Debug);
+            DeviceLogger.Log($"Content: {response.Content.ReadAsStringAsync().Result}", DeviceLogger.LogLevels.Debug);
         }
     }
 }

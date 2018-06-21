@@ -1,5 +1,8 @@
 ﻿namespace Testura.Android.Device.Services.Adb
 {
+    /// <summary>
+    /// Define methods to execute adb shell commands
+    /// </summary>
     public interface IAdbShellService
     {
         /// <summary>

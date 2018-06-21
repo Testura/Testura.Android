@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using NUnit.Framework;
 using Testura.Android.Device.Ui.Search;
@@ -23,7 +24,7 @@ namespace Testura.Android.Tests.Util.Helpers
         {
             var uiObjectOne = _testHelper.CreateUiObject(With.Class("test"), 0);
             var uiObjectTwo = _testHelper.CreateUiObject(With.ResourceId("test"), 2000);
-            var foundObject = UiWait.ForAny(10, uiObjectOne.IsVisible, uiObjectTwo.IsHidden);
+            var foundObject = UiWait.ForAny(new Func<TimeSpan, bool>[] { uiObjectOne.IsVisible, uiObjectTwo.IsHidden }, TimeSpan.FromSeconds(10));
             Assert.AreEqual(uiObjectOne, foundObject);
         }
 
@@ -31,7 +32,7 @@ namespace Testura.Android.Tests.Util.Helpers
         public void ForAny_IfNoObjectIsFound_ShouldThrowException()
         {
             var uiObject = _testHelper.CreateUiObject(With.Class("hej"), 0, true);
-            Assert.Throws<UiNodeNotFoundException>(() => UiWait.ForAny(10, uiObject.IsVisible));
+            Assert.Throws<UiNodeNotFoundException>(() => UiWait.ForAny(new Func<TimeSpan, bool>[] { uiObject.IsVisible }, TimeSpan.FromSeconds(10)));
         }
 
         [Test]
@@ -39,7 +40,7 @@ namespace Testura.Android.Tests.Util.Helpers
         {
             var uiObjectOne = _testHelper.CreateUiObject(With.Class("test"), 0);
             var uiObjectTwo = _testHelper.CreateUiObject(With.ResourceId("test"), 500, true);
-            var foundObject = UiWait.ForAny(10, uiObjectOne.IsVisible, uiObjectTwo.IsHidden);
+            var foundObject = UiWait.ForAny(new Func<TimeSpan, bool>[] { uiObjectOne.IsVisible, uiObjectTwo.IsHidden}, TimeSpan.FromSeconds(10));
             Assert.AreEqual(uiObjectOne, foundObject);
             Thread.Sleep(1000);
         }
@@ -49,7 +50,7 @@ namespace Testura.Android.Tests.Util.Helpers
         {
             var uiObjectOne = _testHelper.CreateUiObject(With.Class("test"), 500);
             var uiObjectTwo = _testHelper.CreateUiObject(With.ResourceId("test"), 500);
-            UiWait.ForAll(1, uiObjectOne.IsVisible, uiObjectTwo.IsVisible);
+            UiWait.ForAll(new Func<TimeSpan, bool>[] { uiObjectOne.IsVisible, uiObjectTwo.IsVisible }, TimeSpan.FromSeconds(1));
         }
 
         [Test]
@@ -57,7 +58,7 @@ namespace Testura.Android.Tests.Util.Helpers
         {
             var uiObjectOne = _testHelper.CreateUiObject(With.Class("test"), 500, true);
             var uiObjectTwo = _testHelper.CreateUiObject(With.ResourceId("test"), 500, true);
-            Assert.Throws<UiNodeNotFoundException>(() => UiWait.ForAll(1, uiObjectOne.IsVisible, uiObjectTwo.IsVisible));
+            Assert.Throws<UiNodeNotFoundException>(() => UiWait.ForAll(new Func<TimeSpan, bool>[] { uiObjectOne.IsVisible, uiObjectTwo.IsVisible }, TimeSpan.FromSeconds(1)));
         }
     }
 }

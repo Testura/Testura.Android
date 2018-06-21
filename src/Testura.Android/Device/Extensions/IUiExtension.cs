@@ -12,7 +12,6 @@ namespace Testura.Android.Device.Extensions
         /// Check nodes on the screen for abnormalities.
         /// </summary>
         /// <param name="nodes">A list with nodes on the screen.</param>
-        /// <param name="device">Current android device.</param>
         /// <returns><c>true</c> if we should reset the regular find node timer, otherwise <c>false</c>.</returns>
         bool CheckNodes(IList<Node> nodes);
     }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using Testura.Android.Util;
 using Testura.Android.Util.Extensions;
@@ -19,9 +20,7 @@ namespace Testura.Android.Device.Configurations
             Serial = string.Empty;
             Dependencies = DependencyHandling.InstallIfMissing;
             DependenciesDirectory = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Dependencies");
-            Port = null;
-            DumpTries = 5;
-            DumpTimeout = 15;
+            Port = 9008;
         }
 
         /// <summary>
@@ -48,17 +47,6 @@ namespace Testura.Android.Device.Configurations
         /// <summary>
         /// Gets or sets the local port.
         /// </summary>
-        public int? Port { get; set; }
-
-        /// <summary>
-        /// Gets or sets how many times we should try to dump the UI before
-        /// sending exception.
-        /// </summary>
-        public int DumpTries { get; set; }
-
-        /// <summary>
-        /// Gets or sets the dump timeout in seconds
-        /// </summary>
-        public int DumpTimeout { get; set; }
+        public int Port { get; set; }
     }
 }

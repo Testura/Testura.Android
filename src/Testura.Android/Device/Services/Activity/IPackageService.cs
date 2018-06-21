@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Testura.Android.Device.Services.Activity
 {
+    /// <summary>
+    /// Defines method(s) to get handle package on device
+    /// </summary>
     public interface IPackageService
     {
         /// <summary>

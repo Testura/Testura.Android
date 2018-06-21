@@ -38,11 +38,11 @@ namespace Testura.Android.Util.LogcatWatchers
         {
             if (_task != null)
             {
-                DeviceLogger.Log("Logcat watcher aldready started.. closing last process");
+                DeviceLogger.Log("Logcat watcher aldready started.. closing last process", DeviceLogger.LogLevels.Info);
                 Stop();
             }
 
-            DeviceLogger.Log("Starting logcat watcher..");
+            DeviceLogger.Log("Starting logcat watcher..", DeviceLogger.LogLevels.Info);
 
             if (_flushLogcat)
             {
@@ -82,7 +82,7 @@ namespace Testura.Android.Util.LogcatWatchers
 
                             if (_cancellationTokenSource.IsCancellationRequested)
                             {
-                                DeviceLogger.Log("Logcat watcher cancellation requested, stopping task.");
+                                DeviceLogger.Log("Logcat watcher cancellation requested, stopping task.", DeviceLogger.LogLevels.Info);
                                 process.Kill();
                                 return;
                             }
@@ -96,7 +96,7 @@ namespace Testura.Android.Util.LogcatWatchers
         /// </summary>
         public void Stop()
         {
-            DeviceLogger.Log("Request to stop logcat watcher..");
+            DeviceLogger.Log("Request to stop logcat watcher..", DeviceLogger.LogLevels.Info);
             _cancellationTokenSource?.Cancel();
             _task?.Wait(2000);
             _task = null;

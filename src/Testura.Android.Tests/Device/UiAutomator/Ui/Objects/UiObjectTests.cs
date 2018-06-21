@@ -1,9 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Moq;
 using NUnit.Framework;
 using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Objects;
 using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
@@ -24,7 +26,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
         {
             var uiObject = _testHelper.CreateUiObject(With.Class("testClass"), 0);
 
-            _testHelper.UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), It.IsAny<With[]>()))
+            _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
                 .Returns(new Node(new XElement("node", new XAttribute("clickable", "true")), null));
 
             Assert.IsTrue(uiObject.WaitForValue(n => n.Clickable));
@@ -35,10 +37,10 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
         {
             var uiObject = _testHelper.CreateUiObject(With.Class("testClass"), 0);
 
-            _testHelper.UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), It.IsAny<With[]>()))
+            _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
                 .Returns(new Node(new XElement("node", new XAttribute("clickable", "false")), null));
 
-            Assert.IsFalse(uiObject.WaitForValue(n => n.Clickable, 1));
+            Assert.IsFalse(uiObject.WaitForValue(n => n.Clickable, TimeSpan.FromSeconds(1)));
         }
 
         [Test]
@@ -46,13 +48,13 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
         {
             var uiObject = _testHelper.CreateUiObject(With.Class("testClass"), 0);
 
-            _testHelper.UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), It.IsAny<With[]>()))
+            _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
                 .Returns(new Node(new XElement("node", new XAttribute("clickable", "false")), null));
 
             Task.Run(() =>
             {
                 Thread.Sleep(2000);
-                _testHelper.UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), It.IsAny<With[]>()))
+                _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
                     .Returns(new Node(new XElement("node", new XAttribute("clickable", "true")), null));
             });
 

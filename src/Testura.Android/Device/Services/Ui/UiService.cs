@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
 using Testura.Android.Device.Extensions;
+using Testura.Android.Device.Server;
 using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
@@ -14,7 +17,7 @@ namespace Testura.Android.Device.Services.Ui
     /// </summary>
     public class UiService : INodeFinderService
     {
-        private readonly IScreenDumper _screenDumper;
+        private readonly IUiAutomatorServer _uiAutomatorServer;
         private readonly INodeParser _nodeParser;
         private readonly INodeFinder _nodeFinder;
 
@@ -22,14 +25,15 @@ namespace Testura.Android.Device.Services.Ui
         /// Initializes a new instance of the <see cref="UiService"/> class.
         /// </summary>
         /// <param name="screenDumper">The screen dumper.</param>
+        /// <param name="uiAutomatorServer">The ui server used to get screen dumps</param>
         /// <param name="nodeParser">The node parser.</param>
         /// <param name="nodeFinder">The node finder.</param>
         public UiService(
-            IScreenDumper screenDumper,
+            IUiAutomatorServer uiAutomatorServer,
             INodeParser nodeParser,
             INodeFinder nodeFinder)
         {
-            _screenDumper = screenDumper ?? throw new ArgumentNullException(nameof(screenDumper));
+            _uiAutomatorServer = uiAutomatorServer;
             _nodeParser = nodeParser ?? throw new ArgumentNullException(nameof(nodeParser));
             _nodeFinder = nodeFinder ?? throw new ArgumentNullException(nameof(nodeFinder));
             Extensions = new List<IUiExtension>();
@@ -44,26 +48,26 @@ namespace Testura.Android.Device.Services.Ui
         /// Find a node on the screen
         /// </summary>
         /// <param name="timeout">Timeout in seconds</param>
-        /// <param name="with">Find node with</param>
+        /// <param name="withs">Find node with</param>
         /// <returns>Returns found node</returns>
         /// <exception cref="UiNodeNotFoundException">If we timeout and can't find the node</exception>
-        public Node FindNode(int timeout, params With[] with)
+        public Node FindNode(IList<With> withs, TimeSpan timeout)
         {
-            return FindNodes(timeout, with).First();
+            return FindNodes(withs, timeout).First();
         }
 
         /// <summary>
         /// Find multiple nodes on the screen
         /// </summary>
         /// <param name="timeout">Timeout in seconds</param>
-        /// <param name="with">Find node with</param>
+        /// <param name="withs">Find node with</param>
         /// <returns>Returns found node</returns>
         /// <exception cref="UiNodeNotFoundException">If we timeout and can't find any nodes</exception>
-        public IList<Node> FindNodes(int timeout, With[] with)
+        public IList<Node> FindNodes(IList<With> withs, TimeSpan timeout)
         {
-            if (with == null || !with.Any())
+            if (withs == null || !withs.Any())
             {
-                throw new ArgumentException("You must search with at least one \"with\"", nameof(with));
+                throw new ArgumentException("You must search with at least one \"with\"", nameof(withs));
             }
 
             var startTime = DateTime.Now;
@@ -80,11 +84,11 @@ namespace Testura.Android.Device.Services.Ui
                         }
                     }
 
-                    return _nodeFinder.FindNodes(nodes, with);
+                    return _nodeFinder.FindNodes(nodes, withs);
                 }
                 catch (UiNodeNotFoundException)
                 {
-                    if ((DateTime.Now - startTime).TotalSeconds > timeout)
+                    if ((DateTime.Now - startTime).TotalSeconds > timeout.TotalSeconds)
                     {
                         throw;
                     }
@@ -92,25 +96,22 @@ namespace Testura.Android.Device.Services.Ui
             }
         }
 
+        /// <summary>
+        /// Get all nodes on the screen
+        /// </summary>
+        /// <returns>A list of all nodes on the screen</returns>
         public IList<Node> AllNodes()
         {
-            return _nodeParser.ParseNodes(_screenDumper.DumpUi());
-        }
-
-        /// <summary>
-        /// Start the ui server
-        /// </summary>
-        public void StartUiServer()
-        {
-            _screenDumper.StartUiServer();
-        }
-
-        /// <summary>
-        /// Stop the ui server
-        /// </summary>
-        public void StopUiServer()
-        {
-            _screenDumper.StopUiServer();
+            try
+            {
+                var dump = _uiAutomatorServer.DumpUi();
+                var parsedDump = XDocument.Parse(dump);
+                return _nodeParser.ParseNodes(parsedDump);
+            }
+            catch (XmlException ex)
+            {
+                throw new UiNodeNotFoundException("Could not parse nodes from dump", ex);
+            }
         }
     }
 }

@@ -16,21 +16,21 @@ namespace Testura.Android.Device.Ui.Nodes
         /// Search through a list of nodes and return the first node that match the search criteria.
         /// </summary>
         /// <param name="nodes">A list withs nodes to search through.</param>
-        /// <param name="with">One ore many search criteria.</param>
+        /// <param name="withs">One ore many search criteria.</param>
         /// <returns>The first node we find that match the search criteria.</returns>
-        public Node FindNode(IList<Node> nodes, params With[] with)
+        public Node FindNode(IList<Node> nodes, IList<With> withs)
         {
             if (nodes == null)
             {
                 throw new ArgumentNullException(nameof(nodes));
             }
 
-            if (with == null || with.Length == 0)
+            if (withs == null || !withs.Any())
             {
-                throw new ArgumentException("Argument is empty collection", nameof(with));
+                throw new ArgumentException("Argument is empty collection", nameof(withs));
             }
 
-            var foundNodes = FindNodes(nodes, with);
+            var foundNodes = FindNodes(nodes, withs);
             return foundNodes.First();
         }
 
@@ -40,14 +40,14 @@ namespace Testura.Android.Device.Ui.Nodes
         /// <param name="nodes">A list withs nodes to search through.</param>
         /// <param name="withs">One ore many search criteria.</param>
         /// <returns>All nodes we find that match the search criteria.</returns>
-        public IList<Node> FindNodes(IList<Node> nodes, params With[] withs)
+        public IList<Node> FindNodes(IList<Node> nodes, IList<With> withs)
         {
             if (nodes == null)
             {
                 throw new ArgumentNullException(nameof(nodes));
             }
 
-            if (withs == null || withs.Length == 0)
+            if (withs == null || !withs.Any())
             {
                 throw new ArgumentException("Argument is empty collection", nameof(withs));
             }

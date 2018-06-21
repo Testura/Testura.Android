@@ -9,6 +9,14 @@ namespace Testura.Android.Util.Logging
     /// </summary>
     public static class DeviceLogger
     {
+        public enum LogLevels
+        {
+            Debug,
+            Info,
+            Warning,
+            Error,
+        }
+
         private static IList<ILogListener> _logListeners;
 
         /// <summary>
@@ -60,10 +68,12 @@ namespace Testura.Android.Util.Logging
         /// Write a new log message to all log listeners
         /// </summary>
         /// <param name="message">Message to log</param>
+        /// <param name="logLevel">Log level</param>
         /// <param name="memberName">Method or property name of the caller</param>
         /// <param name="sourceFilePath">Full path of the source file that contains the caller.</param>
         internal static void Log(
             string message,
+            LogLevels logLevel,
             [CallerMemberName] string memberName = "",
             [CallerFilePath] string sourceFilePath = "")
         {
@@ -74,7 +84,7 @@ namespace Testura.Android.Util.Logging
 
             foreach (var logListener in _logListeners)
             {
-                logListener.Log(Path.GetFileNameWithoutExtension(sourceFilePath), memberName, message);
+                logListener.Log(Path.GetFileNameWithoutExtension(sourceFilePath), memberName, message, logLevel);
             }
         }
     }

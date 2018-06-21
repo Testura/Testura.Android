@@ -44,7 +44,7 @@ namespace Testura.Android.Util
 
             allArguments.AddRange(arguments);
 
-            DeviceLogger.Log($"Sending adb command: {string.Join(" ", allArguments)}");
+            DeviceLogger.Log($"Sending adb command: {string.Join(" ", allArguments)}", DeviceLogger.LogLevels.Info);
 
             try
             {
@@ -59,7 +59,7 @@ namespace Testura.Android.Util
                     if (!command.Result.Success)
                     {
                         var message = $"Output: {output}, Error: {error}";
-                        DeviceLogger.Log(message);
+                        DeviceLogger.Log(message, DeviceLogger.LogLevels.Error);
                         throw new AdbException(message);
                     }
 
@@ -89,7 +89,7 @@ namespace Testura.Android.Util
 
             allArguments.AddRange(arguments);
 
-            DeviceLogger.Log($"Starting adb process with shell: {string.Join(" ", allArguments)}");
+            DeviceLogger.Log($"Starting adb process with shell: {string.Join(" ", allArguments)}", DeviceLogger.LogLevels.Info);
 
             try
             {
@@ -133,7 +133,7 @@ namespace Testura.Android.Util
 
             allArguments.AddRange(arguments);
 
-            DeviceLogger.Log($"Starting adb process without shell: {string.Join(" ", allArguments)}");
+            DeviceLogger.Log($"Starting adb process without shell: {string.Join(" ", allArguments)}", DeviceLogger.LogLevels.Info);
 
             try
             {

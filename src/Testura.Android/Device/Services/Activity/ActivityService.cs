@@ -16,6 +16,10 @@ namespace Testura.Android.Device.Services.Activity
     {
         private readonly IAdbShellService _adbShellService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActivityService"/> class.
+        /// </summary>
+        /// <param name="adbShellService">Service to execute shell command for specific device</param>
         public ActivityService(IAdbShellService adbShellService)
         {
             _adbShellService = adbShellService;
@@ -41,7 +45,7 @@ namespace Testura.Android.Device.Services.Activity
                 throw new ArgumentException("Argument is null or whitespace", nameof(activity));
             }
 
-            DeviceLogger.Log("Starting a new activity");
+            DeviceLogger.Log("Starting a new activity", DeviceLogger.LogLevels.Info);
             var commandBuilder = new StringBuilder($"am start -W -n {packageName}/{activity}");
             if (forceStopActivity)
             {
@@ -66,16 +70,19 @@ namespace Testura.Android.Device.Services.Activity
         /// <returns>Current open activity</returns>
         public string GetCurrent()
         {
-            DeviceLogger.Log("Getting current activity");
+            DeviceLogger.Log("Getting current activity", DeviceLogger.LogLevels.Info);
             var activity = _adbShellService.Shell("dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp'");
             var regex = new Regex(@"(?<=\{)[^}]*(?=\})");
             var matches = regex.Matches(activity);
             if (matches.Count == 0)
             {
+                DeviceLogger.Log("Could not find any activity", DeviceLogger.LogLevels.Info);
                 return "Unknown activity";
             }
 
-            return matches[0].Value.Split(' ').Last();
+            var foundActivity = matches[0].Value.Split(' ').Last();
+            DeviceLogger.Log($"Found activity: {activity}", DeviceLogger.LogLevels.Info);
+            return foundActivity;
         }
 
         /// <summary>
@@ -84,6 +91,7 @@ namespace Testura.Android.Device.Services.Activity
         /// <returns>A list with all installed packages</returns>
         public IList<string> GetPackages()
         {
+            DeviceLogger.Log("Getting all packages", DeviceLogger.LogLevels.Info);
             var packages = _adbShellService.Shell("pm list packages").Split(new[] { "\r\r\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             return packages.Select(p => p.Replace("package:", string.Empty)).ToList();
         }
@@ -95,8 +103,16 @@ namespace Testura.Android.Device.Services.Activity
         /// <returns>True if package are installed, otherwise false</returns>
         public bool IsPackagedInstalled(string packageName)
         {
+            DeviceLogger.Log($"Checking if \"{packageName}\" package is installed..", DeviceLogger.LogLevels.Info);
             var packages = GetPackages();
-            return packages.Contains(packageName);
+            if (packages.Contains(packageName))
+            {
+                DeviceLogger.Log("..package is installed", DeviceLogger.LogLevels.Info);
+                return true;
+            }
+
+            DeviceLogger.Log("..package is not installed", DeviceLogger.LogLevels.Info);
+            return false;
         }
 
         /// <summary>
@@ -106,6 +122,7 @@ namespace Testura.Android.Device.Services.Activity
         /// <returns>The package version if package exist, otherwise version 0.</returns>
         public Version GetPackageVersion(string packageName)
         {
+            DeviceLogger.Log($"Checking version of \"{packageName}\"...", DeviceLogger.LogLevels.Info);
             var version = _adbShellService.Shell($"dumpsys package {packageName} | grep versionName");
             var versionSplit = version
                 .Trim()
@@ -115,10 +132,13 @@ namespace Testura.Android.Device.Services.Activity
 
             if (versionSplit.Length != 2)
             {
+                DeviceLogger.Log("...could not find any version", DeviceLogger.LogLevels.Info);
                 return new Version(0, 0);
             }
 
-            return Version.Parse(versionSplit[1]);
+            var parsedVersion = Version.Parse(versionSplit[1]);
+            DeviceLogger.Log($"...version is {parsedVersion}", DeviceLogger.LogLevels.Info);
+            return parsedVersion;
         }
     }
 }

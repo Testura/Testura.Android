@@ -1,7 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Xml.Linq;
 using Moq;
 using Testura.Android.Device;
+using Testura.Android.Device.Server;
+using Testura.Android.Device.Services;
 using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Nodes.Data;
@@ -17,17 +21,16 @@ namespace Testura.Android.Tests
 
         public TestHelper()
         {
+            NodeFinderService = new Mock<INodeFinderService>();
             DeviceMock = new Mock<AndroidDevice>();
-            UiServiceMock = new Mock<INodeFinderService>();
-            DeviceMock.SetupGet(d => d.Ui).Returns(UiServiceMock.Object);
 
             _uiService = new UiService(
-                new Mock<IScreenDumper>().Object,
+                new Mock<IUiAutomatorServer>().Object, 
                 new Mock<INodeParser>().Object,
                 new Mock<INodeFinder>().Object);
         }
 
-        public Mock<INodeFinderService> UiServiceMock { get; }
+        public Mock<INodeFinderService> NodeFinderService { get; }
 
         public Mock<AndroidDevice> DeviceMock { get; }
 
@@ -35,34 +38,34 @@ namespace Testura.Android.Tests
         {
             if (shouldThrowExeception)
             {
-                UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), with))
+                NodeFinderService.Setup(u => u.FindNode(new[] { with }, It.IsAny<TimeSpan>()))
                     .Callback(() => Thread.Sleep(delayInMiliSec))
                     .Throws<UiNodeNotFoundException>();
             }
             else
             {
-                UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), with))
+                NodeFinderService.Setup(u => u.FindNode(new[] { with }, It.IsAny<TimeSpan>()))
                    .Callback(() => Thread.Sleep(delayInMiliSec))
                    .Returns(new Node(new XElement("mm"), null));
             }
-            return DeviceMock.Object.CreateUiObject(with);
+            return new UiObject(null, NodeFinderService.Object, new[] { with });
         }
 
         public UiObjects CreateUiObjects(With with, int delayInMiliSec, bool shouldThrowExeception = false)
         {
             if (shouldThrowExeception)
             {
-                UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), with))
+                NodeFinderService.Setup(u => u.FindNode(new[] { with }, It.IsAny<TimeSpan>()))
                     .Callback(() => Thread.Sleep(delayInMiliSec))
                     .Throws<UiNodeNotFoundException>();
             }
             else
             {
-                UiServiceMock.Setup(u => u.FindNode(It.IsAny<int>(), with))
+                NodeFinderService.Setup(u => u.FindNode(new [] { with }, It.IsAny<TimeSpan>()))
                    .Callback(() => Thread.Sleep(delayInMiliSec))
                    .Returns(new Node(new XElement("mm"), null));
             }
-            return DeviceMock.Object.CreateUiObjects(with);
+            return new UiObjects(NodeFinderService.Object, new[] { with });
         }
     }
 }

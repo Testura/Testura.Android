@@ -49,9 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Device\AndroidDevice.cs" />
-    <Compile Include="Device\DeviceCreator.cs" />
+    <Compile Include="Device\AndroidDeviceCreator.cs" />
     <Compile Include="Device\Extensions\IUiExtension.cs" />
-    <Compile Include="Device\IAndroidDeviceServiceGetter.cs" />
     <Compile Include="Device\Services\Activity\ActivityService.cs" />
     <Compile Include="Device\Services\Activity\IPackageService.cs" />
     <Compile Include="Device\Services\Adb\IAdbInstallService.cs" />
@@ -64,7 +63,7 @@
     <Compile Include="Device\Ui\Objects\UiObjects.cs" />
     <Compile Include="Device\Ui\Nodes\INodeFinder.cs" />
     <Compile Include="Device\Ui\Nodes\NodeFinder.cs" />
-    <Compile Include="Device\Ui\Server\IInteractionUiAutomatorServer.cs" />
+    <Compile Include="Device\Server\IInteractionUiAutomatorServer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PageObject\Application.cs" />
     <Compile Include="PageObject\Attributes\CreateAttribute.cs" />
@@ -76,11 +75,9 @@
     <Compile Include="Device\Services\SettingsService.cs" />
     <Compile Include="Device\Ui\Nodes\INodeParser.cs" />
     <Compile Include="Device\Ui\Search\With.cs" />
-    <Compile Include="Device\Ui\Nodes\IScreenDumper.cs" />
-    <Compile Include="Device\Ui\Server\IUiAutomatorServer.cs" />
+    <Compile Include="Device\Server\IUiAutomatorServer.cs" />
     <Compile Include="Device\Ui\Nodes\NodeParser.cs" />
-    <Compile Include="Device\Ui\Nodes\ScreenDumper.cs" />
-    <Compile Include="Device\Ui\Server\UiAutomatorServer.cs" />
+    <Compile Include="Device\Server\UiAutomatorServer.cs" />
     <Compile Include="Device\Ui\Nodes\Data\Node.cs" />
     <Compile Include="Device\Ui\Objects\BaseUiObject.cs" />
     <Compile Include="Util\Coordinate.cs" />

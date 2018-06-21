@@ -1,6 +1,6 @@
 ﻿using Testura.Android.Util;
 
-namespace Testura.Android.Device.Ui.Server
+namespace Testura.Android.Device.Server
 {
     /// <summary>
     /// Defines methods to send interaction requests to the ui automator server.

@@ -1,7 +1,7 @@
 ﻿using System;
+using Testura.Android.Device.Server;
 using Testura.Android.Device.Services.Adb;
 using Testura.Android.Device.Ui.Nodes.Data;
-using Testura.Android.Device.Ui.Server;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;
@@ -20,6 +20,7 @@ namespace Testura.Android.Device.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractionService"/> class.
         /// </summary>
+        /// <param name="adbShellService">Service to execute adb shell commands</param>
         /// <param name="interactionServer">An implementation of the interaction server interface.</param>
         /// <exception cref="ArgumentNullException">Thrown if interaction service is null.</exception>
         public InteractionService(IAdbShellService adbShellService, IInteractionUiAutomatorServer interactionServer)
@@ -38,11 +39,7 @@ namespace Testura.Android.Device.Services
         /// <param name="duration">Duration of the swipe in milliseconds</param>
         public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
-            if (!_interactionServer.Swipe(fromX, fromY, toX, toY, duration))
-            {
-                DeviceLogger.Log("Failed to swipe through server, trying through adb.");
-                _adbShellService.Shell($"input swipe {fromX} {fromY} {toX} {toY} {duration}");
-            }
+            _interactionServer.Swipe(fromX, fromY, toX, toY, duration);
         }
 
         /// <summary>
@@ -129,7 +126,7 @@ namespace Testura.Android.Device.Services
 
         private void SetScreenHeightAndWidth()
         {
-            DeviceLogger.Log("Getting width and height");
+            DeviceLogger.Log("Getting width and height", DeviceLogger.LogLevels.Info);
             var widthAndHeight = _adbShellService.Shell("wm size");
             if (string.IsNullOrEmpty(widthAndHeight))
             {
@@ -137,7 +134,7 @@ namespace Testura.Android.Device.Services
             }
 
             var split = widthAndHeight.Replace(" ", string.Empty).Split(':', 'x');
-            DeviceLogger.Log($"Width: {split[split.Length - 2]}, Height: {split[split.Length - 1]}");
+            DeviceLogger.Log($"Width: {split[split.Length - 2]}, Height: {split[split.Length - 1]}", DeviceLogger.LogLevels.Info);
             _screenBounds = new NodeBounds(int.Parse(split[split.Length - 2]), int.Parse(split[split.Length - 1]));
         }
     }
