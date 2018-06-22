@@ -6,6 +6,8 @@ namespace Testura.Android.PageObject
     {
         object Resolve(Type type);
 
+        void RegisterInstance(Type type, object obj);
+
         void RegisterType(Type type);
     }
 }

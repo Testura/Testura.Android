@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Reflection;
+using System.Collections.Generic;
+using System.Linq;
 using Testura.Android.Device;
-using Testura.Android.Device.Ui.Objects;
-using Testura.Android.PageObject.Attributes;
 
 namespace Testura.Android.PageObject
 {
@@ -15,90 +14,38 @@ namespace Testura.Android.PageObject
         /// Initializes a new instance of the <see cref="View"/> class.
         /// </summary>
         /// <param name="device">Current android device</param>
-        protected View(AndroidDevice device)
+        protected View(IAndroidDevice device)
         {
             Device = device;
-            InitializeUiObjects();
+            ViewFactory.MapUiNodes(device, this);
         }
 
         /// <summary>
         /// Gets or sets the current android device
         /// </summary>
-        protected AndroidDevice Device { get; set; }
+        protected IAndroidDevice Device { get; set; }
 
-        /// <summary>
-        /// Go through all properties and fields and check for those that implement the
-        /// InitializeUiObjectAttribute and then initialize them.
-        /// </summary>
-        private void InitializeUiObjects()
+        protected void Validate<T>(params IAndroidViewValidation<T>[] validators)
+            where T : View
         {
-            InitializeUiObjectsFromProperties(GetType());
-            InitializeUiObjectsFromFields(GetType());
-        }
-
-        private void InitializeUiObjectsFromProperties(Type type)
-        {
-            if (type.BaseType != null)
+            var exceptions = new List<Exception>();
+            foreach (var validator in validators)
             {
-                InitializeUiObjectsFromProperties(type.BaseType);
+                try
+                {
+                    validator.Validate(Device, (T)this);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);
+                }
             }
 
-            var properties = type.GetProperties(BindingFlags.Instance |
-                                                BindingFlags.NonPublic |
-                                                BindingFlags.Public);
-
-            foreach (var property in properties)
+            if (exceptions.Any())
             {
-                if (property.PropertyType != typeof(UiObject) && property.PropertyType != typeof(UiObjects))
-                {
-                    continue;
-                }
-
-                var attributes = property.GetCustomAttributes(typeof(CreateAttribute), true);
-                if (attributes.Length >= 1)
-                {
-                    var attribute = attributes[0] as CreateAttribute;
-                    if (property.PropertyType == typeof(UiObject))
-                    {
-                        property.SetValue(this, Device.CreateUiObject(attribute.With));
-                    }
-                    else
-                    {
-                        property.SetValue(this, Device.CreateUiObjects(attribute.With));
-                    }
-                }
+                throw new AggregateException(exceptions);
             }
         }
 
-        private void InitializeUiObjectsFromFields(Type type)
-        {
-            if (type.BaseType != null)
-            {
-                InitializeUiObjectsFromFields(type.BaseType);
-            }
-
-            var fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
-            foreach (var field in fields)
-            {
-                if (field.FieldType != typeof(UiObject) && field.FieldType != typeof(UiObjects))
-                {
-                    continue;
-                }
-
-                var attributes = field.GetCustomAttributes(typeof(CreateAttribute), true);
-                if (attributes.Length >= 1)
-                {
-                    var attribute = attributes[0] as CreateAttribute;
-                    if (field.FieldType == typeof(UiObject))
-                    {
-                        field.SetValue(this, Device.CreateUiObject(attribute.With));
-                    }
-                    else
-                    {
-                        field.SetValue(this, Device.CreateUiObjects(attribute.With));
-                    }
-                }
-            }
-        }
     }
 }

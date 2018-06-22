@@ -15,7 +15,7 @@ namespace Testura.Android.Device
     /// <summary>
     /// Provides functionality to interact with an Android Device through multiple service objects
     /// </summary>
-    public class AndroidDevice
+    public class AndroidDevice : IAndroidDevice, IAdbTerminalContainer, IAndroidServiceContainer, IAndroidUiMapper
     {
         private readonly DeviceConfiguration _configuration;
         private readonly UiAutomatorServer _uiAutomatorServer;
@@ -26,7 +26,7 @@ namespace Testura.Android.Device
         /// <param name="configuration">Device Configuration</param>
         public AndroidDevice(DeviceConfiguration configuration)
         {
-            var terminal = new Terminal(configuration.Serial, configuration.AdbPath);
+            var terminal = new AdbTerminal(configuration.Serial, configuration.AdbPath);
 
             _configuration = configuration;
             _uiAutomatorServer = new UiAutomatorServer(terminal, configuration.Port);
@@ -47,6 +47,11 @@ namespace Testura.Android.Device
             : this(new DeviceConfiguration())
         {
         }
+
+        /// <summary>
+        /// Gets the connected terminal
+        /// </summary>
+        public AdbTerminal AdbTerminal { get; }
 
         /// <summary>
         /// Gets the adb service of an android device.
@@ -73,12 +78,14 @@ namespace Testura.Android.Device
         /// </summary>
         public InteractionService Interaction { get; }
 
+        public string Serial => _configuration.Serial;
+
         /// <summary>
         /// Create a new ui object that wraps around a node that match a specific search criteria
         /// </summary>
         /// <param name="with">Find node with</param>
         /// <returns>The mapped ui object</returns>
-        public virtual UiObject CreateUiObject(params With[] with)
+        public virtual UiObject MapUiNode(params With[] with)
         {
             return new UiObject(Interaction, Ui, with.ToArray());
         }
@@ -88,7 +95,7 @@ namespace Testura.Android.Device
         /// </summary>
         /// <param name="with">Find nodes with</param>
         /// <returns>The mapped ui object</returns>
-        public virtual UiObjects CreateUiObjects(params With[] with)
+        public virtual UiObjects MapUiNodes(params With[] with)
         {
             return new UiObjects(Ui, with.ToArray());
         }

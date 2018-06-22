@@ -49,8 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Device\AndroidDevice.cs" />
-    <Compile Include="Device\AndroidDeviceCreator.cs" />
     <Compile Include="Device\Extensions\IUiExtension.cs" />
+    <Compile Include="Device\IAdbTerminalContainer.cs" />
+    <Compile Include="Device\IAndroidDevice.cs" />
+    <Compile Include="Device\IAndroidServiceContainer.cs" />
+    <Compile Include="Device\IAndroidUiMapper.cs" />
     <Compile Include="Device\Services\Activity\ActivityService.cs" />
     <Compile Include="Device\Services\Activity\IPackageService.cs" />
     <Compile Include="Device\Services\Adb\IAdbInstallService.cs" />
@@ -66,9 +69,11 @@
     <Compile Include="Device\Server\IInteractionUiAutomatorServer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PageObject\Application.cs" />
-    <Compile Include="PageObject\Attributes\CreateAttribute.cs" />
+    <Compile Include="PageObject\Attributes\UiMapAttribute.cs" />
+    <Compile Include="PageObject\IAndroidViewValidation.cs" />
     <Compile Include="PageObject\IDependencyContainer.cs" />
     <Compile Include="PageObject\View.cs" />
+    <Compile Include="PageObject\ViewFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Device\Services\Adb\AdbService.cs" />
     <Compile Include="Device\Services\Ui\UiService.cs" />
@@ -110,7 +115,7 @@
     <Compile Include="Util\Walker\Input\SwipeAppWalkerInput.cs" />
     <Compile Include="Util\Walker\Input\TapAppWalkerInput.cs" />
     <Compile Include="Util\Walker\Cases\Tap\TapCase.cs" />
-    <Compile Include="Util\Terminal.cs" />
+    <Compile Include="Util\AdbTerminal.cs" />
     <Compile Include="Util\Walker\AppWalker.cs" />
     <Compile Include="Util\ByErrorMessageBuilder.cs" />
   </ItemGroup>

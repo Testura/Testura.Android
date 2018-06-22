@@ -35,19 +35,19 @@ namespace Testura.Android.Device.Server
         private readonly object _dumpLock;
 
         private readonly int _localPort;
-        private readonly Terminal _terminal;
+        private readonly AdbTerminal _adbTerminal;
         private readonly HttpClient _httpClient;
         private Command _currentServerProcess;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UiAutomatorServer"/> class.
         /// </summary>
-        /// <param name="terminal">Object to interact with the terminal.</param>
+        /// <param name="adbTerminal">Object to interact with the terminal.</param>
         /// <param name="port">The local port.</param>
-        public UiAutomatorServer(Terminal terminal, int port)
+        public UiAutomatorServer(AdbTerminal adbTerminal, int port)
         {
             _localPort = port;
-            _terminal = terminal ?? throw new ArgumentNullException(nameof(terminal));
+            _adbTerminal = adbTerminal ?? throw new ArgumentNullException(nameof(adbTerminal));
             _serverLock = new object();
             _dumpLock = new object();
             _httpClient = new HttpClient(new TimeoutHandler(TimeSpan.FromSeconds(10), new HttpClientHandler()));
@@ -82,7 +82,7 @@ namespace Testura.Android.Device.Server
                 ForwardPorts();
                 KillAndroidProcess();
                 DeviceLogger.Log("Starting instrumental", DeviceLogger.LogLevels.Info);
-                _currentServerProcess = _terminal.StartAdbProcessWithoutShell(
+                _currentServerProcess = _adbTerminal.StartAdbProcessWithoutShell(
                     "shell",
                     $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
 
@@ -296,7 +296,7 @@ namespace Testura.Android.Device.Server
         private void ForwardPorts()
         {
             DeviceLogger.Log("Forwarding ports", DeviceLogger.LogLevels.Info);
-            _terminal.ExecuteAdbCommand("forward", $"tcp:{_localPort}", $"tcp:{DevicePort}");
+            _adbTerminal.ExecuteAdbCommand("forward", $"tcp:{_localPort}", $"tcp:{DevicePort}");
         }
 
         /// <summary>
@@ -307,8 +307,6 @@ namespace Testura.Android.Device.Server
         {
             try
             {
-                DeviceLogger.Log("Ping server..", DeviceLogger.LogLevels.Debug);
-
                 // Use a token just to make sure we don't get stuck..
                 using (var cts = new CancellationTokenSource())
                 {
@@ -322,18 +320,17 @@ namespace Testura.Android.Device.Server
                     if (response.Content.ReadAsStringAsync().Result ==
                         "Hello human.")
                     {
-                        DeviceLogger.Log("..and it was successful!", DeviceLogger.LogLevels.Debug);
                         return true;
                     }
 
-                    DeviceLogger.Log("..and it was not successful!", DeviceLogger.LogLevels.Debug);
+                    DeviceLogger.Log("Ping server failed!", DeviceLogger.LogLevels.Debug);
                     LogRespone(response);
                     return false;
                 }
             }
             catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
             {
-                DeviceLogger.Log("..and it was not successful!", DeviceLogger.LogLevels.Debug);
+                DeviceLogger.Log("ing server failed!", DeviceLogger.LogLevels.Debug);
                 DeviceLogger.Log(ex.ToString(), DeviceLogger.LogLevels.Debug);
                 return false;
             }
@@ -346,9 +343,9 @@ namespace Testura.Android.Device.Server
         {
             try
             {
-                _terminal.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
+                _adbTerminal.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
                 DeviceLogger.Log("Killing testura helper process on the device.", DeviceLogger.LogLevels.Info);
-                _terminal.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
+                _adbTerminal.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
             }
             catch (Exception)
             {

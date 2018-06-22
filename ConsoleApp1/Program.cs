@@ -12,7 +12,7 @@ namespace ConsoleApp1
             DeviceLogger.AddListener(new ConsoleLogListener(DeviceLogger.LogLevels.Debug));
 
             var device = new AndroidDevice();
-            device.CreateUiObject(With.Text("Chrome")).Tap();
+            device.MapUiNode(With.Text("Chrome")).Tap();
 
             Console.ReadLine();
         }

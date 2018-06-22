@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Recording;
@@ -11,15 +12,15 @@ namespace Testura.Android.Device.Services.Adb
     /// </summary>
     public class AdbService : IAdbShellService, IAdbInstallService
     {
-        private readonly Terminal _terminal;
+        private readonly AdbTerminal _adbTerminal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdbService"/> class.
         /// </summary>
-        /// <param name="terminal">Object to interact with terminal</param>
-        public AdbService(Terminal terminal)
+        /// <param name="adbTerminal">Object to interact with terminal</param>
+        public AdbService(AdbTerminal adbTerminal)
         {
-            _terminal = terminal ?? throw new ArgumentNullException(nameof(terminal));
+            _adbTerminal = adbTerminal ?? throw new ArgumentNullException(nameof(adbTerminal));
         }
 
         /// <summary>
@@ -35,6 +36,21 @@ namespace Testura.Android.Device.Services.Adb
             }
 
             return ExecuteCommand(command);
+        }
+
+        /// <summary>
+        /// Issue an adb command in the target emulator/device instance
+        /// </summary>
+        /// <param name="command">Command to execute</param>
+        /// <returns>The result from executing the command</returns>
+        public string Execute(string[] commands)
+        {
+            if (!commands.Any())
+            {
+                throw new ArgumentException("Argument is null or empty", nameof(commands));
+            }
+
+            return ExecuteCommand(commands);
         }
 
         /// <summary>
@@ -180,14 +196,14 @@ namespace Testura.Android.Device.Services.Adb
         /// <returns>The created screen recorder task (later used to stop the recording)</returns>
         public ScreenRecorderTask RecordScreen(ScreenRecordConfiguration configuration, string temporaryDeviceDirectory = "/sdcard/")
         {
-            var screenRecorderTask = new ScreenRecorderTask(this, _terminal, temporaryDeviceDirectory);
+            var screenRecorderTask = new ScreenRecorderTask(this, _adbTerminal, temporaryDeviceDirectory);
             screenRecorderTask.StartRecording(configuration);
             return screenRecorderTask;
         }
 
         private string ExecuteCommand(params string[] arguments)
         {
-            return _terminal.ExecuteAdbCommand(arguments);
+            return _adbTerminal.ExecuteAdbCommand(arguments);
         }
     }
 }

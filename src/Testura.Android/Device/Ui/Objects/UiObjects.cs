@@ -25,6 +25,16 @@ namespace Testura.Android.Device.Ui.Objects
         /// </summary>
         /// <param name="timeout">Timeout in seconds.</param>
         /// <returns>A list of nodes that contain all values.</returns>
+        public IList<Node> Values()
+        {
+            return TryFindNode(TimeSpan.FromSeconds(2));
+        }
+
+        /// <summary>
+        /// Get a list of nodes that contain all values.
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns>A list of nodes that contain all values.</returns>
         public IList<Node> Values(TimeSpan timeout)
         {
             return TryFindNode(timeout);

@@ -17,7 +17,7 @@ namespace Testura.Android.Tests.Device.Services.Default
         [SetUp]
         public void SetUp()
         {
-            _adbService = new AdbService(new Terminal());
+            _adbService = new AdbService(new AdbTerminal());
         }
 
         [Test]

@@ -9,6 +9,7 @@ using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device.Services.Ui
 {
@@ -20,6 +21,7 @@ namespace Testura.Android.Device.Services.Ui
         private readonly IUiAutomatorServer _uiAutomatorServer;
         private readonly INodeParser _nodeParser;
         private readonly INodeFinder _nodeFinder;
+        private string _lastScreenDump;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UiService"/> class.
@@ -90,6 +92,8 @@ namespace Testura.Android.Device.Services.Ui
                 {
                     if ((DateTime.Now - startTime).TotalSeconds > timeout.TotalSeconds)
                     {
+                        DeviceLogger.Log("Failed to find node, last xml dump: ", DeviceLogger.LogLevels.Warning);
+                        DeviceLogger.Log(_lastScreenDump?.Replace(System.Environment.NewLine, "replacement text"), DeviceLogger.LogLevels.Warning);
                         throw;
                     }
                 }
@@ -104,8 +108,8 @@ namespace Testura.Android.Device.Services.Ui
         {
             try
             {
-                var dump = _uiAutomatorServer.DumpUi();
-                var parsedDump = XDocument.Parse(dump);
+                _lastScreenDump = _uiAutomatorServer.DumpUi();
+                var parsedDump = XDocument.Parse(_lastScreenDump);
                 return _nodeParser.ParseNodes(parsedDump);
             }
             catch (XmlException ex)

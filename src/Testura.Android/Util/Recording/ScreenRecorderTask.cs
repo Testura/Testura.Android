@@ -13,14 +13,14 @@ namespace Testura.Android.Util.Recording
     public class ScreenRecorderTask
     {
         private readonly AdbService _adbService;
-        private readonly Terminal _terminal;
+        private readonly AdbTerminal _adbTerminal;
         private readonly string _temporaryDeviceDirectory;
         private string _lastFullTemporaryRecordingPath;
 
-        internal ScreenRecorderTask(AdbService adbService, Terminal terminal, string temporaryDeviceDirectory)
+        internal ScreenRecorderTask(AdbService adbService, AdbTerminal adbTerminal, string temporaryDeviceDirectory)
         {
             _adbService = adbService;
-            _terminal = terminal;
+            _adbTerminal = adbTerminal;
             _temporaryDeviceDirectory = temporaryDeviceDirectory;
         }
 
@@ -68,7 +68,7 @@ namespace Testura.Android.Util.Recording
                 _lastFullTemporaryRecordingPath,
             };
             commands.AddRange(configurations.GetArguments());
-            _terminal.StartAdbProcessWithoutShell(commands.ToArray());
+            _adbTerminal.StartAdbProcessWithoutShell(commands.ToArray());
         }
 
         private void StopRecordingProcess()
