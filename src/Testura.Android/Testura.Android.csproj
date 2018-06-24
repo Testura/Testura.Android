@@ -49,10 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Device\AndroidDevice.cs" />
+    <Compile Include="Device\DeviceFactory.cs" />
     <Compile Include="Device\Extensions\IUiExtension.cs" />
-    <Compile Include="Device\IAdbTerminalContainer.cs" />
+    <Compile Include="Device\IAdbTerminalProvider.cs" />
     <Compile Include="Device\IAndroidDevice.cs" />
-    <Compile Include="Device\IAndroidServiceContainer.cs" />
+    <Compile Include="Device\IAndroidServiceProvider.cs" />
     <Compile Include="Device\IAndroidUiMapper.cs" />
     <Compile Include="Device\Services\Activity\ActivityService.cs" />
     <Compile Include="Device\Services\Activity\IPackageService.cs" />

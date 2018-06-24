@@ -7,7 +7,7 @@ namespace Testura.Android.PageObject.Attributes
     /// <summary>
     /// Provides functionality to automatically initialize an UIObject that use this attribute and exist on a <see cref="View"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
     public class UiMapAttribute : Attribute
     {
         /// <summary>

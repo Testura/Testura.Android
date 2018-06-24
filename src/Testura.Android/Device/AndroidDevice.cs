@@ -15,7 +15,7 @@ namespace Testura.Android.Device
     /// <summary>
     /// Provides functionality to interact with an Android Device through multiple service objects
     /// </summary>
-    public class AndroidDevice : IAndroidDevice, IAdbTerminalContainer, IAndroidServiceContainer, IAndroidUiMapper
+    public class AndroidDevice : IAndroidDevice, IAdbTerminalProvider, IAndroidServiceProvider, IAndroidUiMapper
     {
         private readonly DeviceConfiguration _configuration;
         private readonly UiAutomatorServer _uiAutomatorServer;
@@ -26,12 +26,12 @@ namespace Testura.Android.Device
         /// <param name="configuration">Device Configuration</param>
         public AndroidDevice(DeviceConfiguration configuration)
         {
-            var terminal = new AdbTerminal(configuration.Serial, configuration.AdbPath);
+            AdbTerminal = new AdbTerminal(configuration.Serial, configuration.AdbPath);
 
             _configuration = configuration;
-            _uiAutomatorServer = new UiAutomatorServer(terminal, configuration.Port);
+            _uiAutomatorServer = new UiAutomatorServer(AdbTerminal, configuration.Port);
 
-            Adb = new AdbService(terminal);
+            Adb = new AdbService(AdbTerminal);
             Ui = new UiService(_uiAutomatorServer, new NodeParser(), new NodeFinder());
             Settings = new SettingsService(Adb);
             Activity = new ActivityService(Adb);
@@ -49,14 +49,17 @@ namespace Testura.Android.Device
         }
 
         /// <summary>
-        /// Gets the connected terminal
+        /// Gets a terminal object to send adb commands.
         /// </summary>
         public AdbTerminal AdbTerminal { get; }
 
+
         /// <summary>
-        /// Gets the adb service of an android device.
+        /// Gets the adb service of an android device. This service
+        /// handles everything connected to adb.
         /// </summary>
         public AdbService Adb { get; }
+
 
         /// <summary>
         /// Gets the ui service of an android device.
@@ -64,20 +67,26 @@ namespace Testura.Android.Device
         public UiService Ui { get; }
 
         /// <summary>
-        /// Gets the settings service of an android device.
+        /// Gets the settings service of an android device. This service
+        /// handles everything with settings like airplane mode, wifi, etc.
         /// </summary>
         public SettingsService Settings { get; }
 
         /// <summary>
-        /// Gets the activity service of an android device.
+        /// Gets the activity service of an android device. This service
+        /// handles everything connected to activites (start, current, etc).
         /// </summary>
         public ActivityService Activity { get; }
 
         /// <summary>
-        /// Gets the interaction service of an android device.
+        /// Gets the interaction service of an android device. This service
+        /// handles everything with interaction like swipe, tap, etc.
         /// </summary>
         public InteractionService Interaction { get; }
 
+        /// <summary>
+        /// Gets the serial of the device
+        /// </summary>
         public string Serial => _configuration.Serial;
 
         /// <summary>

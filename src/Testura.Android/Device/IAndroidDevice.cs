@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines an interface to control the android device.
     /// </summary>
-    public interface IAndroidDevice : IAndroidUiMapper, IAndroidServiceContainer, IAdbTerminalContainer
+    public interface IAndroidDevice : IAndroidUiMapper, IAndroidServiceProvider, IAdbTerminalProvider
     {
         /// <summary>
         /// Gets the serial of the device

@@ -4,7 +4,7 @@ using Testura.Android.Device.Server;
 using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes;
 
-namespace Testura.Android.Tests.Device.Services.Default
+namespace Testura.Android.Tests.Device.Services
 {
     [TestFixture]
     public class UiServiceTests

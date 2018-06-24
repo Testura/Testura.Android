@@ -93,7 +93,7 @@ namespace Testura.Android.Device.Services.Ui
                     if ((DateTime.Now - startTime).TotalSeconds > timeout.TotalSeconds)
                     {
                         DeviceLogger.Log("Failed to find node, last xml dump: ", DeviceLogger.LogLevels.Warning);
-                        DeviceLogger.Log(_lastScreenDump?.Replace(System.Environment.NewLine, "replacement text"), DeviceLogger.LogLevels.Warning);
+                        DeviceLogger.Log(_lastScreenDump?.Replace(Environment.NewLine, "replacement text"), DeviceLogger.LogLevels.Warning);
                         throw;
                     }
                 }

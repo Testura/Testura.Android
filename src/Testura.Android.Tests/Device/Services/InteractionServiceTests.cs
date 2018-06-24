@@ -1,12 +1,11 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using Testura.Android.Device;
 using Testura.Android.Device.Server;
 using Testura.Android.Device.Services;
 using Testura.Android.Device.Services.Adb;
 
-namespace Testura.Android.Tests.Device.Services.Default
+namespace Testura.Android.Tests.Device.Services
 {
     [TestFixture]
     public class InteractionServiceTests

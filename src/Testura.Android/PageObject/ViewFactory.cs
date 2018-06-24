@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Testura.Android.Device;
 using Testura.Android.Device.Ui.Objects;
@@ -13,7 +14,6 @@ namespace Testura.Android.PageObject
             MapUiObjectsFromProperties(obj, obj.GetType(), mapper);
             MapUiObjectsFromFields(obj, obj.GetType(), mapper);
         }
-
 
         private static void MapUiObjectsFromProperties(object obj, Type type, IAndroidUiMapper mapper)
         {
@@ -36,14 +36,14 @@ namespace Testura.Android.PageObject
                 var attributes = property.GetCustomAttributes(typeof(UiMapAttribute), true);
                 if (attributes.Length >= 1)
                 {
-                    var attribute = attributes[0] as UiMapAttribute;
+                    var withs = attributes.Cast<UiMapAttribute>().Select(u => u.With).ToArray();
                     if (property.PropertyType == typeof(UiObject))
                     {
-                        property.SetValue(obj, mapper.MapUiNode(attribute.With));
+                        property.SetValue(obj, mapper.MapUiNode(withs));
                     }
                     else
                     {
-                        property.SetValue(obj, mapper.MapUiNodes(attribute.With));
+                        property.SetValue(obj, mapper.MapUiNodes(withs));
                     }
                 }
             }
@@ -67,14 +67,14 @@ namespace Testura.Android.PageObject
                 var attributes = field.GetCustomAttributes(typeof(UiMapAttribute), true);
                 if (attributes.Length >= 1)
                 {
-                    var attribute = attributes[0] as UiMapAttribute;
+                    var withs = attributes.Cast<UiMapAttribute>().Select(u => u.With).ToArray();
                     if (field.FieldType == typeof(UiObject))
                     {
-                        field.SetValue(obj, mapper.MapUiNode(attribute.With));
+                        field.SetValue(obj, mapper.MapUiNode(withs));
                     }
                     else
                     {
-                        field.SetValue(obj, mapper.MapUiNodes(attribute.With));
+                        field.SetValue(obj, mapper.MapUiNodes(withs));
                     }
                 }
             }

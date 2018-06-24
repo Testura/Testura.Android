@@ -144,19 +144,19 @@ namespace Testura.Android.Device.Ui.Search
             switch (attribute)
             {
                 case AttributeTags.TextContains:
-                    return new With(node => node.Text.Contains(value), $"text contains \"{value}\"");
+                    return new With(node => node.Text != null && node.Text.ToLower().Contains(value.ToLower()), $"text contains \"{value}\"");
                 case AttributeTags.Text:
-                    return new With(node => node.Text == value, $"text equals \"{value}\"");
+                    return new With(node => node.Text != null && node.Text.Equals(value, StringComparison.OrdinalIgnoreCase), $"text equals \"{value}\"");
                 case AttributeTags.ResourceId:
-                    return new With(node => node.ResourceId == value, $"resource id equals \"{value}\"");
+                    return new With(node => node.ResourceId != null && node.ResourceId.Equals(value, StringComparison.OrdinalIgnoreCase), $"resource id equals \"{value}\"");
                 case AttributeTags.ContentDesc:
-                    return new With(node => node.ContentDesc == value, $"content desc equals \"{value}\"");
+                    return new With(node => node.ContentDesc != null && node.ContentDesc.Equals(value, StringComparison.OrdinalIgnoreCase), $"content desc equals \"{value}\"");
                 case AttributeTags.Class:
-                    return new With(node => node.Class == value, $"class equals \"{value}\"");
+                    return new With(node => node.Class != null && node.Class.Equals(value, StringComparison.OrdinalIgnoreCase), $"class equals \"{value}\"");
                 case AttributeTags.Index:
-                    return new With(node => node.Index == value, $"index equals {value}");
+                    return new With(node => node.Index != null && node.Index.Equals(value, StringComparison.OrdinalIgnoreCase), $"index equals {value}");
                 case AttributeTags.Package:
-                    return new With(node => node.Package == value, $"package equals \"{value}\"");
+                    return new With(node => node.Package != null && node.Package.Equals(value, StringComparison.OrdinalIgnoreCase), $"package equals \"{value}\"");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null);
             }

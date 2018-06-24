@@ -15,8 +15,8 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <param name="deviceConfiguration">Current device configuration.</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
-        public EventLogcatWatcher(IAdbTerminalContainer adbTerminalHandler, string[] tags, bool flushLogcat = false)
-            : base(adbTerminalHandler, tags, flushLogcat)
+        public EventLogcatWatcher(IAdbTerminalProvider adbTerminalProvider, string[] tags, bool flushLogcat = false)
+            : base(adbTerminalProvider, tags, flushLogcat)
         {
         }
 
