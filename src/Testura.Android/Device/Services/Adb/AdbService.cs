@@ -12,6 +12,7 @@ namespace Testura.Android.Device.Services.Adb
     /// </summary>
     public class AdbService : IAdbShellService, IAdbInstallService
     {
+        private const string TemporaryScreencapPath = "sdcard/temp_screencap_1234.png";
         private readonly AdbTerminal _adbTerminal;
 
         /// <summary>
@@ -168,10 +169,9 @@ namespace Testura.Android.Device.Services.Adb
                 throw new ArgumentException("Argument is null or empty", nameof(localPath));
             }
 
-            var remotePath = "sdcard/temp_screencap_1234.png";
-            ExecuteCommand("shell", "screencap", remotePath);
-            Pull(remotePath, localPath);
-            ExecuteCommand("shell", "rm", remotePath);
+            ExecuteCommand("shell", "screencap", TemporaryScreencapPath);
+            Pull(TemporaryScreencapPath, localPath);
+            ExecuteCommand("shell", "rm", TemporaryScreencapPath);
         }
 
         /// <summary>

@@ -51,7 +51,7 @@ namespace Testura.Android.Util
                 using (var command = Command.Run(
                     GetAdbExe(),
                     allArguments,
-                    options: o => o.Timeout(TimeSpan.FromMinutes(1))))
+                    o => o.Timeout(TimeSpan.FromMinutes(1))))
                 {
                     var output = command.StandardOutput.ReadToEnd();
                     var error = command.StandardError.ReadToEnd();
@@ -162,12 +162,7 @@ namespace Testura.Android.Util
 
         private string GetAdbExe()
         {
-            if (string.IsNullOrEmpty(_adbPath))
-            {
-                return "adb.exe";
-            }
-
-            return _adbPath;
+            return string.IsNullOrEmpty(_adbPath) ? "adb.exe" : _adbPath;
         }
     }
 }

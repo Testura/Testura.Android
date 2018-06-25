@@ -22,7 +22,7 @@ namespace Testura.Android.Util
             }
             else
             {
-                for (int n = 0; n < withs.Count; n++)
+                for (var n = 0; n < withs.Count; n++)
                 {
                     errorMessage.Append($"{withs[n].ErrorMessage}");
                     if (n < withs.Count - 2)

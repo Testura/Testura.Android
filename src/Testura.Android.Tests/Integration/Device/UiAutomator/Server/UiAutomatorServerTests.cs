@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Server;
 using Testura.Android.Util;
 using Assert = NUnit.Framework.Assert;

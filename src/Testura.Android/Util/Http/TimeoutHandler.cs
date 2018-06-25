@@ -38,12 +38,10 @@ namespace Testura.Android.Util.Http
                 // No need to create a CTS if there's no timeout
                 return null;
             }
-            else
-            {
-                var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                cts.CancelAfter(timeout);
-                return cts;
-            }
+
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            cts.CancelAfter(timeout);
+            return cts;
         }
     }
 }

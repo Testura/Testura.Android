@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Xml.Linq;
 using Moq;
 using Testura.Android.Device;
 using Testura.Android.Device.Server;
-using Testura.Android.Device.Services;
 using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes;
 using Testura.Android.Device.Ui.Nodes.Data;

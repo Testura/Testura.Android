@@ -5,7 +5,6 @@ using System.Xml.Linq;
 using Moq;
 using NUnit.Framework;
 using Testura.Android.Device.Ui.Nodes.Data;
-using Testura.Android.Device.Ui.Objects;
 using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects

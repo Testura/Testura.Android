@@ -13,7 +13,7 @@ namespace Testura.Android.Util.LogcatWatchers
     public abstract class LogcatWatcher
     {
         private readonly AdbTerminal _adbTerminal;
-        private readonly IEnumerable<string> _tags;
+        private readonly IList<string> _tags;
         private readonly bool _flushLogcat;
         private Task _task;
         private CancellationTokenSource _cancellationTokenSource;
@@ -27,7 +27,7 @@ namespace Testura.Android.Util.LogcatWatchers
         protected LogcatWatcher(AdbTerminal adbTerminal, IEnumerable<string> tags, bool flushLogcat = false)
         {
             _adbTerminal = adbTerminal;
-            _tags = tags;
+            _tags = new List<string>(tags);
             _flushLogcat = flushLogcat;
         }
 
@@ -57,7 +57,7 @@ namespace Testura.Android.Util.LogcatWatchers
 
             if (_flushLogcat)
             {
-                _adbTerminal.ExecuteAdbCommand(new[] { "logcat", "-c" });
+                _adbTerminal.ExecuteAdbCommand("logcat", "-c");
             }
 
             _cancellationTokenSource = new CancellationTokenSource();

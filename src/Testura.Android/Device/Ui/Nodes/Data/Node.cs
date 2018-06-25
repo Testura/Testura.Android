@@ -154,16 +154,23 @@ namespace Testura.Android.Device.Ui.Nodes.Data
             var bounds = Element.Attribute("bounds");
 
             // Could we use regexp? Yes, but this is more hardcore.
+            if (bounds == null)
+            {
+                return new List<Coordinate>();
+            }
+
             var values = bounds.Value
                 .Replace("][", ",")
                 .Replace("[", string.Empty)
                 .Replace("]", string.Empty)
                 .Split(',');
+
             return new List<Coordinate>
             {
                 new Coordinate(int.Parse(values[0]), int.Parse(values[1])),
                 new Coordinate(int.Parse(values[2]), int.Parse(values[3]))
             };
+
         }
 
         private bool ParseAttribute(string name)

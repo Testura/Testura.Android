@@ -24,9 +24,7 @@ namespace Testura.Android.Util.Http
                 throw new ArgumentNullException(nameof(request));
             }
 
-            object value;
-
-            if (request.Properties.TryGetValue(TimeoutPropertyKey, out value))
+            if (request.Properties.TryGetValue(TimeoutPropertyKey, out var value))
             {
                 if (value is TimeSpan)
                 {

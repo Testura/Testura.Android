@@ -110,13 +110,12 @@ namespace Testura.Android.Util.Helpers
             }
         }
 
-        private static void BuildError(Dictionary<Task<bool>, Func<TimeSpan, bool>> invokeMethodByTask, IEnumerable<Task<bool>> failedTasks)
+        private static void BuildError(IReadOnlyDictionary<Task<bool>, Func<TimeSpan, bool>> invokeMethodByTask, IEnumerable<Task<bool>> failedTasks)
         {
             var errorMessage = new StringBuilder();
             foreach (var notCompletedTask in failedTasks)
             {
-                var uiObject = invokeMethodByTask[notCompletedTask].Target as UiObject;
-                if (uiObject != null)
+                if (invokeMethodByTask[notCompletedTask].Target is UiObject uiObject)
                 {
                     errorMessage.Append($"{WithErrorMessageBuilder.BuildWithErrorMessage(uiObject.Withs).Replace("Could not find node where", "Node where")} \r\n");
                 }

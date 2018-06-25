@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
-using Moq;
 using NUnit.Framework;
 using Testura.Android.Device;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Ui.Objects;
-using Testura.Android.Device.Ui.Search;
 using Testura.Android.PageObject;
 using Testura.Android.PageObject.Attributes;
 using Testura.Android.Util;

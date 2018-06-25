@@ -17,6 +17,7 @@ namespace Testura.Android.Util.Walker
     /// </summary>
     public class AppWalker
     {
+        private const int ForceMaxTries = 20;
         private readonly IList<IAppWalkerInput> _inputs;
         private readonly AppWalkerConfiguration _appWalkerConfiguration;
         private readonly Random _rnd;
@@ -90,7 +91,7 @@ namespace Testura.Android.Util.Walker
 
             var currentPackageAndActivity = device.Activity.GetCurrent();
             var numberOfTimesOnPackageAndAcivity = 0;
-            var uiService = device.Ui as UiService;
+            var uiService = device.Ui;
             var start = DateTime.Now;
 
             while (true)
@@ -161,9 +162,8 @@ namespace Testura.Android.Util.Walker
         /// </summary>
         /// <param name="uiService">The ui service on the current device</param>
         /// <returns>All nodes on the screen</returns>
-        private IList<Node> ForceGetAllNodes(UiService uiService)
+        private IList<Node> ForceGetAllNodes(INodeFinderService uiService)
         {
-            var maxTries = 20;
             var tries = 0;
             while (true)
             {
@@ -173,7 +173,7 @@ namespace Testura.Android.Util.Walker
                 }
                 catch (UiNodeNotFoundException)
                 {
-                    if (tries >= maxTries)
+                    if (tries >= ForceMaxTries)
                     {
                         throw;
                     }

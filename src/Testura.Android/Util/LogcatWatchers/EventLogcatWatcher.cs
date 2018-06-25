@@ -26,7 +26,7 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <param name="adbTerminalProvider">An adb terminal provider</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
-        public EventLogcatWatcher(IAdbTerminalProvider adbTerminalProvider, string[] tags, bool flushLogcat = false)
+        public EventLogcatWatcher(IAdbTerminalProvider adbTerminalProvider, IEnumerable<string> tags, bool flushLogcat = false)
             : base(adbTerminalProvider, tags, flushLogcat)
         {
         }

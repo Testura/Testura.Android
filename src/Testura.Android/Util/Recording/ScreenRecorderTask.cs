@@ -65,7 +65,7 @@ namespace Testura.Android.Util.Recording
             {
                 "shell",
                 "screenrecord",
-                _lastFullTemporaryRecordingPath,
+                _lastFullTemporaryRecordingPath
             };
             commands.AddRange(configurations.GetArguments());
             _adbTerminal.StartAdbProcessWithoutShell(commands.ToArray());

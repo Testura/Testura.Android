@@ -6,7 +6,7 @@ namespace Testura.Android.PageObject
     /// Defines and interface to validate one or multiple things on a view
     /// </summary>
     /// <typeparam name="T">View to validate</typeparam>
-    public interface IAndroidViewValidation<T>
+    public interface IAndroidViewValidation<in T>
         where T : View
     {
         /// <summary>

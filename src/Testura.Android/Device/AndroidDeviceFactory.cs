@@ -77,11 +77,11 @@ namespace Testura.Android.Device
             }
 
             var possibleDevices = new List<DeviceConfiguration>();
-            for (int i = 1; i < devices.Length; i++)
+            for (var i = 1; i < devices.Length; i++)
             {
                 possibleDevices.Add(new DeviceConfiguration
                 {
-                    Serial = devices[i].Split('\t').First(),
+                    Serial = devices[i].Split('\t').First()
                 });
             }
 
@@ -148,7 +148,7 @@ namespace Testura.Android.Device
             return BusyDevices.All(b => b.Serial != serial);
         }
 
-        private int GetPort(IList<DeviceConfiguration> possibleDevices, DeviceConfiguration configuration)
+        private int GetPort(ICollection<DeviceConfiguration> possibleDevices, DeviceConfiguration configuration)
         {
             if (possibleDevices.Select(p => p.Port).Distinct().Count() == possibleDevices.Count)
             {

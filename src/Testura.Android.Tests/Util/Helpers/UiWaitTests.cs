@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 using NUnit.Framework;
 using Testura.Android.Device.Ui.Search;
