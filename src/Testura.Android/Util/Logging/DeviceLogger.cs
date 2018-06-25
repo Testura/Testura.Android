@@ -14,7 +14,7 @@ namespace Testura.Android.Util.Logging
             Debug,
             Info,
             Warning,
-            Error,
+            Error
         }
 
         private static IList<ILogListener> _logListeners;

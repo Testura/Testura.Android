@@ -15,10 +15,10 @@ namespace Testura.Android.Util.Walker.Cases.Stop
         /// <summary>
         /// Initializes a new instance of the <see cref="FuncStopCase"/> class.
         /// </summary>
-        /// <param name="bys">Withs to find the node in our case</param>
+        /// <param name="withs">Withs to find the node in our case</param>
         /// <param name="case">A func which take the current device and return if we should stop the run or not</param>
-        public FuncStopCase(IList<With> bys, Func<AndroidDevice, bool> @case)
-            : base(bys)
+        public FuncStopCase(IList<With> withs, Func<AndroidDevice, bool> @case)
+            : base(withs)
         {
             _case = @case;
         }

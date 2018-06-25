@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Medallion.Shell;
 using Testura.Android.Device.Services.Adb;
 using Testura.Android.Util.Logging;
 
@@ -90,23 +91,34 @@ namespace Testura.Android.Util.Recording
 
             try
             {
-                var screenRecordings = _adbService.Shell("ps | grep screenrecord")
-                    .Split(new[] {"\r\r\n"}, StringSplitOptions.RemoveEmptyEntries);
-
+                var screenRecordings = GetCurrentRecordingProcesses();
                 foreach (var screenRecording in screenRecordings)
                 {
-                    var fixedRow = screenRecording.Replace("shell", string.Empty).Split((string[])null, StringSplitOptions.RemoveEmptyEntries);
+                    var fixedRow = screenRecording.Replace("shell", string.Empty)
+                        .Split((string[])null, StringSplitOptions.RemoveEmptyEntries);
                     if (fixedRow.Any())
                     {
                         var pid = fixedRow.First();
                         _adbService.Shell($"kill -2 {pid}");
                     }
                 }
+
+                var start = DateTime.Now;
+                while ((DateTime.Now - start).Minutes < 2 && GetCurrentRecordingProcesses().Any())
+                {
+                }
+
+                DeviceLogger.Log("Could not terminate recording process?", DeviceLogger.LogLevels.Warning);
             }
             catch (Exception)
             {
                 // No recordings found
             }
+        }
+
+        private string[] GetCurrentRecordingProcesses()
+        {
+            return _adbService.Shell("ps | grep screenrecord").Split(new[] { "\r\r\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }
