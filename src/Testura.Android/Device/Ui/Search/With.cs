@@ -37,7 +37,7 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(text));
             }
 
-            return Attribute(AttributeTags.Text, text);
+            return Attribute(AttributeTag.Text, text);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(text));
             }
 
-            return Attribute(AttributeTags.TextContains, text);
+            return Attribute(AttributeTag.TextContains, text);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(id));
             }
 
-            return Attribute(AttributeTags.ResourceId, id);
+            return Attribute(AttributeTag.ResourceId, id);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(contentDesc));
             }
 
-            return Attribute(AttributeTags.ContentDesc, contentDesc);
+            return Attribute(AttributeTag.ContentDesc, contentDesc);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(@class));
             }
 
-            return Attribute(AttributeTags.Class, @class);
+            return Attribute(AttributeTag.Class, @class);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Testura.Android.Device.Ui.Search
         /// <returns>An instance of the with object containing the search function.</returns>
         public static With Index(int index)
         {
-            return Attribute(AttributeTags.Index, index.ToString());
+            return Attribute(AttributeTag.Index, index.ToString());
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Testura.Android.Device.Ui.Search
         /// <returns>An instance of the with objecting containing the search function.</returns>
         public static With Package(string package)
         {
-            return Attribute(AttributeTags.Package, package);
+            return Attribute(AttributeTag.Package, package);
         }
 
         /// <summary>
@@ -139,23 +139,23 @@ namespace Testura.Android.Device.Ui.Search
             return new With(predicate, customErrorMessage ?? "complex lambda");
         }
 
-        private static With Attribute(AttributeTags attribute, string value)
+        private static With Attribute(AttributeTag attribute, string value)
         {
             switch (attribute)
             {
-                case AttributeTags.TextContains:
+                case AttributeTag.TextContains:
                     return new With(node => node.Text != null && node.Text.ToLower().Contains(value.ToLower()), $"text contains \"{value}\"");
-                case AttributeTags.Text:
+                case AttributeTag.Text:
                     return new With(node => node.Text != null && node.Text.Equals(value, StringComparison.OrdinalIgnoreCase), $"text equals \"{value}\"");
-                case AttributeTags.ResourceId:
+                case AttributeTag.ResourceId:
                     return new With(node => node.ResourceId != null && node.ResourceId.Equals(value, StringComparison.OrdinalIgnoreCase), $"resource id equals \"{value}\"");
-                case AttributeTags.ContentDesc:
+                case AttributeTag.ContentDesc:
                     return new With(node => node.ContentDesc != null && node.ContentDesc.Equals(value, StringComparison.OrdinalIgnoreCase), $"content desc equals \"{value}\"");
-                case AttributeTags.Class:
+                case AttributeTag.Class:
                     return new With(node => node.Class != null && node.Class.Equals(value, StringComparison.OrdinalIgnoreCase), $"class equals \"{value}\"");
-                case AttributeTags.Index:
+                case AttributeTag.Index:
                     return new With(node => node.Index != null && node.Index.Equals(value, StringComparison.OrdinalIgnoreCase), $"index equals {value}");
-                case AttributeTags.Package:
+                case AttributeTag.Package:
                     return new With(node => node.Package != null && node.Package.Equals(value, StringComparison.OrdinalIgnoreCase), $"package equals \"{value}\"");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null);

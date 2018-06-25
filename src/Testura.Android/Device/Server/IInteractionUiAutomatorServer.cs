@@ -31,7 +31,7 @@ namespace Testura.Android.Device.Server
         /// </summary>
         /// <param name="keyEvent">Key event to send to the device</param>
         /// <returns>True if we successfully input key event, otherwise false.</returns>
-        bool InputKeyEvent(KeyEvents keyEvent);
+        bool InputKeyEvent(KeyEvent keyEvent);
 
         /// <summary>
         /// Send a input text request to the ui automator server on the android device.

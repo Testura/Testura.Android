@@ -26,7 +26,6 @@ namespace Testura.Android.Device.Services.Ui
         /// <summary>
         /// Initializes a new instance of the <see cref="UiService"/> class.
         /// </summary>
-        /// <param name="screenDumper">The screen dumper.</param>
         /// <param name="uiAutomatorServer">The ui server used to get screen dumps</param>
         /// <param name="nodeParser">The node parser.</param>
         /// <param name="nodeFinder">The node finder.</param>
@@ -49,8 +48,8 @@ namespace Testura.Android.Device.Services.Ui
         /// <summary>
         /// Find a node on the screen
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
         /// <param name="withs">Find node with</param>
+        /// <param name="timeout">Timeout in seconds</param>
         /// <returns>Returns found node</returns>
         /// <exception cref="UiNodeNotFoundException">If we timeout and can't find the node</exception>
         public Node FindNode(IList<With> withs, TimeSpan timeout)
@@ -61,8 +60,8 @@ namespace Testura.Android.Device.Services.Ui
         /// <summary>
         /// Find multiple nodes on the screen
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
         /// <param name="withs">Find node with</param>
+        /// <param name="timeout">Timeout in seconds</param>
         /// <returns>Returns found node</returns>
         /// <exception cref="UiNodeNotFoundException">If we timeout and can't find any nodes</exception>
         public IList<Node> FindNodes(IList<With> withs, TimeSpan timeout)
@@ -92,8 +91,8 @@ namespace Testura.Android.Device.Services.Ui
                 {
                     if ((DateTime.Now - startTime).TotalMilliseconds > timeout.TotalMilliseconds)
                     {
-                        DeviceLogger.Log("Failed to find node, last xml dump: ", DeviceLogger.LogLevels.Warning);
-                        DeviceLogger.Log(_lastScreenDump?.Replace(Environment.NewLine, "replacement text"), DeviceLogger.LogLevels.Warning);
+                        DeviceLogger.Log("Failed to find node, last xml dump: ", DeviceLogger.LogLevel.Warning);
+                        DeviceLogger.Log(_lastScreenDump?.Replace(Environment.NewLine, "replacement text"), DeviceLogger.LogLevel.Warning);
                         throw;
                     }
                 }

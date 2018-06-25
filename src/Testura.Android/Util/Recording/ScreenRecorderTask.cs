@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Medallion.Shell;
 using Testura.Android.Device.Services.Adb;
 using Testura.Android.Util.Logging;
 
@@ -32,9 +31,9 @@ namespace Testura.Android.Util.Recording
         /// <param name="removeRecordingFromDevice">True if we should remove recording from device after pulling.</param>
         public void StopRecording(string savePath, bool removeRecordingFromDevice = true)
         {
-            DeviceLogger.Log("Request to stop recording..", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log("Request to stop recording..", DeviceLogger.LogLevel.Info);
             StopRecordingProcess();
-            DeviceLogger.Log($"Pulling recording to {savePath}", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log($"Pulling recording to {savePath}", DeviceLogger.LogLevel.Info);
             _adbService.Pull(_lastFullTemporaryRecordingPath, savePath);
             RemoveTemporaryRecordingOnDevice(removeRecordingFromDevice);
         }
@@ -45,7 +44,7 @@ namespace Testura.Android.Util.Recording
         /// <param name="removeRecordingFromDevice">True if we should remove recording from device after pulling.</param>
         public void StopRecording(bool removeRecordingFromDevice = true)
         {
-            DeviceLogger.Log("Request to stop recording without saving movie..", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log("Request to stop recording without saving movie..", DeviceLogger.LogLevel.Info);
             StopRecordingProcess();
             RemoveTemporaryRecordingOnDevice(removeRecordingFromDevice);
         }
@@ -58,9 +57,9 @@ namespace Testura.Android.Util.Recording
             }
 
             TerminateAllCurrentRecordings();
-            DeviceLogger.Log($"Starting new screen recording with {configurations.TimeLimit.TotalSeconds} seconds time limit...", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log($"Starting new screen recording with {configurations.TimeLimit.TotalSeconds} seconds time limit...", DeviceLogger.LogLevel.Info);
             _lastFullTemporaryRecordingPath = Path.Combine(_temporaryDeviceDirectory, $"{Guid.NewGuid().ToString()}.mp4");
-            DeviceLogger.Log($"Saving temporary recording at {_lastFullTemporaryRecordingPath}", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log($"Saving temporary recording at {_lastFullTemporaryRecordingPath}", DeviceLogger.LogLevel.Info);
 
             var commands = new List<string>
             {
@@ -87,7 +86,7 @@ namespace Testura.Android.Util.Recording
 
         private void TerminateAllCurrentRecordings()
         {
-            DeviceLogger.Log("Terminating all current recordings..", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log("Terminating all current recordings..", DeviceLogger.LogLevel.Info);
 
             try
             {
@@ -108,7 +107,7 @@ namespace Testura.Android.Util.Recording
                 {
                 }
 
-                DeviceLogger.Log("Could not terminate recording process?", DeviceLogger.LogLevels.Warning);
+                DeviceLogger.Log("Could not terminate recording process?", DeviceLogger.LogLevel.Warning);
             }
             catch (Exception)
             {

@@ -25,26 +25,26 @@ namespace Testura.Android.Util
 
         public void InstallDependencies(IAdbInstallService adbInstallService, string dependenciesDirectory)
         {
-            DeviceLogger.Log("Installing all dependencies..", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log("Installing all dependencies..", DeviceLogger.LogLevel.Info);
             adbInstallService.InstallApp(Path.Combine(dependenciesDirectory, ServerApkName));
             adbInstallService.InstallApp(Path.Combine(dependenciesDirectory, ServerUiAutomatorApkName));
         }
 
         public void InstallDependenciesIfMissing(IAdbInstallService adbInstallService, IPackageService activityService, string dependenciesDirectory)
         {
-            DeviceLogger.Log("Checking if helper is installed..", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log("Checking if helper is installed..", DeviceLogger.LogLevel.Info);
             if (!activityService.IsPackagedInstalled("com.testura.server"))
             {
-                DeviceLogger.Log("..not installed.", DeviceLogger.LogLevels.Info);
+                DeviceLogger.Log("..not installed.", DeviceLogger.LogLevel.Info);
                 InstallDependencies(adbInstallService, dependenciesDirectory);
             }
             else
             {
-                DeviceLogger.Log("..already installed.", DeviceLogger.LogLevels.Info);
+                DeviceLogger.Log("..already installed.", DeviceLogger.LogLevel.Info);
                 var latestVersion = Version.Parse(ServerApkVersion);
                 if (activityService.GetPackageVersion("com.testura.server") < latestVersion)
                 {
-                    DeviceLogger.Log("But you don't have the current/latest version. Updating your dependencies", DeviceLogger.LogLevels.Info);
+                    DeviceLogger.Log("But you don't have the current/latest version. Updating your dependencies", DeviceLogger.LogLevel.Info);
                     InstallDependencies(adbInstallService, dependenciesDirectory);
                 }
             }

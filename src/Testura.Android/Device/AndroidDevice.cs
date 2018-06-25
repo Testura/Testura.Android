@@ -54,7 +54,6 @@ namespace Testura.Android.Device
         /// </summary>
         public AdbService Adb { get; }
 
-
         /// <summary>
         /// Gets the ui service of an android device.
         /// </summary>

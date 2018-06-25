@@ -25,6 +25,11 @@ namespace Testura.Android.PageObject
         /// </summary>
         protected IAndroidDevice Device { get; set; }
 
+        /// <summary>
+        /// Execute all provided validations on the view
+        /// </summary>
+        /// <typeparam name="T">View to validate</typeparam>
+        /// <param name="validators">An array of validators to execute</param>
         protected void Validate<T>(params IAndroidViewValidation<T>[] validators)
             where T : View
         {
@@ -46,6 +51,5 @@ namespace Testura.Android.PageObject
                 throw new AggregateException(exceptions);
             }
         }
-
     }
 }

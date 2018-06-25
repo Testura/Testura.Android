@@ -41,7 +41,7 @@ namespace Testura.Android.Device.Services.Adb
         /// <summary>
         /// Issue an adb command in the target emulator/device instance
         /// </summary>
-        /// <param name="command">Command to execute</param>
+        /// <param name="commands">Commands to execute</param>
         /// <returns>The result from executing the command</returns>
         public string Execute(string[] commands)
         {
@@ -188,7 +188,6 @@ namespace Testura.Android.Device.Services.Adb
 
         /// <summary>
         /// Recording the display of device
-        /// 
         /// Will terminate any ongoing recordings.
         /// </summary>
         /// <param name="configuration">Screen recording configuration (time limit, bit rate and size)</param>

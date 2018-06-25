@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using Testura.Android.Device;
-using Testura.Android.Device.Configurations;
 
 namespace Testura.Android.Util.LogcatWatchers
 {
@@ -12,7 +12,18 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="EventLogcatWatcher"/> class.
         /// </summary>
-        /// <param name="deviceConfiguration">Current device configuration.</param>
+        /// <param name="adbTerminal">The adb terminal used to send adb commands</param>
+        /// <param name="tags">A set of logcat tags.</param>
+        /// <param name="flushLogcat">If we should flush logcat before starting.</param>
+        public EventLogcatWatcher(AdbTerminal adbTerminal, IEnumerable<string> tags, bool flushLogcat = false)
+            : base(adbTerminal, tags, flushLogcat)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventLogcatWatcher"/> class.
+        /// </summary>
+        /// <param name="adbTerminalProvider">An adb terminal provider</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
         public EventLogcatWatcher(IAdbTerminalProvider adbTerminalProvider, string[] tags, bool flushLogcat = false)

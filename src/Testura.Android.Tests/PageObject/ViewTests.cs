@@ -19,23 +19,23 @@ namespace Testura.Android.Tests.PageObject
 
         private class ExampleClass
         {
-            [UiMap(with: AttributeTags.Text, value: "test")]
+            [UiMap(with: AttributeTag.Text, value: "test")]
             private UiObject _fieldObject;
 
-            [UiMap(with: AttributeTags.Text, value: "test")]
+            [UiMap(with: AttributeTag.Text, value: "test")]
             private UiObjects _fieldObjects;
 
-            [UiMap(with: AttributeTags.Class, value: "test")]
+            [UiMap(with: AttributeTag.Class, value: "test")]
             public UiObject PropertyObject { get; private set; }
 
-            [UiMap(with: AttributeTags.Index, value: "0")]
-            [UiMap(with: AttributeTags.Class, value: "test")]
+            [UiMap(with: AttributeTag.Index, value: "0")]
+            [UiMap(with: AttributeTag.Class, value: "test")]
             public UiObject PropertyObjectWithMultiple { get; private set; }
 
-            [UiMap(with: AttributeTags.Class, value: "test")]
+            [UiMap(with: AttributeTag.Class, value: "test")]
             public UiObjects PropertyObjects { get; private set; }
 
-            [UiMap(with: AttributeTags.Class, value: "test")]
+            [UiMap(with: AttributeTag.Class, value: "test")]
             internal UiObject InternalProperty { get; private set; }
         }
 

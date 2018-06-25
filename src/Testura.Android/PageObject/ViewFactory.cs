@@ -7,8 +7,17 @@ using Testura.Android.PageObject.Attributes;
 
 namespace Testura.Android.PageObject
 {
+    /// <summary>
+    /// Provides the functionality to map ui nodes through the "UiMap" attribute.
+    /// </summary>
     public static class ViewFactory
     {
+        /// <summary>
+        /// Go through all fields/properties in the provided object and look for those
+        /// that have the "UiMap" attribute and initialze them.
+        /// </summary>
+        /// <param name="mapper">The mapper used to map the UI objects.</param>
+        /// <param name="obj">Object to initialize</param>
         public static void MapUiNodes(IAndroidUiMapper mapper, object obj)
         {
             MapUiObjectsFromProperties(obj, obj.GetType(), mapper);

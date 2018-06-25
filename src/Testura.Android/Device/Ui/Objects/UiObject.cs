@@ -58,7 +58,7 @@ namespace Testura.Android.Device.Ui.Objects
         {
             Tap(timeout);
             var tries = 0;
-            while (!WaitForValue(n => n.Focused, TimeSpan.FromSeconds(1)) && tries < 3)
+            while (!WaitUntil(n => n.Focused, TimeSpan.FromSeconds(1)) && tries < 3)
             {
                 Tap(TimeSpan.FromSeconds(1));
                 tries++;
@@ -91,9 +91,9 @@ namespace Testura.Android.Device.Ui.Objects
         /// </summary>
         /// <param name="expectedValues">Expected values on the node.</param>
         /// <returns>True if node values match before timeout, otherwise false.</returns>
-        public bool WaitForValue(Func<Node, bool> expectedValues)
+        public bool WaitUntil(Func<Node, bool> expectedValues)
         {
-            return WaitForValue(expectedValues, TimeSpan.FromSeconds(20));
+            return WaitUntil(expectedValues, TimeSpan.FromSeconds(20));
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <param name="expectedValues">Expected values on the node.</param>
         /// <param name="timeout">Timeout</param>
         /// <returns>True if node values match before timeout, otherwise false.</returns>
-        public bool WaitForValue(Func<Node, bool> expectedValues, TimeSpan timeout)
+        public bool WaitUntil(Func<Node, bool> expectedValues, TimeSpan timeout)
         {
             var startTime = DateTime.Now;
             while (true)

@@ -52,7 +52,7 @@ namespace Testura.Android.Util.Walker.Input
 
             if (nodes.Count == 0)
             {
-                device.Interaction.InputKeyEvent(KeyEvents.Back);
+                device.Interaction.InputKeyEvent(KeyEvent.Back);
                 return;
             }
 

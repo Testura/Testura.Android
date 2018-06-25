@@ -21,7 +21,7 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="LogcatWatcher"/> class.
         /// </summary>
-        /// <param name="deviceConfiguration">Current device configuration.</param>
+        /// <param name="adbTerminal">The adb terminal used to send adb commands</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
         protected LogcatWatcher(AdbTerminal adbTerminal, IEnumerable<string> tags, bool flushLogcat = false)
@@ -34,7 +34,7 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="LogcatWatcher"/> class.
         /// </summary>
-        /// <param name="deviceConfiguration">Current device configuration.</param>
+        /// <param name="adbTerminalProvider">An adb terminal orovider</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
         protected LogcatWatcher(IAdbTerminalProvider adbTerminalProvider, IEnumerable<string> tags, bool flushLogcat = false)
@@ -49,11 +49,11 @@ namespace Testura.Android.Util.LogcatWatchers
         {
             if (_task != null)
             {
-                DeviceLogger.Log("Logcat watcher aldready started.. closing last process", DeviceLogger.LogLevels.Info);
+                DeviceLogger.Log("Logcat watcher aldready started.. closing last process", DeviceLogger.LogLevel.Info);
                 Stop();
             }
 
-            DeviceLogger.Log("Starting logcat watcher..", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log("Starting logcat watcher..", DeviceLogger.LogLevel.Info);
 
             if (_flushLogcat)
             {
@@ -93,7 +93,7 @@ namespace Testura.Android.Util.LogcatWatchers
 
                             if (_cancellationTokenSource.IsCancellationRequested)
                             {
-                                DeviceLogger.Log("Logcat watcher cancellation requested, stopping task.", DeviceLogger.LogLevels.Info);
+                                DeviceLogger.Log("Logcat watcher cancellation requested, stopping task.", DeviceLogger.LogLevel.Info);
                                 process.Kill();
                                 return;
                             }
@@ -107,7 +107,7 @@ namespace Testura.Android.Util.LogcatWatchers
         /// </summary>
         public void Stop()
         {
-            DeviceLogger.Log("Request to stop logcat watcher..", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log("Request to stop logcat watcher..", DeviceLogger.LogLevel.Info);
             _cancellationTokenSource?.Cancel();
             _task?.Wait(2000);
             _task = null;

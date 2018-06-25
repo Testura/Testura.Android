@@ -47,7 +47,7 @@ namespace Testura.Android.Device.Services
         /// </summary>
         /// <param name="swipeDirection">Direction to swipe</param>
         /// <param name="duration">Duration of the swipe in milliseconds</param>
-        public void Swipe(SwipeDirections swipeDirection, int duration)
+        public void Swipe(SwipeDirection swipeDirection, int duration)
         {
             if (_screenBounds == null)
             {
@@ -59,16 +59,16 @@ namespace Testura.Android.Device.Services
 
             switch (swipeDirection)
             {
-                case SwipeDirections.Left:
+                case SwipeDirection.Left:
                     Swipe(middleX, middleY, 0, middleY, duration);
                     break;
-                case SwipeDirections.Up:
+                case SwipeDirection.Up:
                     Swipe(middleX, middleY, middleX, 0, duration);
                     break;
-                case SwipeDirections.Right:
+                case SwipeDirection.Right:
                     Swipe(middleX, middleY, _screenBounds.Width, middleY, duration);
                     break;
-                case SwipeDirections.Down:
+                case SwipeDirection.Down:
                     Swipe(middleX, middleY, middleX, _screenBounds.Height, duration);
                     break;
                 default:
@@ -119,14 +119,14 @@ namespace Testura.Android.Device.Services
         /// Send a key event to the device.
         /// </summary>
         /// <param name="keyEvent">Key event to send to the device</param>
-        public void InputKeyEvent(KeyEvents keyEvent)
+        public void InputKeyEvent(KeyEvent keyEvent)
         {
             _interactionServer.InputKeyEvent(keyEvent);
         }
 
         private void SetScreenHeightAndWidth()
         {
-            DeviceLogger.Log("Getting width and height", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log("Getting width and height", DeviceLogger.LogLevel.Info);
             var widthAndHeight = _adbShellService.Shell("wm size");
             if (string.IsNullOrEmpty(widthAndHeight))
             {
@@ -134,7 +134,7 @@ namespace Testura.Android.Device.Services
             }
 
             var split = widthAndHeight.Replace(" ", string.Empty).Split(':', 'x');
-            DeviceLogger.Log($"Width: {split[split.Length - 2]}, Height: {split[split.Length - 1]}", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log($"Width: {split[split.Length - 2]}, Height: {split[split.Length - 1]}", DeviceLogger.LogLevel.Info);
             _screenBounds = new NodeBounds(int.Parse(split[split.Length - 2]), int.Parse(split[split.Length - 1]));
         }
     }

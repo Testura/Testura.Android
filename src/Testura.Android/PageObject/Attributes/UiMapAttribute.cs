@@ -15,29 +15,29 @@ namespace Testura.Android.PageObject.Attributes
         /// </summary>
         /// <param name="with">Find node with this attribute tag.</param>
         /// <param name="value">Find node with this value on the wanted attribute tag.</param>
-        public UiMapAttribute(AttributeTags with, string value)
+        public UiMapAttribute(AttributeTag with, string value)
         {
             switch (with)
             {
-                case AttributeTags.TextContains:
+                case AttributeTag.TextContains:
                     With = With.ContainsText(value);
                     break;
-                case AttributeTags.Text:
+                case AttributeTag.Text:
                     With = With.Text(value);
                     break;
-                case AttributeTags.ResourceId:
+                case AttributeTag.ResourceId:
                     With = With.ResourceId(value);
                     break;
-                case AttributeTags.ContentDesc:
+                case AttributeTag.ContentDesc:
                     With = With.ContentDesc(value);
                     break;
-                case AttributeTags.Class:
+                case AttributeTag.Class:
                     With = With.Class(value);
                     break;
-                case AttributeTags.Package:
+                case AttributeTag.Package:
                     With = With.Package(value);
                     break;
-                case AttributeTags.Index:
+                case AttributeTag.Index:
                     With = With.Index(int.Parse(value));
                     break;
                 default:

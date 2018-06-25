@@ -27,7 +27,7 @@ namespace Testura.Android.Device.Services
         /// <param name="state">Wanted state of wifi</param>
         public void Wifi(State state)
         {
-            DeviceLogger.Log($"Changing wifi state to {state.ToString()}", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log($"Changing wifi state to {state.ToString()}", DeviceLogger.LogLevel.Info);
             _adbShellService.Shell(state == State.Enable
                 ? $"am startservice -n {PackageName}/{PackageName}.services.settings.WifiService -e enable 1"
                 : $"am startservice -n {PackageName}/{PackageName}.services.settings.WifiService  -e enable 0");
@@ -39,7 +39,7 @@ namespace Testura.Android.Device.Services
         /// <param name="state">Wanted state of bluetooth.</param>
         public void Bluetooth(State state)
         {
-            DeviceLogger.Log($"Changing bluetooth state to {state.ToString()}", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log($"Changing bluetooth state to {state.ToString()}", DeviceLogger.LogLevel.Info);
             _adbShellService.Shell(state == State.Enable
                 ? $"am startservice -n {PackageName}/{PackageName}.services.settings.BluetoothService -e enable 1"
                 : $"am startservice -n {PackageName}/{PackageName}.services.settings.BluetoothService  -e enable 0");
@@ -51,7 +51,7 @@ namespace Testura.Android.Device.Services
         /// <param name="state">Wanted state of gps</param>
         public void Gps(State state)
         {
-            DeviceLogger.Log($"Changing gps state to {state.ToString()}", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log($"Changing gps state to {state.ToString()}", DeviceLogger.LogLevel.Info);
             if (state == State.Enable)
             {
                 _adbShellService.Shell("settings put secure location_providers_allowed +gps");
@@ -72,7 +72,7 @@ namespace Testura.Android.Device.Services
         /// <param name="state">Wanted state of airplane mode</param>
         public void AirplaneMode(State state)
         {
-            DeviceLogger.Log($"Changing airplane mode state to {state == State.Enable}", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log($"Changing airplane mode state to {state == State.Enable}", DeviceLogger.LogLevel.Info);
             _adbShellService.Shell(state == State.Enable
                 ? "settings put global airplane_mode_on 1"
                 : "settings put global airplane_mode_on 0");

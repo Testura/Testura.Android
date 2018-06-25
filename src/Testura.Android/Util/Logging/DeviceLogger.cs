@@ -9,15 +9,33 @@ namespace Testura.Android.Util.Logging
     /// </summary>
     public static class DeviceLogger
     {
-        public enum LogLevels
+        private static IList<ILogListener> _logListeners;
+
+        /// <summary>
+        /// Defines logging severity levels.
+        /// </summary>
+        public enum LogLevel
         {
+            /// <summary>
+            /// Logs that are used for interactive investigation during development. These logs should primarily contain information useful for debugging and have no long-term value.
+            /// </summary>
             Debug,
+
+            /// <summary>
+            /// Logs that track the general flow of the application. These logs should have long-term value.
+            /// </summary>
             Info,
+
+            /// <summary>
+            /// Logs that highlight an abnormal or unexpected event in the application flow, but do not otherwise cause the application execution to stop.
+            /// </summary>
             Warning,
+
+            /// <summary>
+            /// Logs that describe an unrecoverable application or system crash, or a catastrophic failure that requires immediate attention.
+            /// </summary>
             Error
         }
-
-        private static IList<ILogListener> _logListeners;
 
         /// <summary>
         /// Add a new log listener to our log listener list
@@ -73,7 +91,7 @@ namespace Testura.Android.Util.Logging
         /// <param name="sourceFilePath">Full path of the source file that contains the caller.</param>
         internal static void Log(
             string message,
-            LogLevels logLevel,
+            LogLevel logLevel,
             [CallerMemberName] string memberName = "",
             [CallerFilePath] string sourceFilePath = "")
         {

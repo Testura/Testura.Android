@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using Testura.Android.Util;
 using Testura.Android.Util.Extensions;

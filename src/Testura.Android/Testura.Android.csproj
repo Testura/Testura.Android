@@ -90,6 +90,7 @@
     <Compile Include="Util\DependencyInstaller.cs" />
     <Compile Include="Util\Enums.cs" />
     <Compile Include="Util\Exceptions\AdbException.cs" />
+    <Compile Include="Util\Exceptions\AndroidDeviceFactoryException.cs" />
     <Compile Include="Util\Exceptions\TerminalException.cs" />
     <Compile Include="Util\Exceptions\UiAutomatorServerException.cs" />
     <Compile Include="Util\Exceptions\UiNodeNotFoundException.cs" />

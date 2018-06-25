@@ -77,11 +77,11 @@ namespace Testura.Android.Device.Server
         {
             lock (_serverLock)
             {
-                DeviceLogger.Log("Starting server..", DeviceLogger.LogLevels.Info);
+                DeviceLogger.Log("Starting server..", DeviceLogger.LogLevel.Info);
 
                 ForwardPorts();
                 KillAndroidProcess();
-                DeviceLogger.Log("Starting instrumental", DeviceLogger.LogLevels.Info);
+                DeviceLogger.Log("Starting instrumental", DeviceLogger.LogLevel.Info);
                 _currentServerProcess = _adbTerminal.StartAdbProcessWithoutShell(
                     "shell",
                     $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
@@ -100,7 +100,7 @@ namespace Testura.Android.Device.Server
         {
             lock (_serverLock)
             {
-                DeviceLogger.Log("Stopping server", DeviceLogger.LogLevels.Info);
+                DeviceLogger.Log("Stopping server", DeviceLogger.LogLevel.Info);
                 try
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, StopUrl);
@@ -109,7 +109,7 @@ namespace Testura.Android.Device.Server
                 }
                 catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
                 {
-                    DeviceLogger.Log($"Failed stop server, already closed? {ex.Message}", DeviceLogger.LogLevels.Info);
+                    DeviceLogger.Log($"Failed stop server, already closed? {ex.Message}", DeviceLogger.LogLevel.Info);
                 }
 
                 _currentServerProcess?.Kill();
@@ -125,7 +125,7 @@ namespace Testura.Android.Device.Server
         public bool Alive(TimeSpan timeout)
         {
             var time = DateTime.Now;
-            DeviceLogger.Log("Checking if server is alive..", DeviceLogger.LogLevels.Debug);
+            DeviceLogger.Log("Checking if server is alive..", DeviceLogger.LogLevel.Debug);
             while ((DateTime.Now - time).TotalSeconds < timeout.TotalSeconds)
             {
                 var result = Ping();
@@ -135,7 +135,7 @@ namespace Testura.Android.Device.Server
                 }
             }
 
-            DeviceLogger.Log("Server is not alive!", DeviceLogger.LogLevels.Error);
+            DeviceLogger.Log("Server is not alive!", DeviceLogger.LogLevel.Error);
             return false;
         }
 
@@ -150,14 +150,14 @@ namespace Testura.Android.Device.Server
                 var tries = 0;
                 while (tries < RequestTries)
                 {
-                    DeviceLogger.Log("Sending screen dump request", DeviceLogger.LogLevels.Debug);
+                    DeviceLogger.Log("Sending screen dump request", DeviceLogger.LogLevel.Debug);
                     var response = SendServerRequest(DumpUrl, TimeSpan.FromSeconds(15));
                     if (!string.IsNullOrEmpty(response))
                     {
                         return response.Replace("\\\"", "\"");
                     }
 
-                    DeviceLogger.Log("Empty dump from server!", DeviceLogger.LogLevels.Info);
+                    DeviceLogger.Log("Empty dump from server!", DeviceLogger.LogLevel.Info);
 
                     /* In some cases we get stuck and the server is alive
                        but we can't dump the UI. So try a reboot */
@@ -169,7 +169,7 @@ namespace Testura.Android.Device.Server
                     tries--;
                     DeviceLogger.Log(
                         $"Screen dump request failed, trying {tries} more times",
-                        DeviceLogger.LogLevels.Debug);
+                        DeviceLogger.LogLevel.Debug);
                 }
 
                 throw new UiAutomatorServerException("Failed to dump screen");
@@ -208,9 +208,9 @@ namespace Testura.Android.Device.Server
         /// </summary>
         /// <param name="keyEvent">Key event to send to the device</param>
         /// <returns>True if we successfully input key event, otherwise false.</returns>
-        public bool InputKeyEvent(KeyEvents keyEvent)
+        public bool InputKeyEvent(KeyEvent keyEvent)
         {
-            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int) keyEvent}", TimeSpan.FromMilliseconds(3000));
+            return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int)keyEvent}", TimeSpan.FromMilliseconds(3000));
         }
 
         /// <summary>
@@ -235,19 +235,19 @@ namespace Testura.Android.Device.Server
             var tries = 0;
             while (tries < RequestTries)
             {
-                DeviceLogger.Log("Sending interaction request", DeviceLogger.LogLevels.Debug);
+                DeviceLogger.Log("Sending interaction request", DeviceLogger.LogLevel.Debug);
                 var response = SendServerRequest(url, timeout);
                 if (response == "success")
                 {
-                    DeviceLogger.Log("Interaction request was successful", DeviceLogger.LogLevels.Debug);
+                    DeviceLogger.Log("Interaction request was successful", DeviceLogger.LogLevel.Debug);
                     return true;
                 }
 
                 tries--;
-                DeviceLogger.Log($"Interaction request failed, trying {tries} more times", DeviceLogger.LogLevels.Debug);
+                DeviceLogger.Log($"Interaction request failed, trying {tries} more times", DeviceLogger.LogLevel.Debug);
             }
 
-            DeviceLogger.Log("Failed to send interaction request", DeviceLogger.LogLevels.Error);
+            DeviceLogger.Log("Failed to send interaction request", DeviceLogger.LogLevel.Error);
             return false;
         }
 
@@ -277,7 +277,7 @@ namespace Testura.Android.Device.Server
                             "Server responded with 404, make sure that you have the latest Testura server app.");
                     }
 
-                    DeviceLogger.Log("Server request was unsuccessful", DeviceLogger.LogLevels.Debug);
+                    DeviceLogger.Log("Server request was unsuccessful", DeviceLogger.LogLevel.Debug);
                     LogRespone(response);
                 }
 
@@ -285,7 +285,7 @@ namespace Testura.Android.Device.Server
             }
             catch (Exception ex)
             {
-                DeviceLogger.Log(ex.ToString(), DeviceLogger.LogLevels.Debug);
+                DeviceLogger.Log(ex.ToString(), DeviceLogger.LogLevel.Debug);
                 return null;
             }
         }
@@ -295,7 +295,7 @@ namespace Testura.Android.Device.Server
         /// </summary>
         private void ForwardPorts()
         {
-            DeviceLogger.Log("Forwarding ports", DeviceLogger.LogLevels.Info);
+            DeviceLogger.Log("Forwarding ports", DeviceLogger.LogLevel.Info);
             _adbTerminal.ExecuteAdbCommand("forward", $"tcp:{_localPort}", $"tcp:{DevicePort}");
         }
 
@@ -323,15 +323,15 @@ namespace Testura.Android.Device.Server
                         return true;
                     }
 
-                    DeviceLogger.Log("Ping server failed!", DeviceLogger.LogLevels.Debug);
+                    DeviceLogger.Log("Ping server failed!", DeviceLogger.LogLevel.Debug);
                     LogRespone(response);
                     return false;
                 }
             }
             catch (Exception ex) when (ex is AggregateException || ex is HttpRequestException || ex is WebException)
             {
-                DeviceLogger.Log("ing server failed!", DeviceLogger.LogLevels.Debug);
-                DeviceLogger.Log(ex.ToString(), DeviceLogger.LogLevels.Debug);
+                DeviceLogger.Log("ing server failed!", DeviceLogger.LogLevel.Debug);
+                DeviceLogger.Log(ex.ToString(), DeviceLogger.LogLevel.Debug);
                 return false;
             }
         }
@@ -344,7 +344,7 @@ namespace Testura.Android.Device.Server
             try
             {
                 _adbTerminal.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
-                DeviceLogger.Log("Killing testura helper process on the device.", DeviceLogger.LogLevels.Info);
+                DeviceLogger.Log("Killing testura helper process on the device.", DeviceLogger.LogLevel.Info);
                 _adbTerminal.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
             }
             catch (Exception)
@@ -355,10 +355,10 @@ namespace Testura.Android.Device.Server
 
         private void LogRespone(HttpResponseMessage response)
         {
-            DeviceLogger.Log("Response from server: ", DeviceLogger.LogLevels.Debug);
-            DeviceLogger.Log($"HTTP status code: {response.StatusCode}", DeviceLogger.LogLevels.Debug);
-            DeviceLogger.Log($"Reason phrase: {response.ReasonPhrase}", DeviceLogger.LogLevels.Debug);
-            DeviceLogger.Log($"Content: {response.Content.ReadAsStringAsync().Result}", DeviceLogger.LogLevels.Debug);
+            DeviceLogger.Log("Response from server: ", DeviceLogger.LogLevel.Debug);
+            DeviceLogger.Log($"HTTP status code: {response.StatusCode}", DeviceLogger.LogLevel.Debug);
+            DeviceLogger.Log($"Reason phrase: {response.ReasonPhrase}", DeviceLogger.LogLevel.Debug);
+            DeviceLogger.Log($"Content: {response.Content.ReadAsStringAsync().Result}", DeviceLogger.LogLevel.Debug);
         }
     }
 }

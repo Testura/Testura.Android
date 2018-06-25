@@ -15,7 +15,6 @@ namespace Testura.Android.Device.Ui.Objects
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseUiObject"/> class.
         /// </summary>
-        /// <param name="device">The current android device object.</param>
         /// <param name="withs">A set of <see cref="With">Withs</see> that tell us how we should find the UI object./></param>
         protected BaseUiObject(IList<With> withs)
         {

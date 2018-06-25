@@ -12,6 +12,6 @@
         /// <param name="memberName">Method or property name of the calling class</param>
         /// <param name="message">Message from the calling class</param>
         /// <param name="logLevel">The message log level</param>
-        void Log(string className, string memberName, string message, DeviceLogger.LogLevels logLevel);
+        void Log(string className, string memberName, string message, DeviceLogger.LogLevel logLevel);
     }
 }

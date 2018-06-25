@@ -129,7 +129,7 @@ namespace Testura.Android.Util.Walker
                     numberOfTimesOnPackageAndAcivity++;
                     if (numberOfTimesOnPackageAndAcivity == _appWalkerConfiguration.MaxInputBeforeGoingBack)
                     {
-                        device.Interaction.InputKeyEvent(KeyEvents.Back);
+                        device.Interaction.InputKeyEvent(KeyEvent.Back);
                         numberOfTimesOnPackageAndAcivity = 0;
                     }
                 }

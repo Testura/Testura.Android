@@ -73,7 +73,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Device\Services\UiServiceTests.cs" />
     <Compile Include="Device\UiAutomator\Ui\Util\NodeFinderTests.cs" />
-    <Compile Include="Device\UiAutomator\Ui\Util\ScreenDumperTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Util\Exceptions\UiNodeNotFoundExceptionTests.cs" />
     <Compile Include="Util\Helpers\UiFindTests.cs" />

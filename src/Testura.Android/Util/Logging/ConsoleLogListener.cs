@@ -8,9 +8,13 @@ namespace Testura.Android.Util.Logging
     /// </summary>
     public class ConsoleLogListener : ILogListener
     {
-        private readonly DeviceLogger.LogLevels _minLogLevel;
+        private readonly DeviceLogger.LogLevel _minLogLevel;
 
-        public ConsoleLogListener(DeviceLogger.LogLevels minLogLevel)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleLogListener"/> class.
+        /// </summary>
+        /// <param name="minLogLevel">Minimum log level</param>
+        public ConsoleLogListener(DeviceLogger.LogLevel minLogLevel)
         {
             _minLogLevel = minLogLevel;
         }
@@ -22,7 +26,7 @@ namespace Testura.Android.Util.Logging
         /// <param name="memberName">Method or property name of the calling class</param>
         /// <param name="message">Message from the calling class</param>
         /// <param name="logLevel">The message log level</param>´s
-        public void Log(string className, string memberName, string message, DeviceLogger.LogLevels logLevel)
+        public void Log(string className, string memberName, string message, DeviceLogger.LogLevel logLevel)
         {
             if (logLevel < _minLogLevel)
             {

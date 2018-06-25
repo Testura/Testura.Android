@@ -29,7 +29,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
             _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
                 .Returns(new Node(new XElement("node", new XAttribute("clickable", "true")), null));
 
-            Assert.IsTrue(uiObject.WaitForValue(n => n.Clickable));
+            Assert.IsTrue(uiObject.WaitUntil(n => n.Clickable));
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
             _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
                 .Returns(new Node(new XElement("node", new XAttribute("clickable", "false")), null));
 
-            Assert.IsFalse(uiObject.WaitForValue(n => n.Clickable, TimeSpan.FromSeconds(1)));
+            Assert.IsFalse(uiObject.WaitUntil(n => n.Clickable, TimeSpan.FromSeconds(1)));
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
                     .Returns(new Node(new XElement("node", new XAttribute("clickable", "true")), null));
             });
 
-            Assert.IsTrue(uiObject.WaitForValue(n => n.Clickable));
+            Assert.IsTrue(uiObject.WaitUntil(n => n.Clickable));
         }
 
     }

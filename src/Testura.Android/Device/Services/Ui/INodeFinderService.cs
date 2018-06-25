@@ -14,17 +14,17 @@ namespace Testura.Android.Device.Services.Ui
         /// <summary>
         /// Find a node on the screen
         /// </summary>
-        /// <param name="timeout">Timeout</param>
         /// <param name="withs">Find node with</param>
+        /// <param name="timeout">Timeout</param>
         /// <returns>Returns found node</returns>
         /// <exception cref="UiNodeNotFoundException">If we timeout and can't find the node</exception>
-        Node FindNode(IList<With> withs,TimeSpan timeout);
+        Node FindNode(IList<With> withs, TimeSpan timeout);
 
         /// <summary>
         /// Find multiple nodes on the screen
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
         /// <param name="withs">Find node with</param>
+        /// <param name="timeout">Timeout in seconds</param>
         /// <returns>Returns found node</returns>
         /// <exception cref="UiNodeNotFoundException">If we timeout and can't find any nodes</exception>
         IList<Node> FindNodes(IList<With> withs, TimeSpan timeout);

@@ -16,8 +16,8 @@ namespace Testura.Android.Util.Helpers
         /// <summary>
         /// Wait for any ui object to be visible or hidden.
         /// </summary>
-        /// <param name="timeout">Timeout</param>
         /// <param name="invokeMethods">Methods on different uiObjects to invoke (for example Visible or Hidden)</param>
+        /// <param name="timeout">Timeout</param>
         /// <returns>The first uiObject to be visible or hidden</returns>
         /// <example>This example show how to call the method with two uiObjects and wait for the
         /// first one to be visible or the second one to be hidden.
@@ -62,8 +62,8 @@ namespace Testura.Android.Util.Helpers
         /// <summary>
         /// Wait for all ui object to be visible or hidden.
         /// </summary>
-        /// <param name="timeout">Timeout</param>
         /// <param name="invokeMethods">Methods on different uiObjects to invoke (for example Visible or Hidden)</param>
+        /// <param name="timeout">Timeout</param>
         /// <example>This example show how to call the method with two uiObjects and wait for the
         /// first one to be visible or the second one to be hidden.
         /// </example>
