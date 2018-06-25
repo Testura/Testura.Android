@@ -6,24 +6,24 @@ using Testura.Android.Device.Configurations;
 
 namespace Testura.Android.Device
 {
-    public class DeviceFactory
+    public class AndroidDeviceFactory
     {
         private readonly TimeSpan _maxWaitTime;
         private readonly TimeSpan _timeBetweenChecks;
         private static readonly IList<DeviceConfiguration> _busyDevices;
 
-        static DeviceFactory()
+        static AndroidDeviceFactory()
         {
             _busyDevices = new List<DeviceConfiguration>();
         }
 
-        public DeviceFactory()
+        public AndroidDeviceFactory()
         {
             _maxWaitTime = TimeSpan.FromMinutes(360);
             _timeBetweenChecks = TimeSpan.FromSeconds(20);
         }
 
-        public DeviceFactory(TimeSpan maxWaitTime, TimeSpan timeBetweenChecks)
+        public AndroidDeviceFactory(TimeSpan maxWaitTime, TimeSpan timeBetweenChecks)
         {
             _maxWaitTime = maxWaitTime;
             _timeBetweenChecks = timeBetweenChecks;
@@ -41,6 +41,20 @@ namespace Testura.Android.Device
                 Serial = configuration.Serial
             });
         }
+
+        public void DisposeDevice(IAndroidDevice device)
+        {
+            lock (_busyDevices)
+            {
+                device.StopServer();
+                var config = _busyDevices.FirstOrDefault(b => b.Serial == device.Serial);
+                if (config != null)
+                {
+                    _busyDevices.Remove(config);
+                }
+            }
+        }
+
 
         private DeviceConfiguration GetConfiguration(DeviceConfiguration[] possibleDevices)
         {

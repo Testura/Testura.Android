@@ -57,6 +57,7 @@ namespace Testura.Android.Device.Ui.Nodes
             foreach (var with in withs)
             {
                 var foundNodes = nodes.Where(with.NodeSearch).ToList();
+
                 if (!approvedNodes.Any())
                 {
                     approvedNodes = foundNodes;

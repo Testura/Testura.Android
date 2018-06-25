@@ -38,7 +38,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns><c>true</c> if object is visible, otherwise <c>false</c>.</returns>
         public bool IsVisible()
         {
-            return IsVisible(TimeSpan.FromSeconds(10));
+            return IsVisible(TimeSpan.FromSeconds(20));
         }
 
         /// <summary>

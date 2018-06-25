@@ -38,7 +38,7 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
         protected LogcatWatcher(IAdbTerminalProvider adbTerminalProvider, IEnumerable<string> tags, bool flushLogcat = false)
-            : this(adbTerminalProvider?.AdbTerminal, tags, flushLogcat)
+            : this(adbTerminalProvider?.GetAdbTerminal(), tags, flushLogcat)
         {
         }
 

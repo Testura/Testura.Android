@@ -9,16 +9,16 @@ namespace Testura.Android.Device
     public interface IAndroidUiMapper
     {
         /// <summary>
-        /// Map an UI node that match search criteria to an Ui object
+        /// Create a new ui object that maps to a single node
         /// </summary>
-        /// <param name="with">Find node with</param>
+        /// <param name="with">Map ui object with node that match this with</param>
         /// <returns>The mapped ui object</returns>
         UiObject MapUiNode(params With[] with);
 
         /// <summary>
-        /// Map multiple UI nodes that match the same search criteria to a single UI object.
+        /// Create a new ui object that maps to multiple nodes with same properties
         /// </summary>
-        /// <param name="with">Find nodes with</param>
+        /// <param name="with">Map ui object with nodes that match this with</param>
         /// <returns>The mapped ui object</returns>
         UiObjects MapUiNodes(params With[] with);
     }

@@ -90,7 +90,7 @@ namespace Testura.Android.Device.Services.Ui
                 }
                 catch (UiNodeNotFoundException)
                 {
-                    if ((DateTime.Now - startTime).TotalSeconds > timeout.TotalSeconds)
+                    if ((DateTime.Now - startTime).TotalMilliseconds > timeout.TotalMilliseconds)
                     {
                         DeviceLogger.Log("Failed to find node, last xml dump: ", DeviceLogger.LogLevels.Warning);
                         DeviceLogger.Log(_lastScreenDump?.Replace(Environment.NewLine, "replacement text"), DeviceLogger.LogLevels.Warning);

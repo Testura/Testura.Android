@@ -1,7 +1,4 @@
-﻿#pragma warning disable IDE0005 // Using directive is unnecessary.
-#pragma warning restore IDE0005 // Using directive is unnecessary.
-
-namespace Testura.Android.Device.Server
+﻿namespace Testura.Android.Device.Server
 {
     /// <summary>
     /// Defines methods to interact with the UI automator server.

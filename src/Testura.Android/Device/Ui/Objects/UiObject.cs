@@ -27,7 +27,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// </summary>
         public void Tap()
         {
-            Tap(TimeSpan.FromSeconds(20));
+            Tap(TimeSpan.FromSeconds(10));
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <param name="text">The text to input into the nod.e</param>
         public void InputText(string text)
         {
-            InputText(text, TimeSpan.FromSeconds(20));
+            InputText(text, TimeSpan.FromSeconds(10));
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns>A node object with all values of this node.</returns>
         public Node Values()
         {
-            return Values(TimeSpan.FromSeconds(2));
+            return Values(TimeSpan.FromSeconds(10));
         }
 
         /// <summary>

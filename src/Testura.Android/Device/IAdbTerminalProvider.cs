@@ -8,8 +8,9 @@ namespace Testura.Android.Device
     public interface IAdbTerminalProvider
     {
         /// <summary>
-        /// Gets a terminal object to send adb commands.
+        /// Get an adb terminal configured for this device.
         /// </summary>
-        AdbTerminal AdbTerminal { get; }
+        /// <returns>Adb terminal configured for this device</returns>
+        AdbTerminal GetAdbTerminal();
     }
 }

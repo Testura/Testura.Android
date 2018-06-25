@@ -26,12 +26,12 @@ namespace Testura.Android.Device
         /// <param name="configuration">Device Configuration</param>
         public AndroidDevice(DeviceConfiguration configuration)
         {
-            AdbTerminal = new AdbTerminal(configuration.Serial, configuration.AdbPath);
+            var adbTerminal = new AdbTerminal(configuration.Serial, configuration.AdbPath);
 
             _configuration = configuration;
-            _uiAutomatorServer = new UiAutomatorServer(AdbTerminal, configuration.Port);
+            _uiAutomatorServer = new UiAutomatorServer(adbTerminal, configuration.Port);
 
-            Adb = new AdbService(AdbTerminal);
+            Adb = new AdbService(adbTerminal);
             Ui = new UiService(_uiAutomatorServer, new NodeParser(), new NodeFinder());
             Settings = new SettingsService(Adb);
             Activity = new ActivityService(Adb);
@@ -47,12 +47,6 @@ namespace Testura.Android.Device
             : this(new DeviceConfiguration())
         {
         }
-
-        /// <summary>
-        /// Gets a terminal object to send adb commands.
-        /// </summary>
-        public AdbTerminal AdbTerminal { get; }
-
 
         /// <summary>
         /// Gets the adb service of an android device. This service
@@ -90,9 +84,9 @@ namespace Testura.Android.Device
         public string Serial => _configuration.Serial;
 
         /// <summary>
-        /// Create a new ui object that wraps around a node that match a specific search criteria
+        /// Create a new ui object that maps to a single node
         /// </summary>
-        /// <param name="with">Find node with</param>
+        /// <param name="with">Map ui object with node that match this with</param>
         /// <returns>The mapped ui object</returns>
         public virtual UiObject MapUiNode(params With[] with)
         {
@@ -100,9 +94,9 @@ namespace Testura.Android.Device
         }
 
         /// <summary>
-        /// Create a new ui object that wraps around multiple nodes that match a specific search criteria
+        /// Create a new ui object that maps to multiple nodes with same properties
         /// </summary>
-        /// <param name="with">Find nodes with</param>
+        /// <param name="with">Map ui object with nodes that match this with</param>
         /// <returns>The mapped ui object</returns>
         public virtual UiObjects MapUiNodes(params With[] with)
         {
@@ -123,6 +117,15 @@ namespace Testura.Android.Device
         public void StopServer()
         {
             _uiAutomatorServer.Stop();
+        }
+
+        /// <summary>
+        /// Get an adb terminal configured for this device.
+        /// </summary>
+        /// <returns>Adb terminal configured for this device</returns>
+        public AdbTerminal GetAdbTerminal()
+        {
+            return new AdbTerminal(_configuration.Serial, _configuration.AdbPath);
         }
 
         private void InstallHelperApks()
