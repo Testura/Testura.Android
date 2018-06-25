@@ -12,7 +12,7 @@ namespace Testura.Android.Util.LogcatWatchers
     /// </summary>
     public abstract class LogcatWatcher
     {
-        private readonly AdbTerminal _adbTerminal;
+        private readonly AdbCommandExecutor _adbCommandExecutor;
         private readonly IList<string> _tags;
         private readonly bool _flushLogcat;
         private Task _task;
@@ -21,12 +21,12 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="LogcatWatcher"/> class.
         /// </summary>
-        /// <param name="adbTerminal">The adb terminal used to send adb commands</param>
+        /// <param name="adbCommandExecutor">The adb terminal used to send adb commands</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
-        protected LogcatWatcher(AdbTerminal adbTerminal, IEnumerable<string> tags, bool flushLogcat = false)
+        protected LogcatWatcher(AdbCommandExecutor adbCommandExecutor, IEnumerable<string> tags, bool flushLogcat = false)
         {
-            _adbTerminal = adbTerminal;
+            _adbCommandExecutor = adbCommandExecutor;
             _tags = new List<string>(tags);
             _flushLogcat = flushLogcat;
         }
@@ -34,11 +34,11 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="LogcatWatcher"/> class.
         /// </summary>
-        /// <param name="adbTerminalProvider">An adb terminal orovider</param>
+        /// <param name="adbCommandExecutorProvider">An adb terminal orovider</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
-        protected LogcatWatcher(IAdbTerminalProvider adbTerminalProvider, IEnumerable<string> tags, bool flushLogcat = false)
-            : this(adbTerminalProvider?.GetAdbTerminal(), tags, flushLogcat)
+        protected LogcatWatcher(IAdbCommandExecutorProvider adbCommandExecutorProvider, IEnumerable<string> tags, bool flushLogcat = false)
+            : this(adbCommandExecutorProvider?.GetAdbCommandExecutor(), tags, flushLogcat)
         {
         }
 
@@ -57,7 +57,7 @@ namespace Testura.Android.Util.LogcatWatchers
 
             if (_flushLogcat)
             {
-                _adbTerminal.ExecuteAdbCommand("logcat", "-c");
+                _adbCommandExecutor.ExecuteAdbCommand("logcat", "-c");
             }
 
             _cancellationTokenSource = new CancellationTokenSource();
@@ -70,7 +70,7 @@ namespace Testura.Android.Util.LogcatWatchers
             };
 
             commands.AddRange(_tags);
-            var process = _adbTerminal.StartAdbProcessWithoutShell(commands.ToArray());
+            var process = _adbCommandExecutor.StartAdbProcessWithoutShell(commands.ToArray());
             var cancellationToken = _cancellationTokenSource.Token;
             _task = Task.Run(
                 () =>

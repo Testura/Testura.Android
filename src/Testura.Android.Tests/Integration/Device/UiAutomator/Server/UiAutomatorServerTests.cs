@@ -14,7 +14,7 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
         [SetUp]
         public void SetUp()
         {
-            _server = new UiAutomatorServer(new AdbTerminal(), 9008);
+            _server = new UiAutomatorServer(new AdbCommandExecutor(), 9008);
         }
 
         [Test]

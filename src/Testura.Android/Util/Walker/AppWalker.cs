@@ -49,7 +49,7 @@ namespace Testura.Android.Util.Walker
         /// <param name="device">Device to run walk with</param>
         /// <param name="package">Package to app walk. If null we start from current screen</param>
         /// <param name="activity">Activity to app walk. If null we start from current screen</param>
-        public void Start(AndroidDevice device, string package, string activity)
+        public void Start(IAndroidDevice device, string package, string activity)
         {
             Start(device, package, activity, new List<TimeCase>(), new List<StopCase>());
         }
@@ -62,7 +62,7 @@ namespace Testura.Android.Util.Walker
         /// <param name="activity">Activity to app walk. If null we start from current screen</param>
         /// <param name="timeCases">Time cases with specific actions that we want to perform in intervals</param>
         /// <param name="stopCases">Stop cases to decide if we should stop the run</param>
-        public void Start(AndroidDevice device, string package, string activity, IEnumerable<TimeCase> timeCases, IEnumerable<StopCase> stopCases)
+        public void Start(IAndroidDevice device, string package, string activity, IEnumerable<TimeCase> timeCases, IEnumerable<StopCase> stopCases)
         {
             if (device == null)
             {
@@ -146,7 +146,7 @@ namespace Testura.Android.Util.Walker
         /// <param name="stopCases">A list of provided stop cases</param>
         /// <param name="nodes">All nodes on the screen</param>
         /// <returns>True if we should stop the walk, false otherwise</returns>
-        private bool StopWalk(AndroidDevice device, IEnumerable<StopCase> stopCases, IList<Node> nodes)
+        private bool StopWalk(IAndroidDevice device, IEnumerable<StopCase> stopCases, IList<Node> nodes)
         {
             var stopCase = stopCases.FirstOrDefault(s => s.IsMatching(nodes));
             if (stopCase != null)

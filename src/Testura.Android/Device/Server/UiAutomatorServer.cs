@@ -35,19 +35,19 @@ namespace Testura.Android.Device.Server
         private readonly object _dumpLock;
 
         private readonly int _localPort;
-        private readonly AdbTerminal _adbTerminal;
+        private readonly AdbCommandExecutor _adbCommandExecutor;
         private readonly HttpClient _httpClient;
         private Command _currentServerProcess;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UiAutomatorServer"/> class.
         /// </summary>
-        /// <param name="adbTerminal">Object to interact with the terminal.</param>
+        /// <param name="adbCommandExecutor">Object to interact with the terminal.</param>
         /// <param name="port">The local port.</param>
-        public UiAutomatorServer(AdbTerminal adbTerminal, int port)
+        public UiAutomatorServer(AdbCommandExecutor adbCommandExecutor, int port)
         {
             _localPort = port;
-            _adbTerminal = adbTerminal ?? throw new ArgumentNullException(nameof(adbTerminal));
+            _adbCommandExecutor = adbCommandExecutor ?? throw new ArgumentNullException(nameof(adbCommandExecutor));
             _serverLock = new object();
             _dumpLock = new object();
             _httpClient = new HttpClient(new TimeoutHandler(TimeSpan.FromSeconds(10), new HttpClientHandler()));
@@ -82,7 +82,7 @@ namespace Testura.Android.Device.Server
                 ForwardPorts();
                 KillAndroidProcess();
                 DeviceLogger.Log("Starting instrumental", DeviceLogger.LogLevel.Info);
-                _currentServerProcess = _adbTerminal.StartAdbProcessWithoutShell(
+                _currentServerProcess = _adbCommandExecutor.StartAdbProcessWithoutShell(
                     "shell",
                     $"am instrument -w -r -e debug false -e class {AndroidPackageName}.Start {AndroidPackageName}.test/android.support.test.runner.AndroidJUnitRunner");
 
@@ -296,7 +296,7 @@ namespace Testura.Android.Device.Server
         private void ForwardPorts()
         {
             DeviceLogger.Log("Forwarding ports", DeviceLogger.LogLevel.Info);
-            _adbTerminal.ExecuteAdbCommand("forward", $"tcp:{_localPort}", $"tcp:{DevicePort}");
+            _adbCommandExecutor.ExecuteAdbCommand("forward", $"tcp:{_localPort}", $"tcp:{DevicePort}");
         }
 
         /// <summary>
@@ -343,9 +343,9 @@ namespace Testura.Android.Device.Server
         {
             try
             {
-                _adbTerminal.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
+                _adbCommandExecutor.ExecuteAdbCommand("shell", $"ps | grep {AndroidPackageName}");
                 DeviceLogger.Log("Killing testura helper process on the device.", DeviceLogger.LogLevel.Info);
-                _adbTerminal.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
+                _adbCommandExecutor.ExecuteAdbCommand("shell", $"pm clear {AndroidPackageName}");
             }
             catch (Exception)
             {

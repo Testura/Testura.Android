@@ -12,22 +12,22 @@ namespace Testura.Android.Util.LogcatWatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="EventLogcatWatcher"/> class.
         /// </summary>
-        /// <param name="adbTerminal">The adb terminal used to send adb commands</param>
+        /// <param name="adbCommandExecutor">The adb terminal used to send adb commands</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
-        public EventLogcatWatcher(AdbTerminal adbTerminal, IEnumerable<string> tags, bool flushLogcat = false)
-            : base(adbTerminal, tags, flushLogcat)
+        public EventLogcatWatcher(AdbCommandExecutor adbCommandExecutor, IEnumerable<string> tags, bool flushLogcat = false)
+            : base(adbCommandExecutor, tags, flushLogcat)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventLogcatWatcher"/> class.
         /// </summary>
-        /// <param name="adbTerminalProvider">An adb terminal provider</param>
+        /// <param name="adbCommandExecutorProvider">An adb terminal provider</param>
         /// <param name="tags">A set of logcat tags.</param>
         /// <param name="flushLogcat">If we should flush logcat before starting.</param>
-        public EventLogcatWatcher(IAdbTerminalProvider adbTerminalProvider, IEnumerable<string> tags, bool flushLogcat = false)
-            : base(adbTerminalProvider, tags, flushLogcat)
+        public EventLogcatWatcher(IAdbCommandExecutorProvider adbCommandExecutorProvider, IEnumerable<string> tags, bool flushLogcat = false)
+            : base(adbCommandExecutorProvider, tags, flushLogcat)
         {
         }
 

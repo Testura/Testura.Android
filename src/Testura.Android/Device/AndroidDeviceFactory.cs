@@ -68,7 +68,7 @@ namespace Testura.Android.Device
         /// <returns>An available device to use</returns>
         public IAndroidDevice GetDevice(string adbPath = null, DependencyHandling dependencyHandling = DependencyHandling.InstallIfMissing)
         {
-            var terminal = new AdbTerminal(adbPath: adbPath);
+            var terminal = new AdbCommandExecutor(adbPath: adbPath);
             var devices = terminal.ExecuteAdbCommand("devices").Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             if (devices.Length <= 1)

@@ -51,7 +51,7 @@
     <Compile Include="Device\AndroidDevice.cs" />
     <Compile Include="Device\AndroidDeviceFactory.cs" />
     <Compile Include="Device\Extensions\IUiExtension.cs" />
-    <Compile Include="Device\IAdbTerminalProvider.cs" />
+    <Compile Include="Device\IAdbCommandExecutorProvider.cs" />
     <Compile Include="Device\IAndroidDevice.cs" />
     <Compile Include="Device\IAndroidServiceProvider.cs" />
     <Compile Include="Device\IAndroidUiMapper.cs" />
@@ -117,7 +117,7 @@
     <Compile Include="Util\Walker\Input\SwipeAppWalkerInput.cs" />
     <Compile Include="Util\Walker\Input\TapAppWalkerInput.cs" />
     <Compile Include="Util\Walker\Cases\Tap\TapCase.cs" />
-    <Compile Include="Util\AdbTerminal.cs" />
+    <Compile Include="Util\AdbCommandExecutor.cs" />
     <Compile Include="Util\Walker\AppWalker.cs" />
     <Compile Include="Util\WithErrorMessageBuilder.cs" />
   </ItemGroup>

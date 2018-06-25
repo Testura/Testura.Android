@@ -15,7 +15,7 @@ namespace Testura.Android.Device
     /// <summary>
     /// Provides functionality to interact with an Android Device through multiple service objects
     /// </summary>
-    public class AndroidDevice : IAndroidDevice, IAdbTerminalProvider, IAndroidServiceProvider, IAndroidUiMapper
+    public class AndroidDevice : IAndroidDevice, IAdbCommandExecutorProvider, IAndroidServiceProvider, IAndroidUiMapper
     {
         private readonly DeviceConfiguration _configuration;
         private readonly UiAutomatorServer _uiAutomatorServer;
@@ -26,12 +26,12 @@ namespace Testura.Android.Device
         /// <param name="configuration">Device Configuration</param>
         public AndroidDevice(DeviceConfiguration configuration)
         {
-            var adbTerminal = new AdbTerminal(configuration.Serial, configuration.AdbPath);
+            var adbCommandExecutor = new AdbCommandExecutor(configuration.Serial, configuration.AdbPath);
 
             _configuration = configuration;
-            _uiAutomatorServer = new UiAutomatorServer(adbTerminal, configuration.Port);
+            _uiAutomatorServer = new UiAutomatorServer(adbCommandExecutor, configuration.Port);
 
-            Adb = new AdbService(adbTerminal);
+            Adb = new AdbService(adbCommandExecutor);
             Ui = new UiService(_uiAutomatorServer, new NodeParser(), new NodeFinder());
             Settings = new SettingsService(Adb);
             Activity = new ActivityService(Adb);
@@ -87,7 +87,7 @@ namespace Testura.Android.Device
         /// </summary>
         /// <param name="with">Map ui object with node that match this with</param>
         /// <returns>The mapped ui object</returns>
-        public virtual UiObject MapUiNode(params With[] with)
+        public virtual UiObject MapUiObject(params With[] with)
         {
             return new UiObject(Interaction, Ui, with.ToArray());
         }
@@ -97,7 +97,7 @@ namespace Testura.Android.Device
         /// </summary>
         /// <param name="with">Map ui object with nodes that match this with</param>
         /// <returns>The mapped ui object</returns>
-        public virtual UiObjects MapUiNodes(params With[] with)
+        public virtual UiObjects MapUiObjects(params With[] with)
         {
             return new UiObjects(Ui, with.ToArray());
         }
@@ -122,9 +122,9 @@ namespace Testura.Android.Device
         /// Get an adb terminal configured for this device.
         /// </summary>
         /// <returns>Adb terminal configured for this device</returns>
-        public AdbTerminal GetAdbTerminal()
+        public AdbCommandExecutor GetAdbCommandExecutor()
         {
-            return new AdbTerminal(_configuration.Serial, _configuration.AdbPath);
+            return new AdbCommandExecutor(_configuration.Serial, _configuration.AdbPath);
         }
 
         private void InstallHelperApks()

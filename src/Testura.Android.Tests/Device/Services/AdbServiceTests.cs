@@ -13,7 +13,7 @@ namespace Testura.Android.Tests.Device.Services
         [SetUp]
         public void SetUp()
         {
-            _adbService = new AdbService(new AdbTerminal());
+            _adbService = new AdbService(new AdbCommandExecutor());
         }
 
         [Test]

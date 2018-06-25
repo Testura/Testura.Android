@@ -27,5 +27,10 @@ namespace Testura.Android.PageObject
         /// </summary>
         /// <param name="type">Type to register</param>
         void RegisterType(Type type);
+
+        /// <summary>
+        /// RegisterType an instance with the container.
+        /// </summary>
+        void RegisterType<T>();
     }
 }

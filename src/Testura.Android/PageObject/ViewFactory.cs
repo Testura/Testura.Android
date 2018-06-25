@@ -48,11 +48,11 @@ namespace Testura.Android.PageObject
                     var withs = attributes.Cast<UiMapAttribute>().Select(u => u.With).ToArray();
                     if (property.PropertyType == typeof(UiObject))
                     {
-                        property.SetValue(obj, mapper.MapUiNode(withs));
+                        property.SetValue(obj, mapper.MapUiObject(withs));
                     }
                     else
                     {
-                        property.SetValue(obj, mapper.MapUiNodes(withs));
+                        property.SetValue(obj, mapper.MapUiObjects(withs));
                     }
                 }
             }
@@ -79,11 +79,11 @@ namespace Testura.Android.PageObject
                     var withs = attributes.Cast<UiMapAttribute>().Select(u => u.With).ToArray();
                     if (field.FieldType == typeof(UiObject))
                     {
-                        field.SetValue(obj, mapper.MapUiNode(withs));
+                        field.SetValue(obj, mapper.MapUiObject(withs));
                     }
                     else
                     {
-                        field.SetValue(obj, mapper.MapUiNodes(withs));
+                        field.SetValue(obj, mapper.MapUiObjects(withs));
                     }
                 }
             }

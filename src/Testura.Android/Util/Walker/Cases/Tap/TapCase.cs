@@ -43,6 +43,6 @@ namespace Testura.Android.Util.Walker.Cases.Tap
         /// <param name="devie">The current device</param>
         /// <param name="node">The currently selected node</param>
         /// <returns>True if we should still tap on node, false otherwise</returns>
-        public abstract bool Execute(AndroidDevice devie, Node node);
+        public abstract bool Execute(IAndroidDevice devie, Node node);
     }
 }

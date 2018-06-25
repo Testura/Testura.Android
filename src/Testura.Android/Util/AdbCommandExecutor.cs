@@ -10,18 +10,18 @@ namespace Testura.Android.Util
     /// <summary>
     /// Provides functionality to interact with the terminal.
     /// </summary>
-    public class AdbTerminal
+    public class AdbCommandExecutor
     {
         private const string AdbNotFoundError = "Could not find adb.exe. Make sure that Android SDK are installed and that you have adb in your windows environment variables or specified the path to adb.exe inside your device configuration.";
         private readonly string _serial;
         private readonly string _adbPath;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AdbTerminal"/> class.
+        /// Initializes a new instance of the <see cref="AdbCommandExecutor"/> class.
         /// </summary>
         /// <param name="serial">Serial number of device</param>
         /// <param name="adbPath">Path to adb.exe</param>
-        public AdbTerminal(string serial = null, string adbPath = null)
+        public AdbCommandExecutor(string serial = null, string adbPath = null)
         {
             _serial = serial;
             _adbPath = adbPath;

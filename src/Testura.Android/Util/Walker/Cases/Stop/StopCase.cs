@@ -41,6 +41,6 @@ namespace Testura.Android.Util.Walker.Cases.Stop
         /// </summary>
         /// <param name="device">The current device</param>
         /// <returns>True if we should stop the app walker run, false otherwise</returns>
-        public abstract bool Execute(AndroidDevice device);
+        public abstract bool Execute(IAndroidDevice device);
     }
 }

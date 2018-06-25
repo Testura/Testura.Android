@@ -11,14 +11,14 @@ namespace Testura.Android.Util.Walker.Cases.Tap
     /// </summary>
     public class FuncTapCase : TapCase
     {
-        private readonly Func<AndroidDevice, Node, bool> _case;
+        private readonly Func<IAndroidDevice, Node, bool> _case;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FuncTapCase"/> class.
         /// </summary>
         /// <param name="withs">Withs to find the node in our case</param>
         /// <param name="case">A func which take the current device, currently selected node and returns if we still should tap on node.</param>
-        public FuncTapCase(IList<With> withs, Func<AndroidDevice, Node, bool> @case)
+        public FuncTapCase(IList<With> withs, Func<IAndroidDevice, Node, bool> @case)
             : base(withs)
         {
             _case = @case;
@@ -30,7 +30,7 @@ namespace Testura.Android.Util.Walker.Cases.Tap
         /// <param name="devie">The current device</param>
         /// <param name="node">The currently selected node</param>
         /// <returns>True if we should still tap on node, false otherwise</returns>
-        public override bool Execute(AndroidDevice devie, Node node)
+        public override bool Execute(IAndroidDevice devie, Node node)
         {
             return _case.Invoke(devie, node);
         }

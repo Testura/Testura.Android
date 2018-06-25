@@ -13,13 +13,13 @@ namespace Testura.Android.Device
         /// </summary>
         /// <param name="with">Map ui object with node that match this with</param>
         /// <returns>The mapped ui object</returns>
-        UiObject MapUiNode(params With[] with);
+        UiObject MapUiObject(params With[] with);
 
         /// <summary>
         /// Create a new ui object that maps to multiple nodes with same properties
         /// </summary>
         /// <param name="with">Map ui object with nodes that match this with</param>
         /// <returns>The mapped ui object</returns>
-        UiObjects MapUiNodes(params With[] with);
+        UiObjects MapUiObjects(params With[] with);
     }
 }

@@ -22,13 +22,13 @@ namespace Testura.Android.Util.Walker.Cases.Time
         /// <summary>
         /// Gets the android device.
         /// </summary>
-        protected AndroidDevice Device { get; private set; }
+        protected IAndroidDevice Device { get; private set; }
 
         /// <summary>
         /// Start the timer.
         /// </summary>
         /// <param name="device">The current device.</param>
-        public void StartTimer(AndroidDevice device)
+        public void StartTimer(IAndroidDevice device)
         {
             _timer.Start();
             _timer.Elapsed += TimerOnElapsed;

@@ -13,15 +13,15 @@ namespace Testura.Android.Device.Services.Adb
     public class AdbService : IAdbShellService, IAdbInstallService
     {
         private const string TemporaryScreencapPath = "sdcard/temp_screencap_1234.png";
-        private readonly AdbTerminal _adbTerminal;
+        private readonly AdbCommandExecutor _adbCommandExecutor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdbService"/> class.
         /// </summary>
-        /// <param name="adbTerminal">Object to interact with terminal</param>
-        public AdbService(AdbTerminal adbTerminal)
+        /// <param name="adbCommandExecutor">Object to interact with terminal</param>
+        public AdbService(AdbCommandExecutor adbCommandExecutor)
         {
-            _adbTerminal = adbTerminal ?? throw new ArgumentNullException(nameof(adbTerminal));
+            _adbCommandExecutor = adbCommandExecutor ?? throw new ArgumentNullException(nameof(adbCommandExecutor));
         }
 
         /// <summary>
@@ -195,14 +195,14 @@ namespace Testura.Android.Device.Services.Adb
         /// <returns>The created screen recorder task (later used to stop the recording)</returns>
         public ScreenRecorderTask RecordScreen(ScreenRecordConfiguration configuration, string temporaryDeviceDirectory = "/sdcard/")
         {
-            var screenRecorderTask = new ScreenRecorderTask(this, _adbTerminal, temporaryDeviceDirectory);
+            var screenRecorderTask = new ScreenRecorderTask(this, _adbCommandExecutor, temporaryDeviceDirectory);
             screenRecorderTask.StartRecording(configuration);
             return screenRecorderTask;
         }
 
         private string ExecuteCommand(params string[] arguments)
         {
-            return _adbTerminal.ExecuteAdbCommand(arguments);
+            return _adbCommandExecutor.ExecuteAdbCommand(arguments);
         }
     }
 }
