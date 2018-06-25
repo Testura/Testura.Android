@@ -124,8 +124,9 @@ namespace Testura.Android.Device
                     {
                         if (SeeIfDeviceAreAvailable(string.Empty))
                         {
-                            BusyDevices.Add(new DeviceConfiguration());
-                            return null;
+                            var configuration = new DeviceConfiguration();
+                            BusyDevices.Add(configuration);
+                            return configuration;
                         }
                     }
 
