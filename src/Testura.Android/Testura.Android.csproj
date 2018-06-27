@@ -70,7 +70,7 @@
     <Compile Include="Device\Server\IInteractionUiAutomatorServer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PageObject\Application.cs" />
-    <Compile Include="PageObject\Attributes\UiMapAttribute.cs" />
+    <Compile Include="PageObject\Attributes\MapUiObjectAttribute.cs" />
     <Compile Include="PageObject\IAndroidViewValidation.cs" />
     <Compile Include="PageObject\IDependencyContainer.cs" />
     <Compile Include="PageObject\View.cs" />

@@ -8,14 +8,14 @@ namespace Testura.Android.PageObject.Attributes
     /// Provides functionality to automatically initialize an UIObject that use this attribute and exist on a <see cref="View"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
-    public class UiMapAttribute : Attribute
+    public class MapUiObjectAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UiMapAttribute"/> class.
+        /// Initializes a new instance of the <see cref="MapUiObjectAttribute"/> class.
         /// </summary>
         /// <param name="with">Find node with this attribute tag.</param>
         /// <param name="value">Find node with this value on the wanted attribute tag.</param>
-        public UiMapAttribute(AttributeTag with, string value)
+        public MapUiObjectAttribute(AttributeTag with, string value)
         {
             switch (with)
             {

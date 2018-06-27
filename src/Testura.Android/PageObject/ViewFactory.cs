@@ -42,10 +42,10 @@ namespace Testura.Android.PageObject
                     continue;
                 }
 
-                var attributes = property.GetCustomAttributes(typeof(UiMapAttribute), true);
+                var attributes = property.GetCustomAttributes(typeof(MapUiObjectAttribute), true);
                 if (attributes.Length >= 1)
                 {
-                    var withs = attributes.Cast<UiMapAttribute>().Select(u => u.With).ToArray();
+                    var withs = attributes.Cast<MapUiObjectAttribute>().Select(u => u.With).ToArray();
                     if (property.PropertyType == typeof(UiObject))
                     {
                         property.SetValue(obj, mapper.MapUiObject(withs));
@@ -73,10 +73,10 @@ namespace Testura.Android.PageObject
                     continue;
                 }
 
-                var attributes = field.GetCustomAttributes(typeof(UiMapAttribute), true);
+                var attributes = field.GetCustomAttributes(typeof(MapUiObjectAttribute), true);
                 if (attributes.Length >= 1)
                 {
-                    var withs = attributes.Cast<UiMapAttribute>().Select(u => u.With).ToArray();
+                    var withs = attributes.Cast<MapUiObjectAttribute>().Select(u => u.With).ToArray();
                     if (field.FieldType == typeof(UiObject))
                     {
                         field.SetValue(obj, mapper.MapUiObject(withs));

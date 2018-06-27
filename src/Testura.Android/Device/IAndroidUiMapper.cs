@@ -16,7 +16,7 @@ namespace Testura.Android.Device
         UiObject MapUiObject(params With[] with);
 
         /// <summary>
-        /// Create a new ui object that maps to multiple nodes with same properties
+        /// Create a new ui object that maps to multiple nodes with same matching properties
         /// </summary>
         /// <param name="with">Map ui object with nodes that match this with</param>
         /// <returns>The mapped ui object</returns>
