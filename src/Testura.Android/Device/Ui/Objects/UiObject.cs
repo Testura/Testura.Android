@@ -15,8 +15,8 @@ namespace Testura.Android.Device.Ui.Objects
         private readonly InteractionService _interactionService;
         private readonly INodeFinderService _nodeFinderService;
 
-        internal UiObject(InteractionService interactionService, INodeFinderService nodeFinderService, IList<With> withs)
-            : base(withs)
+        internal UiObject(InteractionService interactionService, INodeFinderService nodeFinderService, IList<By> bys)
+            : base(bys)
         {
             _interactionService = interactionService;
             _nodeFinderService = nodeFinderService;
@@ -36,7 +36,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <param name="timeout">Timeout</param>
         public void Tap(TimeSpan timeout)
         {
-            var node = _nodeFinderService.FindNode(Withs, timeout);
+            var node = _nodeFinderService.FindNode(Bys, timeout);
             _interactionService.Tap(node);
         }
 
@@ -83,7 +83,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns>A node object with all values of this node.</returns>
         public Node Values(TimeSpan timeout)
         {
-            return _nodeFinderService.FindNode(Withs, timeout);
+            return _nodeFinderService.FindNode(Bys, timeout);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns>All found node(s)</returns>
         protected override IList<Node> TryFindNode(TimeSpan timeout)
         {
-            return new List<Node> { _nodeFinderService.FindNode(Withs, timeout) };
+            return new List<Node> { _nodeFinderService.FindNode(Bys, timeout) };
         }
     }
 }

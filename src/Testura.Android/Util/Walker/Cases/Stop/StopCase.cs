@@ -15,16 +15,16 @@ namespace Testura.Android.Util.Walker.Cases.Stop
         /// <summary>
         /// Initializes a new instance of the <see cref="StopCase"/> class.
         /// </summary>
-        /// <param name="withs">A set of withs to find specific node.</param>
-        protected StopCase(IList<With> withs)
+        /// <param name="bys">A set of withs to find specific node.</param>
+        protected StopCase(IList<By> bys)
         {
-            Withs = withs;
+            Bys = bys;
         }
 
         /// <summary>
-        /// Gets or sets the with for the special case node
+        /// Gets or sets the bys for the special case node
         /// </summary>
-        public IList<With> Withs { get; set; }
+        public IList<By> Bys { get; set; }
 
         /// <summary>
         /// Check if selected node match this tap case
@@ -33,7 +33,7 @@ namespace Testura.Android.Util.Walker.Cases.Stop
         /// <returns>True if we match, false otherwise</returns>
         public bool IsMatching(IList<Node> nodes)
         {
-            return nodes.Any(node => Withs.All(with => with.NodeSearch(node)));
+            return nodes.Any(node => Bys.All(with => with.NodeSearch(node)));
         }
 
         /// <summary>

@@ -17,23 +17,22 @@ namespace Testura.Android.Tests.PageObject
 
         private class ExampleClass
         {
-            [MapUiObject(with: AttributeTag.Text, value: "test")]
+            [MapUiObject(text: "test")]
             private UiObject _fieldObject;
 
-            [MapUiObject(with: AttributeTag.Text, value: "test")]
+            [MapUiObject(text: "test")]
             private UiObjects _fieldObjects;
 
-            [MapUiObject(with: AttributeTag.Class, value: "test")]
+            [MapUiObject(@class: "hej")]
             public UiObject PropertyObject { get; private set; }
 
-            [MapUiObject(with: AttributeTag.Index, value: "0")]
-            [MapUiObject(with: AttributeTag.Class, value: "test")]
+            [MapUiObject(index: "0", @class: "class")]
             public UiObject PropertyObjectWithMultiple { get; private set; }
 
-            [MapUiObject(with: AttributeTag.Class, value: "test")]
+            [MapUiObject(@class: "test")]
             public UiObjects PropertyObjects { get; private set; }
 
-            [MapUiObject(with: AttributeTag.Class, value: "test")]
+            [MapUiObject(@class: "test")]
             internal UiObject InternalProperty { get; private set; }
         }
 
@@ -48,14 +47,14 @@ namespace Testura.Android.Tests.PageObject
         public void InitializeUiObjects_WhenHavingClassWithPropertiesThatUseAttribute_ShouldInitializeUiObject()
         {
             Assert.IsNotNull(_exampleClass.PropertyObject);
-            Assert.AreEqual(1, _exampleClass.PropertyObject.Withs.Count);
+            Assert.AreEqual(1, _exampleClass.PropertyObject.Bys.Count);
         }
 
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithInternalPropertiesThatUseAttribute_ShouldInitializeUiObject()
         {
             Assert.IsNotNull(_exampleClass.InternalProperty);
-            Assert.AreEqual(1, _exampleClass.InternalProperty.Withs.Count);
+            Assert.AreEqual(1, _exampleClass.InternalProperty.Bys.Count);
         }
 
         [Test]
@@ -63,14 +62,14 @@ namespace Testura.Android.Tests.PageObject
         {
             var field = (UiObject)typeof(ExampleClass).GetField("_fieldObject", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_exampleClass);
             Assert.IsNotNull(field);
-            Assert.AreEqual(1, field.Withs.Count);
+            Assert.AreEqual(1, field.Bys.Count);
         }
 
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithPropertiesThatUseAttribute_ShouldInitializeUiObjects()
         {
             Assert.IsNotNull(_exampleClass.PropertyObjects);
-            Assert.AreEqual(1, _exampleClass.PropertyObjects.Withs.Count);
+            Assert.AreEqual(1, _exampleClass.PropertyObjects.Bys.Count);
         }
 
         [Test]
@@ -78,14 +77,14 @@ namespace Testura.Android.Tests.PageObject
         {
             var fields = (UiObjects)typeof(ExampleClass).GetField("_fieldObjects", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_exampleClass);
             Assert.IsNotNull(fields);
-            Assert.AreEqual(1, fields.Withs.Count);
+            Assert.AreEqual(1, fields.Bys.Count);
         }
 
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithPropertyThatUseMultipleAttributes_ShouldInitializeUiObjects()
         {
             Assert.IsNotNull(_exampleClass.PropertyObjectWithMultiple);
-            Assert.AreEqual(2, _exampleClass.PropertyObjectWithMultiple.Withs.Count);
+            Assert.AreEqual(2, _exampleClass.PropertyObjectWithMultiple.Bys.Count);
         }
     }
 }

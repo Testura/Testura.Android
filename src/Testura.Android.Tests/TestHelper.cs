@@ -32,38 +32,38 @@ namespace Testura.Android.Tests
 
         public Mock<AndroidDevice> DeviceMock { get; }
 
-        public UiObject CreateUiObject(With with, int delayInMiliSec, bool shouldThrowExeception = false)
+        public UiObject CreateUiObject(By @by, int delayInMiliSec, bool shouldThrowExeception = false)
         {
             if (shouldThrowExeception)
             {
-                NodeFinderService.Setup(u => u.FindNode(new[] { with }, It.IsAny<TimeSpan>()))
+                NodeFinderService.Setup(u => u.FindNode(new[] { @by }, It.IsAny<TimeSpan>()))
                     .Callback(() => Thread.Sleep(delayInMiliSec))
                     .Throws<UiNodeNotFoundException>();
             }
             else
             {
-                NodeFinderService.Setup(u => u.FindNode(new[] { with }, It.IsAny<TimeSpan>()))
+                NodeFinderService.Setup(u => u.FindNode(new[] { @by }, It.IsAny<TimeSpan>()))
                    .Callback(() => Thread.Sleep(delayInMiliSec))
                    .Returns(new Node(new XElement("mm"), null));
             }
-            return new UiObject(null, NodeFinderService.Object, new[] { with });
+            return new UiObject(null, NodeFinderService.Object, new[] { @by });
         }
 
-        public UiObjects CreateUiObjects(With with, int delayInMiliSec, bool shouldThrowExeception = false)
+        public UiObjects CreateUiObjects(By @by, int delayInMiliSec, bool shouldThrowExeception = false)
         {
             if (shouldThrowExeception)
             {
-                NodeFinderService.Setup(u => u.FindNode(new[] { with }, It.IsAny<TimeSpan>()))
+                NodeFinderService.Setup(u => u.FindNode(new[] { @by }, It.IsAny<TimeSpan>()))
                     .Callback(() => Thread.Sleep(delayInMiliSec))
                     .Throws<UiNodeNotFoundException>();
             }
             else
             {
-                NodeFinderService.Setup(u => u.FindNode(new [] { with }, It.IsAny<TimeSpan>()))
+                NodeFinderService.Setup(u => u.FindNode(new [] { @by }, It.IsAny<TimeSpan>()))
                    .Callback(() => Thread.Sleep(delayInMiliSec))
                    .Returns(new Node(new XElement("mm"), null));
             }
-            return new UiObjects(NodeFinderService.Object, new[] { with });
+            return new UiObjects(NodeFinderService.Object, new[] { @by });
         }
     }
 }

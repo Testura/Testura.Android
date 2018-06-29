@@ -16,21 +16,21 @@ namespace Testura.Android.Device.Ui.Nodes
         /// Search through a list of nodes and return the first node that match the search criteria.
         /// </summary>
         /// <param name="nodes">A list withs nodes to search through.</param>
-        /// <param name="withs">One ore many search criteria.</param>
+        /// <param name="bys">One ore many search criteria.</param>
         /// <returns>The first node we find that match the search criteria.</returns>
-        public Node FindNode(IList<Node> nodes, IList<With> withs)
+        public Node FindNode(IList<Node> nodes, IList<By> bys)
         {
             if (nodes == null)
             {
                 throw new ArgumentNullException(nameof(nodes));
             }
 
-            if (withs == null || !withs.Any())
+            if (bys == null || !bys.Any())
             {
-                throw new ArgumentException("Argument is empty collection", nameof(withs));
+                throw new ArgumentException("Argument is empty collection", nameof(bys));
             }
 
-            var foundNodes = FindNodes(nodes, withs);
+            var foundNodes = FindNodes(nodes, bys);
             return foundNodes.First();
         }
 
@@ -38,25 +38,25 @@ namespace Testura.Android.Device.Ui.Nodes
         /// Search through a list of nodes and return all nodes that match the search criteria.
         /// </summary>
         /// <param name="nodes">A list withs nodes to search through.</param>
-        /// <param name="withs">One ore many search criteria.</param>
+        /// <param name="bys">One ore many search criteria.</param>
         /// <returns>All nodes we find that match the search criteria.</returns>
-        public IList<Node> FindNodes(IList<Node> nodes, IList<With> withs)
+        public IList<Node> FindNodes(IList<Node> nodes, IList<By> bys)
         {
             if (nodes == null)
             {
                 throw new ArgumentNullException(nameof(nodes));
             }
 
-            if (withs == null || !withs.Any())
+            if (bys == null || !bys.Any())
             {
-                throw new ArgumentException("Argument is empty collection", nameof(withs));
+                throw new ArgumentException("Argument is empty collection", nameof(bys));
             }
 
             var approvedNodes = new List<Node>();
 
-            foreach (var with in withs)
+            foreach (var by in bys)
             {
-                var foundNodes = nodes.Where(with.NodeSearch).ToList();
+                var foundNodes = nodes.Where(by.NodeSearch).ToList();
 
                 if (!approvedNodes.Any())
                 {
@@ -70,7 +70,7 @@ namespace Testura.Android.Device.Ui.Nodes
 
             if (!approvedNodes.Any())
             {
-                throw new UiNodeNotFoundException(withs);
+                throw new UiNodeNotFoundException(bys);
             }
 
             return approvedNodes;

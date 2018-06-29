@@ -14,8 +14,8 @@ namespace Testura.Android.Device.Ui.Objects
     {
         private readonly INodeFinderService _nodeFinderService;
 
-        internal UiObjects(INodeFinderService nodeFinderService, IList<With> withs)
-            : base(withs)
+        internal UiObjects(INodeFinderService nodeFinderService, IList<By> bys)
+            : base(bys)
         {
             _nodeFinderService = nodeFinderService;
         }
@@ -41,7 +41,7 @@ namespace Testura.Android.Device.Ui.Objects
 
         protected override IList<Node> TryFindNode(TimeSpan timeout)
         {
-            return _nodeFinderService.FindNodes(Withs, timeout);
+            return _nodeFinderService.FindNodes(Bys, timeout);
         }
     }
 }

@@ -7,9 +7,9 @@ namespace Testura.Android.Device.Ui.Search
     /// <summary>
     /// Represent how we should find a node on the screen.
     /// </summary>
-    public class With
+    public class By
     {
-        private With(Func<Node, bool> nodeSearch, string errorMessage)
+        private By(Func<Node, bool> nodeSearch, string errorMessage)
         {
             NodeSearch = nodeSearch;
             ErrorMessage = errorMessage;
@@ -26,11 +26,11 @@ namespace Testura.Android.Device.Ui.Search
         public string ErrorMessage { get; }
 
         /// <summary>
-        /// Find node with matching text.
+        /// Map to a node with matching text.
         /// </summary>
         /// <param name="text">The text of the node to be found.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
-        public static With Text(string text)
+        public static By Text(string text)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -41,11 +41,11 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with text that contains text.
+        /// Map to a node that contains text.
         /// </summary>
         /// <param name="text">The partial text of the node to be found.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
-        public static With ContainsText(string text)
+        public static By ContainsText(string text)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -56,11 +56,11 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with matching resource id.
+        /// Map to a node with matching resource id.
         /// </summary>
         /// <param name="id">The resource if of the node to be found.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
-        public static With ResourceId(string id)
+        public static By ResourceId(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -71,11 +71,11 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with matching content desc.
+        /// Map to a node with matching content desc.
         /// </summary>
         /// <param name="contentDesc">The content desc of the node to be found.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
-        public static With ContentDesc(string contentDesc)
+        public static By ContentDesc(string contentDesc)
         {
             if (string.IsNullOrEmpty(contentDesc))
             {
@@ -86,11 +86,11 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with matching class.
+        /// Map to a node with matching class.
         /// </summary>
         /// <param name="class">The class of the node to be found.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
-        public static With Class(string @class)
+        public static By Class(string @class)
         {
             if (string.IsNullOrEmpty(@class))
             {
@@ -101,27 +101,27 @@ namespace Testura.Android.Device.Ui.Search
         }
 
         /// <summary>
-        /// Find node with matching index.
+        /// Map to a node with matching index.
         /// </summary>
         /// <param name="index">The index of the node to be found.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
-        public static With Index(int index)
+        public static By Index(int index)
         {
             return Attribute(AttributeTag.Index, index.ToString());
         }
 
         /// <summary>
-        /// Find node with matching package.
+        /// Map to a node with matching package.
         /// </summary>
         /// <param name="package">The package of the node to be found.</param>
         /// <returns>An instance of the with objecting containing the search function.</returns>
-        public static With Package(string package)
+        public static By Package(string package)
         {
             return Attribute(AttributeTag.Package, package);
         }
 
         /// <summary>
-        /// Find node that match the lambda expression.
+        /// Map to node that match lambda expression.
         /// </summary>
         /// <param name="predicate">The lambda expression.</param>
         /// <param name="customErrorMessage">Error message if we can't find node.</param>
@@ -129,34 +129,34 @@ namespace Testura.Android.Device.Ui.Search
         /// <code>
         /// device.Ui.CreateUiObject(With.Lambda(n => n.Text == "someText"));
         /// </code>
-        public static With Lambda(Func<Node, bool> predicate, string customErrorMessage = null)
+        public static By Lambda(Func<Node, bool> predicate, string customErrorMessage = null)
         {
             if (predicate == null)
             {
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            return new With(predicate, customErrorMessage ?? "complex lambda");
+            return new By(predicate, customErrorMessage ?? "complex lambda");
         }
 
-        private static With Attribute(AttributeTag attribute, string value)
+        private static By Attribute(AttributeTag attribute, string value)
         {
             switch (attribute)
             {
                 case AttributeTag.TextContains:
-                    return new With(node => node.Text != null && node.Text.ToLower().Contains(value.ToLower()), $"text contains \"{value}\"");
+                    return new By(node => node.Text != null && node.Text.ToLower().Contains(value.ToLower()), $"text contains \"{value}\"");
                 case AttributeTag.Text:
-                    return new With(node => node.Text != null && node.Text.Equals(value, StringComparison.OrdinalIgnoreCase), $"text equals \"{value}\"");
+                    return new By(node => node.Text != null && node.Text.Equals(value, StringComparison.OrdinalIgnoreCase), $"text equals \"{value}\"");
                 case AttributeTag.ResourceId:
-                    return new With(node => node.ResourceId != null && node.ResourceId.Equals(value, StringComparison.OrdinalIgnoreCase), $"resource id equals \"{value}\"");
+                    return new By(node => node.ResourceId != null && node.ResourceId.Equals(value, StringComparison.OrdinalIgnoreCase), $"resource id equals \"{value}\"");
                 case AttributeTag.ContentDesc:
-                    return new With(node => node.ContentDesc != null && node.ContentDesc.Equals(value, StringComparison.OrdinalIgnoreCase), $"content desc equals \"{value}\"");
+                    return new By(node => node.ContentDesc != null && node.ContentDesc.Equals(value, StringComparison.OrdinalIgnoreCase), $"content desc equals \"{value}\"");
                 case AttributeTag.Class:
-                    return new With(node => node.Class != null && node.Class.Equals(value, StringComparison.OrdinalIgnoreCase), $"class equals \"{value}\"");
+                    return new By(node => node.Class != null && node.Class.Equals(value, StringComparison.OrdinalIgnoreCase), $"class equals \"{value}\"");
                 case AttributeTag.Index:
-                    return new With(node => node.Index != null && node.Index.Equals(value, StringComparison.OrdinalIgnoreCase), $"index equals {value}");
+                    return new By(node => node.Index != null && node.Index.Equals(value, StringComparison.OrdinalIgnoreCase), $"index equals {value}");
                 case AttributeTag.Package:
-                    return new With(node => node.Package != null && node.Package.Equals(value, StringComparison.OrdinalIgnoreCase), $"package equals \"{value}\"");
+                    return new By(node => node.Package != null && node.Package.Equals(value, StringComparison.OrdinalIgnoreCase), $"package equals \"{value}\"");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null);
             }

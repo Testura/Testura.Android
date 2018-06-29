@@ -45,14 +45,14 @@ namespace Testura.Android.PageObject
                 var attributes = property.GetCustomAttributes(typeof(MapUiObjectAttribute), true);
                 if (attributes.Length >= 1)
                 {
-                    var withs = attributes.Cast<MapUiObjectAttribute>().Select(u => u.With).ToArray();
+                    var mapUiObjectAttribute = attributes[0] as MapUiObjectAttribute;
                     if (property.PropertyType == typeof(UiObject))
                     {
-                        property.SetValue(obj, mapper.MapUiObject(withs));
+                        property.SetValue(obj, mapper.MapUiObject(mapUiObjectAttribute.Bys.ToArray()));
                     }
                     else
                     {
-                        property.SetValue(obj, mapper.MapUiObjects(withs));
+                        property.SetValue(obj, mapper.MapUiObjects(mapUiObjectAttribute.Bys.ToArray()));
                     }
                 }
             }
@@ -76,14 +76,14 @@ namespace Testura.Android.PageObject
                 var attributes = field.GetCustomAttributes(typeof(MapUiObjectAttribute), true);
                 if (attributes.Length >= 1)
                 {
-                    var withs = attributes.Cast<MapUiObjectAttribute>().Select(u => u.With).ToArray();
+                    var mapUiObjectAttribute = attributes[0] as MapUiObjectAttribute;
                     if (field.FieldType == typeof(UiObject))
                     {
-                        field.SetValue(obj, mapper.MapUiObject(withs));
+                        field.SetValue(obj, mapper.MapUiObject(mapUiObjectAttribute.Bys.ToArray()));
                     }
                     else
                     {
-                        field.SetValue(obj, mapper.MapUiObjects(withs));
+                        field.SetValue(obj, mapper.MapUiObjects(mapUiObjectAttribute.Bys.ToArray()));
                     }
                 }
             }

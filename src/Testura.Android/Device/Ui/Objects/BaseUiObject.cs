@@ -15,21 +15,21 @@ namespace Testura.Android.Device.Ui.Objects
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseUiObject"/> class.
         /// </summary>
-        /// <param name="withs">A set of <see cref="With">Withs</see> that tell us how we should find the UI object./></param>
-        protected BaseUiObject(IList<With> withs)
+        /// <param name="bys">A set of <see cref="By">Withs</see> that tell us how we should find the UI object./></param>
+        protected BaseUiObject(IList<By> bys)
         {
-            if (withs == null || !withs.Any())
+            if (bys == null || !bys.Any())
             {
-                throw new ArgumentException("Argument is empty collection", nameof(withs));
+                throw new ArgumentException("Argument is empty collection", nameof(bys));
             }
 
-            Withs = withs;
+            Bys = bys;
         }
 
         /// <summary>
         /// Gets all search criteria to find this ui object.
         /// </summary>
-        internal IList<With> Withs { get; }
+        internal IList<By> Bys { get; }
 
         /// <summary>
         /// Wait for the node(s) to be visible.

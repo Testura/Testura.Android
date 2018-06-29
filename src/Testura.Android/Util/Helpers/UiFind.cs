@@ -11,19 +11,19 @@ namespace Testura.Android.Util.Helpers
     public static class UiFind
     {
         /// <summary>
-        /// Find the closest node(based on another node) that matches a specific with
+        /// Find the closest node(based on another node) that matches a specific by
         /// </summary>
-        /// <param name="with">With that the close node should match</param>
+        /// <param name="by">"By" that the close node should match</param>
         /// <param name="startNode">The start node and position where we should start to search</param>
         /// <returns>The closest node, null if we can't find a matching node</returns>
         /// <example>This example show how to call the method with another node </example>
         /// <code>
         /// var node = uiObject.Values()
-        /// UiFind.ClosestNode(With.Text("test"), node)
+        /// UiFind.ClosestNode(By.Text("test"), node)
         /// </code>
-        public static Node ClosestNode(With with, Node startNode)
+        public static Node ClosestNode(By by, Node startNode)
         {
-            return FindNode(with.NodeSearch, startNode, new List<Node>(), 0, null)?.Node;
+            return FindNode(by.NodeSearch, startNode, new List<Node>(), 0, null)?.Node;
         }
 
         private static FoundNode FindNode(Func<Node, bool> func, Node current, ICollection<Node> visitedNodes, int distance, FoundNode foundNode)

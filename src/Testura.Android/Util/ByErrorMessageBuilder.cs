@@ -5,31 +5,31 @@ using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Util
 {
-    internal static class WithErrorMessageBuilder
+    internal static class ByErrorMessageBuilder
     {
-        internal static string BuildWithErrorMessage(IList<With> withs)
+        internal static string BuildByErrorMessage(IList<By> bys)
         {
-            if (withs == null || !withs.Any())
+            if (bys == null || !bys.Any())
             {
-                return "Could not find node";
+                return "Could not map node (did not provide any \"bys\"?";
             }
 
             var errorMessage = new StringBuilder();
             errorMessage.Append("Could not find node where ");
-            if (withs.Count == 1)
+            if (bys.Count == 1)
             {
-                errorMessage.Append(withs.First().ErrorMessage);
+                errorMessage.Append(bys.First().ErrorMessage);
             }
             else
             {
-                for (var n = 0; n < withs.Count; n++)
+                for (var n = 0; n < bys.Count; n++)
                 {
-                    errorMessage.Append($"{withs[n].ErrorMessage}");
-                    if (n < withs.Count - 2)
+                    errorMessage.Append($"{bys[n].ErrorMessage}");
+                    if (n < bys.Count - 2)
                     {
                         errorMessage.Append(", ");
                     }
-                    else if (n == withs.Count - 2)
+                    else if (n == bys.Count - 2)
                     {
                         errorMessage.Append(" and ");
                     }

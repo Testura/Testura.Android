@@ -48,27 +48,27 @@ namespace Testura.Android.Device.Services.Ui
         /// <summary>
         /// Find a node on the screen
         /// </summary>
-        /// <param name="withs">Find node with</param>
+        /// <param name="bys">Find node with</param>
         /// <param name="timeout">Timeout in seconds</param>
         /// <returns>Returns found node</returns>
         /// <exception cref="UiNodeNotFoundException">If we timeout and can't find the node</exception>
-        public Node FindNode(IList<With> withs, TimeSpan timeout)
+        public Node FindNode(IList<By> bys, TimeSpan timeout)
         {
-            return FindNodes(withs, timeout).First();
+            return FindNodes(bys, timeout).First();
         }
 
         /// <summary>
         /// Find multiple nodes on the screen
         /// </summary>
-        /// <param name="withs">Find node with</param>
+        /// <param name="bys">Find node with</param>
         /// <param name="timeout">Timeout in seconds</param>
         /// <returns>Returns found node</returns>
         /// <exception cref="UiNodeNotFoundException">If we timeout and can't find any nodes</exception>
-        public IList<Node> FindNodes(IList<With> withs, TimeSpan timeout)
+        public IList<Node> FindNodes(IList<By> bys, TimeSpan timeout)
         {
-            if (withs == null || !withs.Any())
+            if (bys == null || !bys.Any())
             {
-                throw new ArgumentException("You must search with at least one \"with\"", nameof(withs));
+                throw new ArgumentException("You must search with at least one \"by\"", nameof(bys));
             }
 
             var startTime = DateTime.Now;
@@ -85,7 +85,7 @@ namespace Testura.Android.Device.Services.Ui
                         }
                     }
 
-                    return _nodeFinder.FindNodes(nodes, withs);
+                    return _nodeFinder.FindNodes(nodes, bys);
                 }
                 catch (UiNodeNotFoundException)
                 {

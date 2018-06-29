@@ -23,9 +23,9 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
         [Test]
         public void WaitForValue_WhenWaitingForValueAndValuesMatch_ShouldReturnTrue()
         {
-            var uiObject = _testHelper.CreateUiObject(With.Class("testClass"), 0);
+            var uiObject = _testHelper.CreateUiObject(By.Class("testClass"), 0);
 
-            _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
+            _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<By[]>(), It.IsAny<TimeSpan>()))
                 .Returns(new Node(new XElement("node", new XAttribute("clickable", "true")), null));
 
             Assert.IsTrue(uiObject.WaitUntil(n => n.Clickable));
@@ -34,9 +34,9 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
         [Test]
         public void WaitForValue_WhenWaitingForValueAndValuesDontMatch_ShouldReturnFalse()
         {
-            var uiObject = _testHelper.CreateUiObject(With.Class("testClass"), 0);
+            var uiObject = _testHelper.CreateUiObject(By.Class("testClass"), 0);
 
-            _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
+            _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<By[]>(), It.IsAny<TimeSpan>()))
                 .Returns(new Node(new XElement("node", new XAttribute("clickable", "false")), null));
 
             Assert.IsFalse(uiObject.WaitUntil(n => n.Clickable, TimeSpan.FromSeconds(1)));
@@ -45,15 +45,15 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
         [Test]
         public void WaitForValue_WhenWaitingForValueAndValueChangeAfter2Second_ShouldReturnTrue()
         {
-            var uiObject = _testHelper.CreateUiObject(With.Class("testClass"), 0);
+            var uiObject = _testHelper.CreateUiObject(By.Class("testClass"), 0);
 
-            _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
+            _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<By[]>(), It.IsAny<TimeSpan>()))
                 .Returns(new Node(new XElement("node", new XAttribute("clickable", "false")), null));
 
             Task.Run(() =>
             {
                 Thread.Sleep(2000);
-                _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<With[]>(), It.IsAny<TimeSpan>()))
+                _testHelper.NodeFinderService.Setup(u => u.FindNode(It.IsAny<By[]>(), It.IsAny<TimeSpan>()))
                     .Returns(new Node(new XElement("node", new XAttribute("clickable", "true")), null));
             });
 

@@ -80,7 +80,7 @@
     <Compile Include="Device\Services\Ui\UiService.cs" />
     <Compile Include="Device\Services\SettingsService.cs" />
     <Compile Include="Device\Ui\Nodes\INodeParser.cs" />
-    <Compile Include="Device\Ui\Search\With.cs" />
+    <Compile Include="Device\Ui\Search\By.cs" />
     <Compile Include="Device\Server\IUiAutomatorServer.cs" />
     <Compile Include="Device\Ui\Nodes\NodeParser.cs" />
     <Compile Include="Device\Server\UiAutomatorServer.cs" />
@@ -119,7 +119,7 @@
     <Compile Include="Util\Walker\Cases\Tap\TapCase.cs" />
     <Compile Include="Util\AdbCommandExecutor.cs" />
     <Compile Include="Util\Walker\AppWalker.cs" />
-    <Compile Include="Util\WithErrorMessageBuilder.cs" />
+    <Compile Include="Util\ByErrorMessageBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
