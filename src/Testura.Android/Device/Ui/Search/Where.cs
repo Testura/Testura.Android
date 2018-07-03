@@ -42,7 +42,13 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(text));
             }
 
-            return Attribute(AttributeTag.Text, text);
+            return new Where(
+                (node, wildcard) =>
+                {
+                    var searchValue = text.Replace(Wildcard, wildcard);
+                    return node.Text != null && node.Text.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
+                },
+                $"text equals \"{text}\"");
         }
 
         /// <summary>
@@ -57,7 +63,13 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(text));
             }
 
-            return Attribute(AttributeTag.TextContains, text);
+            return new Where(
+                (node, wildcard) =>
+                {
+                    var searchValue = text.Replace(Wildcard, wildcard);
+                    return node.Text != null && node.Text.ToLower().Contains(searchValue.ToLower());
+                },
+                $"text contains \"{text}\"");
         }
 
         /// <summary>
@@ -72,7 +84,13 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(id));
             }
 
-            return Attribute(AttributeTag.ResourceId, id);
+            return new Where(
+                (node, wildcard) =>
+                {
+                    var searchValue = id.Replace(Wildcard, wildcard);
+                    return node.ResourceId != null && node.ResourceId.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
+                },
+                $"resource id equals \"{id}\"");
         }
 
         /// <summary>
@@ -87,7 +105,13 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(contentDesc));
             }
 
-            return Attribute(AttributeTag.ContentDesc, contentDesc);
+            return new Where(
+                (node, wildcard) =>
+                {
+                    var searchValue = contentDesc.Replace(Wildcard, wildcard);
+                    return node.ContentDesc != null && node.ContentDesc.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
+                },
+                $"content desc equals \"{contentDesc}\"");
         }
 
         /// <summary>
@@ -102,7 +126,13 @@ namespace Testura.Android.Device.Ui.Search
                 throw new ArgumentException("Argument is null or empty", nameof(@class));
             }
 
-            return Attribute(AttributeTag.Class, @class);
+            return new Where(
+                (node, wildcard) =>
+                {
+                    var searchValue = @class.Replace(Wildcard, wildcard);
+                    return node.Class != null && node.Class.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
+                },
+                $"content desc equals \"{@class}\"");
         }
 
         /// <summary>
@@ -112,7 +142,8 @@ namespace Testura.Android.Device.Ui.Search
         /// <returns>An instance of the with object containing the search function.</returns>
         public static Where Index(int index)
         {
-            return Attribute(AttributeTag.Index, index.ToString());
+            return new Where((node, wildcard) => node.Index != null && node.Index.Equals(index.ToString(), StringComparison.OrdinalIgnoreCase),
+                $"index equals {index}");
         }
 
         /// <summary>
@@ -122,13 +153,24 @@ namespace Testura.Android.Device.Ui.Search
         /// <returns>An instance of the with objecting containing the search function.</returns>
         public static Where Package(string package)
         {
-            return Attribute(AttributeTag.Package, package);
+            if (string.IsNullOrEmpty(package))
+            {
+                throw new ArgumentException("Argument is null or empty", nameof(package));
+            }
+
+            return new Where(
+                (node, wildcard) =>
+                {
+                    var searchValue = package.Replace(Wildcard, wildcard);
+                    return node.Package != null && node.Package.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
+                },
+                $"package equals \"{package}\"");
         }
 
         /// <summary>
         /// Map to node that match lambda expression.
         /// </summary>
-        /// <param name="predicate">The lambda expression.</param>
+        /// <param name="predicate">The func used to map the node(s). The func takes current node, provided wildcard and return true if the node map otherwise false.</param>
         /// <param name="customErrorMessage">Error message if we can't find node.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
         /// <code>
@@ -147,7 +189,7 @@ namespace Testura.Android.Device.Ui.Search
         /// <summary>
         /// Map to node that match lambda expression.
         /// </summary>
-        /// <param name="predicate">The lambda expression.</param>
+        /// <param name="predicate">The func used to map the node(s). The func takes current node and return true if the node map otherwise false.</param>
         /// <param name="customErrorMessage">Error message if we can't find node.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
         /// <code>
@@ -161,78 +203,6 @@ namespace Testura.Android.Device.Ui.Search
             }
 
             return new Where((n, w) => predicate(n), customErrorMessage ?? "complex lambda");
-        }
-
-        private static Where Attribute(AttributeTag attribute, string value)
-        {
-            switch (attribute)
-            {
-                case AttributeTag.TextContains:
-                    return new Where(
-                        (node, wildcard) =>
-                        {
-                            var searchValue = value.Replace(Wildcard, wildcard);
-                            return node.Text != null && node.Text.ToLower().Contains(searchValue.ToLower());
-                        },
-                        $"text contains \"{value}\"");
-
-                case AttributeTag.Text:
-                    return new Where(
-                        (node, wildcard) =>
-                        {
-                            var searchValue = value.Replace(Wildcard, wildcard);
-                            return node.Text != null && node.Text.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
-                        },
-                        $"text equals \"{value}\"");
-
-                case AttributeTag.ResourceId:
-                    return new Where(
-                        (node, wildcard) =>
-                        {
-                            var searchValue = value.Replace(Wildcard, wildcard);
-                            return node.ResourceId != null && node.ResourceId.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
-                        },
-                        $"resource id equals \"{value}\"");
-
-                case AttributeTag.ContentDesc:
-                    return new Where(
-                        (node, wildcard) =>
-                        {
-                            var searchValue = value.Replace(Wildcard, wildcard);
-                            return node.ContentDesc != null && node.ContentDesc.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
-                        },
-                        $"content desc equals \"{value}\"");
-
-                case AttributeTag.Class:
-                    return new Where(
-                        (node, wildcard) =>
-                        {
-                            var searchValue = value.Replace(Wildcard, wildcard);
-                            return node.Class != null && node.Class.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
-                        },
-                        $"class equals \"{value}\"");
-
-                case AttributeTag.Index:
-                    return new Where(
-                        (node, wildcard) =>
-                        {
-                            var searchValue = value.Replace(Wildcard, wildcard);
-                            return node.Index != null && node.Index.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
-                        },
-                        $"index equals {value}");
-
-                case AttributeTag.Package:
-                    return new Where(
-                        (node, wildcard) =>
-                        {
-                            var searchValue = value.Replace(Wildcard, wildcard);
-                            return node.Package != null && node.Package.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
-                        },
-                        $"package equals \"{value}\"");
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null);
-            }
         }
     }
 }
