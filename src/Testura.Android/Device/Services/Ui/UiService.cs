@@ -45,30 +45,18 @@ namespace Testura.Android.Device.Services.Ui
         /// </summary>
         public IList<IUiExtension> Extensions { get; }
 
-        /// <summary>
-        /// Find a node on the screen
-        /// </summary>
-        /// <param name="bys">Find node with</param>
-        /// <param name="timeout">Timeout in seconds</param>
-        /// <returns>Returns found node</returns>
-        /// <exception cref="UiNodeNotFoundException">If we timeout and can't find the node</exception>
-        public Node FindNode(IList<By> bys, TimeSpan timeout)
+        /// <inheritdoc />
+        public Node FindNode(IList<Where> wheres, TimeSpan timeout, string wildcard = null)
         {
-            return FindNodes(bys, timeout).First();
+            return FindNodes(wheres, timeout, wildcard).First();
         }
 
-        /// <summary>
-        /// Find multiple nodes on the screen
-        /// </summary>
-        /// <param name="bys">Find node with</param>
-        /// <param name="timeout">Timeout in seconds</param>
-        /// <returns>Returns found node</returns>
-        /// <exception cref="UiNodeNotFoundException">If we timeout and can't find any nodes</exception>
-        public IList<Node> FindNodes(IList<By> bys, TimeSpan timeout)
+        /// <inheritdoc />
+        public IList<Node> FindNodes(IList<Where> wheres, TimeSpan timeout, string wildcard = null)
         {
-            if (bys == null || !bys.Any())
+            if (wheres == null || !wheres.Any())
             {
-                throw new ArgumentException("You must search with at least one \"by\"", nameof(bys));
+                throw new ArgumentException("You must search with at least one \"where\"", nameof(wheres));
             }
 
             var startTime = DateTime.Now;
@@ -85,7 +73,7 @@ namespace Testura.Android.Device.Services.Ui
                         }
                     }
 
-                    return _nodeFinder.FindNodes(nodes, bys);
+                    return _nodeFinder.FindNodes(nodes, wheres, wildcard);
                 }
                 catch (UiNodeNotFoundException)
                 {

@@ -37,7 +37,7 @@ namespace Testura.Android.PageObject
 
             foreach (var property in properties)
             {
-                if (property.PropertyType != typeof(UiObject) && property.PropertyType != typeof(UiObjects))
+                if (property.PropertyType != typeof(UiObject))
                 {
                     continue;
                 }
@@ -48,11 +48,7 @@ namespace Testura.Android.PageObject
                     var mapUiObjectAttribute = attributes[0] as MapUiObjectAttribute;
                     if (property.PropertyType == typeof(UiObject))
                     {
-                        property.SetValue(obj, mapper.MapUiObject(mapUiObjectAttribute.Bys.ToArray()));
-                    }
-                    else
-                    {
-                        property.SetValue(obj, mapper.MapUiObjects(mapUiObjectAttribute.Bys.ToArray()));
+                        property.SetValue(obj, mapper.MapUiObject(mapUiObjectAttribute.GetWheres().ToArray()));
                     }
                 }
             }
@@ -68,7 +64,7 @@ namespace Testura.Android.PageObject
             var fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var field in fields)
             {
-                if (field.FieldType != typeof(UiObject) && field.FieldType != typeof(UiObjects))
+                if (field.FieldType != typeof(UiObject))
                 {
                     continue;
                 }
@@ -79,11 +75,7 @@ namespace Testura.Android.PageObject
                     var mapUiObjectAttribute = attributes[0] as MapUiObjectAttribute;
                     if (field.FieldType == typeof(UiObject))
                     {
-                        field.SetValue(obj, mapper.MapUiObject(mapUiObjectAttribute.Bys.ToArray()));
-                    }
-                    else
-                    {
-                        field.SetValue(obj, mapper.MapUiObjects(mapUiObjectAttribute.Bys.ToArray()));
+                        field.SetValue(obj, mapper.MapUiObject(mapUiObjectAttribute.GetWheres().ToArray()));
                     }
                 }
             }

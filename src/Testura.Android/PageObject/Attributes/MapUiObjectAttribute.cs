@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Testura.Android.Device.Ui.Objects;
 using Testura.Android.Device.Ui.Search;
-using Testura.Android.Util;
 
 namespace Testura.Android.PageObject.Attributes
 {
@@ -13,63 +13,89 @@ namespace Testura.Android.PageObject.Attributes
     public class MapUiObjectAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapUiObjectAttribute"/> class.
+        /// Gets or sets the text used to map the <see cref="UiObject">ui object</see>
         /// </summary>
-        public MapUiObjectAttribute(
-            string text = null,
-            string containsText = null,
-            string resourceId = null,
-            string contentDesc = null,
-            string @class = null,
-            string package = null,
-            string index = null)
-        {
-            Bys = new List<By>();
-
-            if (text != null)
-            {
-                Bys.Add(By.Text(text));
-            }
-
-            if (containsText != null)
-            {
-                Bys.Add(By.ContainsText(containsText));
-            }
-
-            if (resourceId != null)
-            {
-                Bys.Add(By.ResourceId(resourceId));
-            }
-
-            if (contentDesc != null)
-            {
-                Bys.Add(By.ContentDesc(contentDesc));
-            }
-
-            if (@class != null)
-            {
-                Bys.Add(By.Class(@class));
-            }
-
-            if (package != null)
-            {
-                Bys.Add(By.Package(package));
-            }
-
-            if (index != null)
-            {
-                Bys.Add(By.Index(int.Parse(index)));
-            }
-
-            if (!Bys.Any())
-            {
-                throw new ArgumentException("Need to provide at least one \"by\" when mapping ui object", nameof(By));
-            }
-        }
+        public string Text { get; set; }
 
         /// <summary>
-        /// Gets or sets the bys that should be used to map the ui object.
+        /// Gets or sets the "text contains" used to map the <see cref="UiObject">ui object</see>
         /// </summary>
-        public IList<By> Bys { get; set; }
+        public string TextContains { get; set; }
+
+        /// <summary>
+        /// Gets or sets the resource id used to map the <see cref="UiObject">ui object</see>
+        /// </summary>
+        public string ResourceId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the content desc used to map the <see cref="UiObject">ui object</see>
+        /// </summary>
+        public string ContentDesc { get; set; }
+
+        /// <summary>
+        /// Gets or sets the class used to map the <see cref="UiObject">ui object</see>
+        /// </summary>
+        public string Class { get; set; }
+
+        /// <summary>
+        /// Gets or sets the package used to map the <see cref="UiObject">ui object</see>
+        /// </summary>
+        public string Package { get; set; }
+
+        /// <summary>
+        /// Gets or sets the index used to map the <see cref="UiObject">ui object</see>
+        /// </summary>
+        public string Index { get; set; }
+
+        /// <summary>
+        /// Get all wheres that should be used to map this <see cref="UiObject">ui object</see>
+        /// </summary>
+        /// <returns>Where(s) used to map the <see cref="UiObject">ui object</see></returns>
+        public IList<Where> GetWheres()
+        {
+            var wheres = new List<Where>();
+
+            if (Text != null)
+            {
+                wheres.Add(Where.Text(Text));
+            }
+
+            if (TextContains != null)
+            {
+                wheres.Add(Where.TextContains(TextContains));
+            }
+
+            if (ResourceId != null)
+            {
+                wheres.Add(Where.ResourceId(ResourceId));
+            }
+
+            if (ContentDesc != null)
+            {
+                wheres.Add(Where.ContentDesc(ContentDesc));
+            }
+
+            if (Class != null)
+            {
+                wheres.Add(Where.Class(Class));
+            }
+
+            if (Package != null)
+            {
+                wheres.Add(Where.Package(Package));
+            }
+
+            if (Index != null)
+            {
+                wheres.Add(Where.Index(int.Parse(Index)));
+            }
+
+            if (!wheres.Any())
+            {
+                throw new ArgumentException("Need to provide at least one \"with\" when mapping ui object", nameof(Where));
+            }
+
+            return wheres;
+        }
     }
 }

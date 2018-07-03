@@ -64,7 +64,6 @@
     <Compile Include="Device\Services\Ui\INodeFinderService.cs" />
     <Compile Include="Device\Ui\Nodes\Data\NodeBounds.cs" />
     <Compile Include="Device\Ui\Objects\UiObject.cs" />
-    <Compile Include="Device\Ui\Objects\UiObjects.cs" />
     <Compile Include="Device\Ui\Nodes\INodeFinder.cs" />
     <Compile Include="Device\Ui\Nodes\NodeFinder.cs" />
     <Compile Include="Device\Server\IInteractionUiAutomatorServer.cs" />
@@ -80,12 +79,11 @@
     <Compile Include="Device\Services\Ui\UiService.cs" />
     <Compile Include="Device\Services\SettingsService.cs" />
     <Compile Include="Device\Ui\Nodes\INodeParser.cs" />
-    <Compile Include="Device\Ui\Search\By.cs" />
+    <Compile Include="Device\Ui\Search\Where.cs" />
     <Compile Include="Device\Server\IUiAutomatorServer.cs" />
     <Compile Include="Device\Ui\Nodes\NodeParser.cs" />
     <Compile Include="Device\Server\UiAutomatorServer.cs" />
     <Compile Include="Device\Ui\Nodes\Data\Node.cs" />
-    <Compile Include="Device\Ui\Objects\BaseUiObject.cs" />
     <Compile Include="Util\Coordinate.cs" />
     <Compile Include="Util\DependencyInstaller.cs" />
     <Compile Include="Util\Enums.cs" />
@@ -119,7 +117,7 @@
     <Compile Include="Util\Walker\Cases\Tap\TapCase.cs" />
     <Compile Include="Util\AdbCommandExecutor.cs" />
     <Compile Include="Util\Walker\AppWalker.cs" />
-    <Compile Include="Util\ByErrorMessageBuilder.cs" />
+    <Compile Include="Util\WithErrorMessageBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

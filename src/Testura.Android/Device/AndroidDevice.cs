@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Server;
 using Testura.Android.Device.Services;
@@ -6,6 +7,7 @@ using Testura.Android.Device.Services.Activity;
 using Testura.Android.Device.Services.Adb;
 using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Objects;
 using Testura.Android.Device.Ui.Search;
 using Testura.Android.Util;
@@ -48,80 +50,55 @@ namespace Testura.Android.Device
         {
         }
 
-        /// <summary>
-        /// Gets the adb service of an android device. This service
-        /// handles everything connected to adb.
-        /// </summary>
+        /// <inheritdoc />
         public AdbService Adb { get; }
 
-        /// <summary>
-        /// Gets the ui service of an android device.
-        /// </summary>
+        /// <inheritdoc />
         public UiService Ui { get; }
 
-        /// <summary>
-        /// Gets the settings service of an android device. This service
-        /// handles everything with settings like airplane mode, wifi, etc.
-        /// </summary>
+        /// <inheritdoc />
         public SettingsService Settings { get; }
 
-        /// <summary>
-        /// Gets the activity service of an android device. This service
-        /// handles everything connected to activites (start, current, etc).
-        /// </summary>
+        /// <inheritdoc />
         public ActivityService Activity { get; }
 
-        /// <summary>
-        /// Gets the interaction service of an android device. This service
-        /// handles everything with interaction like swipe, tap, etc.
-        /// </summary>
+        /// <inheritdoc />
         public InteractionService Interaction { get; }
 
-        /// <summary>
-        /// Gets the serial of the device
-        /// </summary>
+        /// <inheritdoc />
         public string Serial => _configuration.Serial;
 
-        /// <summary>
-        /// Create a new ui object that maps to a single node
-        /// </summary>
-        /// <param name="by">How we should map ui object. Node should match all provided bys</param>
-        /// <returns>The mapped ui object</returns>
-        public virtual UiObject MapUiObject(params By[] by)
+        /// <inheritdoc />
+        public virtual UiObject MapUiObject(Func<Node, string, bool> predicate, string customErrorMessage = null)
         {
-            return new UiObject(Interaction, Ui, by);
+            return new UiObject(Interaction, Ui, new List<Where> { Where.Lambda(predicate, customErrorMessage) }, null);
         }
 
-        /// <summary>
-        /// Create a new ui object that maps to multiple nodes with same matching properties
-        /// </summary>
-        /// <param name="by">How we should map ui object. Node should match all provided bys</param>
-        /// <returns>The mapped ui object</returns>
-        public virtual UiObjects MapUiObjects(params By[] by)
+        /// <inheritdoc />
+        public virtual UiObject MapUiObject(Func<Node, bool> predicate, string customErrorMessage = null)
         {
-            return new UiObjects(Ui, by);
+            return new UiObject(Interaction, Ui, new List<Where> { Where.Lambda(predicate, customErrorMessage) }, null);
         }
 
-        /// <summary>
-        /// Start the ui server
-        /// </summary>
+        /// <inheritdoc />
+        public UiObject MapUiObject(params Where[] wheres)
+        {
+            return new UiObject(Interaction, Ui, wheres, null);
+        }
+
+        /// <inheritdoc />
         public void StartServer()
         {
             _uiAutomatorServer.Start();
         }
 
-        /// <summary>
-        /// Stop the ui server
-        /// </summary>
+        /// <inheritdoc />
         public void StopServer()
         {
             _uiAutomatorServer.Stop();
         }
 
-        /// <summary>
-        /// Get an adb terminal configured for this device.
-        /// </summary>
-        /// <returns>Adb terminal configured for this device</returns>
+        /// <inheritdoc />
         public AdbCommandExecutor GetAdbCommandExecutor()
         {
             return new AdbCommandExecutor(_configuration.Serial, _configuration.AdbPath);

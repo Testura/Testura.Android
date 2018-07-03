@@ -14,8 +14,8 @@ namespace Testura.Android.Util.Exceptions
         {
         }
 
-        public UiNodeNotFoundException(IList<By> bys)
-            : base(ByErrorMessageBuilder.BuildByErrorMessage(bys))
+        public UiNodeNotFoundException(IList<Where> wheres)
+            : base(WithErrorMessageBuilder.BuildByErrorMessage(wheres))
         {
         }
 

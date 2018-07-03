@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
 
@@ -11,26 +11,26 @@ namespace Testura.Android.Util.Helpers
     public static class UiFind
     {
         /// <summary>
-        /// Find the closest node(based on another node) that matches a specific by
+        /// Find the closest node(based on another node) that matches specific where(s)
         /// </summary>
-        /// <param name="by">"By" that the close node should match</param>
         /// <param name="startNode">The start node and position where we should start to search</param>
+        /// <param name="wheres">"Where(s)" that the close node should match</param>
         /// <returns>The closest node, null if we can't find a matching node</returns>
         /// <example>This example show how to call the method with another node </example>
         /// <code>
         /// var node = uiObject.Values()
-        /// UiFind.ClosestNode(By.Text("test"), node)
+        /// UiFind.ClosestNode(Where.Text("test"), node)
         /// </code>
-        public static Node ClosestNode(By by, Node startNode)
+        public static Node ClosestNode(Node startNode, params Where[] wheres)
         {
-            return FindNode(by.NodeSearch, startNode, new List<Node>(), 0, null)?.Node;
+            return FindNode(wheres, startNode, new List<Node>(), 0, null)?.Node;
         }
 
-        private static FoundNode FindNode(Func<Node, bool> func, Node current, ICollection<Node> visitedNodes, int distance, FoundNode foundNode)
+        private static FoundNode FindNode(Where[] wheres, Node current, ICollection<Node> visitedNodes, int distance, FoundNode foundNode)
         {
             visitedNodes.Add(current);
 
-            if (func.Invoke(current))
+            if (wheres.All(w => w.NodeSearch.Invoke(current, null)))
             {
                 if (foundNode == null || distance < foundNode.Distance)
                 {
@@ -40,7 +40,7 @@ namespace Testura.Android.Util.Helpers
 
             foreach (var currentChild in current.Children)
             {
-                var found = FindNode(func, currentChild, visitedNodes, distance + 1, foundNode);
+                var found = FindNode(wheres, currentChild, visitedNodes, distance + 1, foundNode);
                 if (NodeOk(foundNode, found))
                 {
                     foundNode = found;
@@ -49,7 +49,7 @@ namespace Testura.Android.Util.Helpers
 
             if (current.Parent != null && !visitedNodes.Contains(current.Parent))
             {
-                var found = FindNode(func, current.Parent, visitedNodes, distance + 1, foundNode);
+                var found = FindNode(wheres, current.Parent, visitedNodes, distance + 1, foundNode);
                 if (NodeOk(foundNode, found))
                 {
                     foundNode = found;

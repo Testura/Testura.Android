@@ -17,22 +17,16 @@ namespace Testura.Android.Tests.PageObject
 
         private class ExampleClass
         {
-            [MapUiObject(text: "test")]
+            [MapUiObject(Text = "test")]
             private UiObject _fieldObject;
 
-            [MapUiObject(text: "test")]
-            private UiObjects _fieldObjects;
-
-            [MapUiObject(@class: "hej")]
+            [MapUiObject(Class = "hej")]
             public UiObject PropertyObject { get; private set; }
 
-            [MapUiObject(index: "0", @class: "class")]
+            [MapUiObject(Index = "0", Class = "class")]
             public UiObject PropertyObjectWithMultiple { get; private set; }
 
-            [MapUiObject(@class: "test")]
-            public UiObjects PropertyObjects { get; private set; }
-
-            [MapUiObject(@class: "test")]
+            [MapUiObject(Class = "test")]
             internal UiObject InternalProperty { get; private set; }
         }
 
@@ -47,14 +41,14 @@ namespace Testura.Android.Tests.PageObject
         public void InitializeUiObjects_WhenHavingClassWithPropertiesThatUseAttribute_ShouldInitializeUiObject()
         {
             Assert.IsNotNull(_exampleClass.PropertyObject);
-            Assert.AreEqual(1, _exampleClass.PropertyObject.Bys.Count);
+            Assert.AreEqual(1, _exampleClass.PropertyObject.Wheres.Count);
         }
 
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithInternalPropertiesThatUseAttribute_ShouldInitializeUiObject()
         {
             Assert.IsNotNull(_exampleClass.InternalProperty);
-            Assert.AreEqual(1, _exampleClass.InternalProperty.Bys.Count);
+            Assert.AreEqual(1, _exampleClass.InternalProperty.Wheres.Count);
         }
 
         [Test]
@@ -62,29 +56,15 @@ namespace Testura.Android.Tests.PageObject
         {
             var field = (UiObject)typeof(ExampleClass).GetField("_fieldObject", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_exampleClass);
             Assert.IsNotNull(field);
-            Assert.AreEqual(1, field.Bys.Count);
+            Assert.AreEqual(1, field.Wheres.Count);
         }
 
-        [Test]
-        public void InitializeUiObjects_WhenHavingClassWithPropertiesThatUseAttribute_ShouldInitializeUiObjects()
-        {
-            Assert.IsNotNull(_exampleClass.PropertyObjects);
-            Assert.AreEqual(1, _exampleClass.PropertyObjects.Bys.Count);
-        }
-
-        [Test]
-        public void InitializeUiObjects_WhenHavingClassWithFieldsThatUseAttribute_ShouldInitializeUiObjects()
-        {
-            var fields = (UiObjects)typeof(ExampleClass).GetField("_fieldObjects", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_exampleClass);
-            Assert.IsNotNull(fields);
-            Assert.AreEqual(1, fields.Bys.Count);
-        }
 
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithPropertyThatUseMultipleAttributes_ShouldInitializeUiObjects()
         {
             Assert.IsNotNull(_exampleClass.PropertyObjectWithMultiple);
-            Assert.AreEqual(2, _exampleClass.PropertyObjectWithMultiple.Bys.Count);
+            Assert.AreEqual(2, _exampleClass.PropertyObjectWithMultiple.Wheres.Count);
         }
     }
 }

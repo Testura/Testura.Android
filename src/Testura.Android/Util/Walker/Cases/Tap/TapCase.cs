@@ -16,16 +16,16 @@ namespace Testura.Android.Util.Walker.Cases.Tap
         /// <summary>
         /// Initializes a new instance of the <see cref="TapCase"/> class.
         /// </summary>
-        /// <param name="bys">A set of special case withs</param>
-        protected TapCase(IList<By> bys)
+        /// <param name="wheres">A set of special case withs</param>
+        protected TapCase(IList<Where> wheres)
         {
-            Bys = bys;
+            Wheres = wheres;
         }
 
         /// <summary>
         /// Gets or sets the with for the special case node
         /// </summary>
-        public IList<By> Bys { get; set; }
+        public IList<Where> Wheres { get; set; }
 
         /// <summary>
         /// Check if selected node match this tap case
@@ -34,7 +34,7 @@ namespace Testura.Android.Util.Walker.Cases.Tap
         /// <returns>True if we match, false otherwise</returns>
         public bool IsMatching(Node node)
         {
-            return Bys.All(by => by.NodeSearch(node));
+            return Wheres.All(where => where.NodeSearch(node, null));
         }
 
         /// <summary>

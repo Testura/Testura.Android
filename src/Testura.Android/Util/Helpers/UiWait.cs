@@ -117,7 +117,7 @@ namespace Testura.Android.Util.Helpers
             {
                 if (invokeMethodByTask[notCompletedTask].Target is UiObject uiObject)
                 {
-                    errorMessage.Append($"{ByErrorMessageBuilder.BuildByErrorMessage(uiObject.Bys).Replace("Could not find node where", "Node where")} \r\n");
+                    errorMessage.Append($"{WithErrorMessageBuilder.BuildByErrorMessage(uiObject.Wheres).Replace("Could not find node where", "Node where")} \r\n");
                 }
             }
 

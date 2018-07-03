@@ -13,16 +13,18 @@ namespace Testura.Android.Device.Ui.Nodes
         /// Search through a list of nodes and return the first node that match the search criteria.
         /// </summary>
         /// <param name="nodes">A list withs nodes to search through.</param>
-        /// <param name="bys">One ore many search criteria.</param>
+        /// <param name="wheres">One ore many search criterias.</param>
+        /// <param name="wildcard">Wildcard value</param>
         /// <returns>The first node we find that match the search criteria.</returns>
-        Node FindNode(IList<Node> nodes, IList<By> bys);
+        Node FindNode(IList<Node> nodes, IList<Where> wheres, string wildcard = null);
 
         /// <summary>
         /// Search through a list of nodes and return all nodes that match the search criteria.
         /// </summary>
         /// <param name="nodes">A list withs nodes to search through.</param>
-        /// <param name="bys">One ore many search criteria.</param>
+        /// <param name="wheres">One ore many search criteria.</param>
+        /// <param name="wildcard">wildcard value</param>
         /// <returns>All nodes we find that match the search criteria.</returns>
-        IList<Node> FindNodes(IList<Node> nodes, IList<By> bys);
+        IList<Node> FindNodes(IList<Node> nodes, IList<Where> wheres, string wildcard = null);
     }
 }

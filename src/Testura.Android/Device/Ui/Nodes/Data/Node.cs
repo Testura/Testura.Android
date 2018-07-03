@@ -170,7 +170,6 @@ namespace Testura.Android.Device.Ui.Nodes.Data
                 new Coordinate(int.Parse(values[0]), int.Parse(values[1])),
                 new Coordinate(int.Parse(values[2]), int.Parse(values[3]))
             };
-
         }
 
         private bool ParseAttribute(string name)

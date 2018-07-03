@@ -13,7 +13,7 @@ namespace Testura.Android.Tests.Util.Helpers
         public void FindClosestNode_WhenSearchingForNodeThatExist_ShouldGetNode()
         {
             var root = CreateNode();
-            var fondNode = UiFind.ClosestNode(By.Text("second_node_1"), root.Children[0]);
+            var fondNode = UiFind.ClosestNode(root.Children[0], Where.Text("second_node_1"));
             Assert.IsNotNull(fondNode);
             Assert.AreEqual(root.Children[0].Children[1], fondNode);
         }
@@ -22,7 +22,7 @@ namespace Testura.Android.Tests.Util.Helpers
         public void FindClosestNode_WhenComplexSearchingForNodeThatExist_ShouldGetNode()
         {
             var root = CreateNode();
-            var fondNode = UiFind.ClosestNode(By.Text("third_node_1_1_1"), root.Children[0]);
+            var fondNode = UiFind.ClosestNode(root.Children[0], Where.Text("third_node_1_1_1"));
             Assert.IsNotNull(fondNode);
             Assert.AreEqual(root.Children[1].Children[1].Children[1], fondNode);
         }
@@ -31,7 +31,7 @@ namespace Testura.Android.Tests.Util.Helpers
         public void FindClosestNode_WhenSearchingForNodeThatDontExist_ShouldGetNull()
         {
             var root = CreateNode();
-            var fondNode = UiFind.ClosestNode(By.Text("second_node_23"), root.Children[0]);
+            var fondNode = UiFind.ClosestNode(root.Children[0], Where.Text("second_node_23"));
             Assert.IsNull(fondNode);
         }
 

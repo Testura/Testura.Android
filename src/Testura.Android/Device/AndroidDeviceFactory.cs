@@ -122,7 +122,7 @@ namespace Testura.Android.Device
                 {
                     if (!possibleDevices.Any())
                     {
-                        if (SeeIfDeviceAreAvailable(string.Empty))
+                        if (IsDeviceAvailable(string.Empty))
                         {
                             var configuration = new DeviceConfiguration();
                             BusyDevices.Add(configuration);
@@ -130,7 +130,7 @@ namespace Testura.Android.Device
                         }
                     }
 
-                    var availableDevice = possibleDevices.FirstOrDefault(p => SeeIfDeviceAreAvailable(p.Serial));
+                    var availableDevice = possibleDevices.FirstOrDefault(p => IsDeviceAvailable(p.Serial));
                     if (availableDevice != null)
                     {
                         BusyDevices.Add(availableDevice);
@@ -144,7 +144,7 @@ namespace Testura.Android.Device
             throw new AndroidDeviceFactoryException($"Could not find any available devices after {_maxWaitTime} minutes.");
         }
 
-        private bool SeeIfDeviceAreAvailable(string serial)
+        private bool IsDeviceAvailable(string serial)
         {
             return BusyDevices.All(b => b.Serial != serial);
         }
