@@ -202,7 +202,7 @@ Ui extensions is a way to hijack the UIService so *before* we look for element x
 
         public bool CheckNodes(IList<Node> nodes)
         {
-            if (nodes.Any(n => With.ResourceId("loadingId).NodeSearch(n, null)) && !_isWaiting)
+            if (nodes.Any(n => With.ResourceId("loadingId").NodeMatch(n, null)) && !_isWaiting)
             {
                 WaitForLoading();
                 // Reset the wait timer for the actual object we're looking for. 

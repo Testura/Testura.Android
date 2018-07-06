@@ -1,6 +1,5 @@
 ﻿using System;
 using Testura.Android.Device.Ui.Nodes.Data;
-using Testura.Android.Util;
 
 namespace Testura.Android.Device.Ui.Search
 {
@@ -14,16 +13,16 @@ namespace Testura.Android.Device.Ui.Search
         /// </summary>
         public const string Wildcard = "{{*}}";
 
-        private Where(Func<Node, string, bool> nodeSearch, string errorMessage)
+        private Where(Func<Node, string, bool> nodeMatch, string errorMessage)
         {
-            NodeSearch = nodeSearch;
+            NodeMatch = nodeMatch;
             ErrorMessage = errorMessage;
         }
 
         /// <summary>
         /// Gets the func used to find the node.
         /// </summary>
-        public Func<Node, string, bool> NodeSearch { get; }
+        public Func<Node, string, bool> NodeMatch { get; }
 
         /// <summary>
         /// Gets the error message that are thrown if we can't find the node.
@@ -170,39 +169,39 @@ namespace Testura.Android.Device.Ui.Search
         /// <summary>
         /// Map to node that match lambda expression.
         /// </summary>
-        /// <param name="predicate">The func used to map the node(s). The func takes current node, provided wildcard and return true if the node map otherwise false.</param>
+        /// <param name="expression">The func used to map the node(s). The func takes current node, provided wildcard and return true if the node map otherwise false.</param>
         /// <param name="customErrorMessage">Error message if we can't find node.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
         /// <code>
         /// device.Ui.CreateUiObject(With.Lambda(n => n.Text == "someText"));
         /// </code>
-        public static Where Lambda(Func<Node, string, bool> predicate, string customErrorMessage = null)
+        public static Where Lambda(Func<Node, string, bool> expression, string customErrorMessage = null)
         {
-            if (predicate == null)
+            if (expression == null)
             {
-                throw new ArgumentNullException(nameof(predicate));
+                throw new ArgumentNullException(nameof(expression));
             }
 
-            return new Where(predicate, customErrorMessage ?? "complex lambda");
+            return new Where(expression, customErrorMessage ?? "complex lambda");
         }
 
         /// <summary>
         /// Map to node that match lambda expression.
         /// </summary>
-        /// <param name="predicate">The func used to map the node(s). The func takes current node and return true if the node map otherwise false.</param>
+        /// <param name="expression">The func used to map the node(s). The func takes current node and return true if the node map otherwise false.</param>
         /// <param name="customErrorMessage">Error message if we can't find node.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
         /// <code>
         /// device.Ui.CreateUiObject(With.Lambda(n => n.Text == "someText"));
         /// </code>
-        public static Where Lambda(Func<Node, bool> predicate, string customErrorMessage = null)
+        public static Where Lambda(Func<Node, bool> expression, string customErrorMessage = null)
         {
-            if (predicate == null)
+            if (expression == null)
             {
-                throw new ArgumentNullException(nameof(predicate));
+                throw new ArgumentNullException(nameof(expression));
             }
 
-            return new Where((n, w) => predicate(n), customErrorMessage ?? "complex lambda");
+            return new Where((n, w) => expression(n), customErrorMessage ?? "complex lambda");
         }
     }
 }

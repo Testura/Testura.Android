@@ -34,7 +34,7 @@ namespace Testura.Android.Util.Walker.Cases.Tap
         /// <returns>True if we match, false otherwise</returns>
         public bool IsMatching(Node node)
         {
-            return Wheres.All(where => where.NodeSearch(node, null));
+            return Wheres.All(where => where.NodeMatch(node, null));
         }
 
         /// <summary>

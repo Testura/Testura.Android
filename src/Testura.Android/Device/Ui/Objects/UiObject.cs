@@ -112,7 +112,7 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Tap in the center of the first node that match all our predicates.
+        /// Tap in the center of the first node that match the provided mapping.
         /// </summary>
         public void Tap()
         {
@@ -120,7 +120,7 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Tap in the center of the first node that match all our predicates.
+        /// Tap in the center of the first node that match the provided mapping.
         /// </summary>
         /// <param name="timeout">Timeout</param>
         public void Tap(TimeSpan timeout)
@@ -130,7 +130,7 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Input text into the node that match all our predicates.
+        /// Input text into the node that match the provided mapping.
         /// </summary>
         /// <param name="text">The text to input into the nod.e</param>
         public void InputText(string text)
@@ -139,7 +139,7 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Input text into the the first node that match all our predicates.
+        /// Input text into the the first node that match the provided mapping.
         /// </summary>
         /// <param name="text">The text to input into the nod.e</param>
         /// <param name="timeout">Timeout</param>
@@ -157,35 +157,35 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Get first node that match all our predicates.
+        /// Get first node that match the provided mapping.
         /// </summary>
-        /// <returns>The first node that match all our predicates</returns>
+        /// <returns>The first node that match the provided mapping</returns>
         public Node First()
         {
             return First(TimeSpan.FromSeconds(20));
         }
 
         /// <summary>
-        /// Get first node that match all our predicates.
+        /// Get first node that match the provided mapping.
         /// </summary>
         /// <param name="timeout">How long we should wait before we stop looking for a node</param>
-        /// <returns>The first node that match all our predicates</returns>
+        /// <returns>The first node that match the provided mapping</returns>
         public Node First(TimeSpan timeout)
         {
             return TryFindNode(timeout).First();
         }
 
         /// <summary>
-        /// Get all nodes that match all our predicates.
+        /// Get all nodes that match the provided mapping.
         /// </summary>
-        /// <returns>All nodes that match our predicates.</returns>
+        /// <returns>All nodes that match the provided mapping.</returns>
         public List<Node> All()
         {
             return All(TimeSpan.FromSeconds(10));
         }
 
         /// <summary>
-        /// Get all nodes that match all our predicates.
+        /// Get all nodes that match the provided mapping.
         /// </summary>
         /// <param name="timeout">How long we should wait before we stop looking for a node</param>
         /// <returns>A node object with all values of this node.</returns>
@@ -195,7 +195,7 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Get the first node that match all our predicates and wait until it match all expected values.
+        /// Get the first node that match the provided mapping and wait until it match all expected values.
         /// </summary>
         /// <param name="expectedValues">Expected values on the node.</param>
         /// <returns>True if node values match before timeout, otherwise false.</returns>
@@ -205,7 +205,7 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Get the first node that match all our predicates and wait until it match all expected values.
+        /// Get the first node that match the provided mapping and wait until it match all expected values.
         /// </summary>
         /// <param name="expectedValues">Expected values on the node.</param>
         /// <param name="timeout">Timeout</param>
@@ -230,7 +230,7 @@ namespace Testura.Android.Device.Ui.Objects
         }
 
         /// <summary>
-        /// Find the closest node(based on the first node that match all our predicates) that matches specific where(s)
+        /// Find the closest node(based on the first node that match the provided mapping) that matches specific where(s)
         /// </summary>
         /// <param name="wheres">"Where(s)" that the close node should match</param>
         /// <returns>The closest node, null if we can't find a matching node</returns>

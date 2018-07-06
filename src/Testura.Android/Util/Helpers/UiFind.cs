@@ -30,7 +30,7 @@ namespace Testura.Android.Util.Helpers
         {
             visitedNodes.Add(current);
 
-            if (wheres.All(w => w.NodeSearch.Invoke(current, null)))
+            if (wheres.All(w => w.NodeMatch.Invoke(current, null)))
             {
                 if (foundNode == null || distance < foundNode.Distance)
                 {

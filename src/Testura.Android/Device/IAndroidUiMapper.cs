@@ -13,18 +13,18 @@ namespace Testura.Android.Device
         /// <summary>
         /// Lazy map an ui object based on a predicate.
         /// </summary>
-        /// <param name="predicate">The func used to map the node(s). The func takes current node, provided wildcard and return true if the node map otherwise false.</param>
+        /// <param name="expression">The func used to map the node(s). The func takes current node, provided wildcard and return true if the node map otherwise false.</param>
         /// <param name="customErrorMessage">Custom error message used later on if we can't find the mapped node</param>
         /// <returns>The mapped ui object</returns>
-        UiObject MapUiObject(Func<Node, string, bool> predicate, string customErrorMessage = null);
+        UiObject MapUiObject(Func<Node, string, bool> expression, string customErrorMessage = null);
 
         /// <summary>
         /// Lazy map an ui object based on a predicate.
         /// </summary>
-        /// <param name="predicate">The func used to map the node(s). The func takes current node and return true if the node map otherwise false.</param>
+        /// <param name="expression">The func used to map the node(s). The func takes current node and return true if the node map otherwise false.</param>
         /// <param name="customErrorMessage">Custom error message used later on if we can't find the mapped node</param>
         /// <returns>The mapped ui object</returns>
-        UiObject MapUiObject(Func<Node, bool> predicate, string customErrorMessage = null);
+        UiObject MapUiObject(Func<Node, bool> expression, string customErrorMessage = null);
 
         /// <summary>
         /// Lazy map an ui object based on one or multiple <see cref="Where">Wher(s)</see>

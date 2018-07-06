@@ -69,15 +69,15 @@ namespace Testura.Android.Device
         public string Serial => _configuration.Serial;
 
         /// <inheritdoc />
-        public virtual UiObject MapUiObject(Func<Node, string, bool> predicate, string customErrorMessage = null)
+        public virtual UiObject MapUiObject(Func<Node, string, bool> expression, string customErrorMessage = null)
         {
-            return new UiObject(Interaction, Ui, new List<Where> { Where.Lambda(predicate, customErrorMessage) }, null);
+            return new UiObject(Interaction, Ui, new List<Where> { Where.Lambda(expression, customErrorMessage) }, null);
         }
 
         /// <inheritdoc />
-        public virtual UiObject MapUiObject(Func<Node, bool> predicate, string customErrorMessage = null)
+        public virtual UiObject MapUiObject(Func<Node, bool> expression, string customErrorMessage = null)
         {
-            return new UiObject(Interaction, Ui, new List<Where> { Where.Lambda(predicate, customErrorMessage) }, null);
+            return new UiObject(Interaction, Ui, new List<Where> { Where.Lambda(expression, customErrorMessage) }, null);
         }
 
         /// <inheritdoc />

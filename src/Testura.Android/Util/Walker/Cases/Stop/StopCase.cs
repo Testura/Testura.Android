@@ -33,7 +33,7 @@ namespace Testura.Android.Util.Walker.Cases.Stop
         /// <returns>True if we match, false otherwise</returns>
         public bool IsMatching(IList<Node> nodes)
         {
-            return nodes.Any(node => Wheres.All(with => with.NodeSearch(node, null)));
+            return nodes.Any(node => Wheres.All(with => with.NodeMatch(node, null)));
         }
 
         /// <summary>
