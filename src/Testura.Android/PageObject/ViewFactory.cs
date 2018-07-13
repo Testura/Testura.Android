@@ -4,6 +4,7 @@ using System.Reflection;
 using Testura.Android.Device;
 using Testura.Android.Device.Ui.Objects;
 using Testura.Android.PageObject.Attributes;
+using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.PageObject
 {
@@ -48,7 +49,14 @@ namespace Testura.Android.PageObject
                     var mapUiObjectAttribute = attributes[0] as MapUiObjectAttribute;
                     if (property.PropertyType == typeof(UiObject))
                     {
-                        property.SetValue(obj, mapper.MapUiObject(mapUiObjectAttribute.GetWheres().ToArray()));
+                        try
+                        {
+                            property.SetValue(obj, mapper.MapUiObject(mapUiObjectAttribute.GetWheres().ToArray()));
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            throw new MapUiObjectException($"Failed to set property with the name \"{property.Name}\". Make sure it isn't readonly and have a set.", ex);
+                        }
                     }
                 }
             }
