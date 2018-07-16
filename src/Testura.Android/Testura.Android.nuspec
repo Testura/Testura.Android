@@ -5,7 +5,7 @@
     <version>2.0.0</version>
     <title>$title$</title>
     <authors>Mille Bostrom</authors>
-    <owners>Mille Boström</owners>
+    <owners>Mille Bostrom</owners>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/Testura/Testura.Android</projectUrl>
     <iconUrl>http://testura.net/Content/Images/logo128-new.png</iconUrl>
@@ -15,15 +15,20 @@
 	The framework rebuilt with multiple breaking changes. List of changes: 
 	
 	- Testura.Android.PageObject nuget removed and all classes moved into Testura.Android 
-	- CreateUiObject(s) moved from UiService to IAndroidDevice and renamed MapUiObject(s)
+	- CreateUiObject(s) moved from UiService to IAndroidDevice and renamed MapUiObject
+	- With renamed to Where
+	- All searches done with Where are now incasesensitive
+	- Added wildcard support for Where
+	- Removed all "InCache" methods on UiObject
+	- UiObjects removed and UiObject handles both single and multiple nodes
+	- Changed all timeouts from seconds(int) to timespan
 	- ITerminal removed and Terminal is renamed to AdbCommandExecutor
 	- Interfaces for all services classes removed 
-	- *new* DeviceFactory to handle one or multiple devices (used when running many devices in parallel)
+	- New class (AndroidDeviceFactory) added to handle one or multiple devices (used when running many devices in parallel)
 	- Multiple consts and properties removed from DeviceConfiguration
 	- Rewrite of UiAutomatorServer to be more robust. 
 	- More logging throught DeviceLogger and added multiple logging levels. 
 	- Fixed corrupt recordings when using the RecordScreen method in AdbService
-	- Changed so we ignore casing with the "With" object. 
 	- Added logging of the last xml dump when failing to find node.
 	- Start/Stop server is now on the IAndroidDevice interface instead of IUiService
 	- KeyEvents enum renamed KeyEvent
