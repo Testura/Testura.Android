@@ -23,7 +23,7 @@ namespace Testura.Android.Tests.Util.Exceptions
         [Test]
         public void Constructor_WhenCreatingExceptionWithThreeWheres_ShouldGetCorrectErrorMessage()
         {
-            Assert.AreEqual("Could not find node where resource id equals \"test\", package equals \"myPackage\" and index equals 2", new UiNodeNotFoundException(new List<Where> { Where.ResourceId("test"), Where.Package("myPackage"), Where.Index(2) }).Message);
+            Assert.AreEqual("Could not find node where resource id equals \"test\", package equals \"myPackage\" and index equals 2", new UiNodeNotFoundException(new List<Where> { Where.ResourceId("test"), Where.Package("myPackage"), Where.Index("2") }).Message);
         }
     }
 }

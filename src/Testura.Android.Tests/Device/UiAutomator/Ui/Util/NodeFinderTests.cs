@@ -82,7 +82,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
         [Test]
         public void NodeChecker_WhenGettingNodeWithIndex_ShouldReturnNode()
         {
-            var foundNode = _nodeFinder.FindNode(_nodes, new[] {Where.Index(1)});
+            var foundNode = _nodeFinder.FindNode(_nodes, new[] {Where.Index("1")});
             Assert.IsNotNull(foundNode);
             Assert.AreEqual("1", foundNode.Index);
         }

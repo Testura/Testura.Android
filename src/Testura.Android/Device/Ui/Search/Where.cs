@@ -139,10 +139,9 @@ namespace Testura.Android.Device.Ui.Search
         /// </summary>
         /// <param name="index">The index of the node to be found.</param>
         /// <returns>An instance of the with object containing the search function.</returns>
-        public static Where Index(int index)
+        public static Where Index(string index)
         {
-            return new Where((node, wildcard) => node.Index != null && node.Index.Equals(index.ToString(), StringComparison.OrdinalIgnoreCase),
-                $"index equals {index}");
+            return new Where((node, wildcard) => node.Index != null && node.Index.Equals(index, StringComparison.OrdinalIgnoreCase), $"index equals {index}");
         }
 
         /// <summary>

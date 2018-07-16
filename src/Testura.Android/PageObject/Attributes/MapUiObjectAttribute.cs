@@ -87,7 +87,7 @@ namespace Testura.Android.PageObject.Attributes
 
             if (Index != null)
             {
-                wheres.Add(Where.Index(int.Parse(Index)));
+                wheres.Add(Where.Index(Index));
             }
 
             if (!wheres.Any())

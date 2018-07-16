@@ -152,6 +152,7 @@ namespace Testura.Android.Util
                         });
                         o.DisposeOnExit();
                     });
+
                 return command;
             }
             catch (Win32Exception)
