@@ -11,7 +11,7 @@ namespace Testura.Android.Util.Walker.Input
     public class SwipeAppWalkerInput : IAppWalkerInput
     {
         private readonly Random _rnd;
-        private readonly IList<SwipeDirections> _swipeDirectionses;
+        private readonly IList<SwipeDirection> _swipeDirectionses;
         private readonly int _duration;
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace Testura.Android.Util.Walker.Input
         /// </summary>
         /// <param name="swipeDirectionses">A set of possible swipe directions.</param>
         /// <param name="duration">The swipe duration in milliseconds.</param>
-        public SwipeAppWalkerInput(IList<SwipeDirections> swipeDirectionses, int duration)
+        public SwipeAppWalkerInput(IList<SwipeDirection> swipeDirectionses, int duration)
         {
             _rnd = new Random();
             _swipeDirectionses = swipeDirectionses;
@@ -34,12 +34,12 @@ namespace Testura.Android.Util.Walker.Input
         {
             _duration = duration;
             _rnd = new Random();
-            _swipeDirectionses = new List<SwipeDirections>
+            _swipeDirectionses = new List<SwipeDirection>
             {
-                SwipeDirections.Down,
-                SwipeDirections.Left,
-                SwipeDirections.Right,
-                SwipeDirections.Up
+                SwipeDirection.Down,
+                SwipeDirection.Left,
+                SwipeDirection.Right,
+                SwipeDirection.Up
             };
         }
 

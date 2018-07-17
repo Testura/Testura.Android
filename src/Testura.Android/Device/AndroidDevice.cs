@@ -1,45 +1,26 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using Testura.Android.Device.Configurations;
+using Testura.Android.Device.Server;
 using Testura.Android.Device.Services;
-using Testura.Android.Device.Services.Default;
+using Testura.Android.Device.Services.Activity;
+using Testura.Android.Device.Services.Adb;
+using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes;
-using Testura.Android.Device.Ui.Server;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.Device.Ui.Objects;
+using Testura.Android.Device.Ui.Search;
 using Testura.Android.Util;
-using Testura.Android.Util.Terminal;
 
 namespace Testura.Android.Device
 {
     /// <summary>
     /// Provides functionality to interact with an Android Device through multiple service objects
     /// </summary>
-    public class AndroidDevice : IAndroidDevice
+    public class AndroidDevice : IAndroidDevice, IAdbCommandExecutorProvider, IAndroidServiceProvider, IAndroidUiMapper
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
-        /// </summary>
-        /// <param name="configuration">Device Configuration</param>
-        /// <param name="adbService">Service to handle communication with adb</param>
-        /// <param name="uiService">Service to handle UI</param>
-        /// <param name="settingsService">Service to handle settings</param>
-        /// <param name="activityService">Service to handle activities</param>
-        /// <param name="interactionService">Service to handle interaction with the device</param>
-        public AndroidDevice(
-            DeviceConfiguration configuration,
-            IAdbService adbService,
-            IUiService uiService,
-            ISettingsService settingsService,
-            IActivityService activityService,
-            IInteractionService interactionService)
-        {
-            Configuration = configuration;
-            Adb = adbService;
-            Ui = uiService;
-            Settings = settingsService;
-            Activity = activityService;
-            Interaction = interactionService;
-            SetOwner();
-            InstallHelperApks();
-        }
+        private readonly DeviceConfiguration _configuration;
+        private readonly UiAutomatorServer _uiAutomatorServer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AndroidDevice"/> class.
@@ -47,17 +28,17 @@ namespace Testura.Android.Device
         /// <param name="configuration">Device Configuration</param>
         public AndroidDevice(DeviceConfiguration configuration)
         {
-            Configuration = configuration;
-            var server = new UiAutomatorServer(new Terminal(configuration), configuration.Port, configuration.DumpTimeout);
-            Adb = new AdbService(new Terminal(configuration));
-            Ui = new UiService(
-                new ScreenDumper(server, configuration.DumpTries),
-                new NodeParser(),
-                new NodeFinder());
-            Settings = new SettingsService();
-            Activity = new ActivityService();
-            Interaction = new InteractionService(server);
-            SetOwner();
+            var adbCommandExecutor = new AdbCommandExecutor(configuration.Serial, configuration.AdbPath);
+
+            _configuration = configuration;
+            _uiAutomatorServer = new UiAutomatorServer(adbCommandExecutor, configuration.Port);
+
+            Adb = new AdbService(adbCommandExecutor);
+            Ui = new UiService(_uiAutomatorServer, new NodeParser(), new NodeFinder());
+            Settings = new SettingsService(Adb);
+            Activity = new ActivityService(Adb);
+            Interaction = new InteractionService(Adb, _uiAutomatorServer);
+
             InstallHelperApks();
         }
 
@@ -69,55 +50,71 @@ namespace Testura.Android.Device
         {
         }
 
-        /// <summary>
-        /// Gets the current device Configuration.
-        /// </summary>
-        public DeviceConfiguration Configuration { get; }
+        /// <inheritdoc />
+        public AdbService Adb { get; }
 
-        /// <summary>
-        /// Gets the adb service of an android device.
-        /// </summary>
-        public IAdbService Adb { get; }
+        /// <inheritdoc />
+        public UiService Ui { get; }
 
-        /// <summary>
-        /// Gets the ui service of an android device.
-        /// </summary>
-        public IUiService Ui { get; }
+        /// <inheritdoc />
+        public SettingsService Settings { get; }
 
-        /// <summary>
-        /// Gets the settings service of an android device.
-        /// </summary>
-        public ISettingsService Settings { get; }
+        /// <inheritdoc />
+        public ActivityService Activity { get; }
 
-        /// <summary>
-        /// Gets the activity service of an android device.
-        /// </summary>
-        public IActivityService Activity { get; }
+        /// <inheritdoc />
+        public InteractionService Interaction { get; }
 
-        /// <summary>
-        /// Gets the interaction service of an android device.
-        /// </summary>
-        public IInteractionService Interaction { get; }
+        /// <inheritdoc />
+        public string Serial => _configuration.Serial;
 
-        private void SetOwner()
+        /// <inheritdoc />
+        public virtual UiObject MapUiObject(Func<Node, string, bool> expression, string customErrorMessage = null)
         {
-            var components = GetType().GetProperties().Where(p => p.PropertyType.IsInterface);
-            foreach (var component in components)
-            {
-                ((Service)component.GetValue(this)).InitializeServiceOwner(this);
-            }
+            return new UiObject(Interaction, Ui, new List<Where> { Where.Lambda(expression, customErrorMessage) }, null);
+        }
+
+        /// <inheritdoc />
+        public virtual UiObject MapUiObject(Func<Node, bool> expression, string customErrorMessage = null)
+        {
+            return new UiObject(Interaction, Ui, new List<Where> { Where.Lambda(expression, customErrorMessage) }, null);
+        }
+
+        /// <inheritdoc />
+        public UiObject MapUiObject(params Where[] wheres)
+        {
+            return new UiObject(Interaction, Ui, wheres, null);
+        }
+
+        /// <inheritdoc />
+        public void StartServer()
+        {
+            _uiAutomatorServer.Start();
+        }
+
+        /// <inheritdoc />
+        public void StopServer()
+        {
+            _uiAutomatorServer.Stop();
+        }
+
+        /// <inheritdoc />
+        public AdbCommandExecutor GetAdbCommandExecutor()
+        {
+            return new AdbCommandExecutor(_configuration.Serial, _configuration.AdbPath);
         }
 
         private void InstallHelperApks()
         {
             var dependencyInstaller = new DependencyInstaller();
-            if (Configuration.Dependencies == DependencyHandling.AlwaysInstall)
+            switch (_configuration.Dependencies)
             {
-                dependencyInstaller.InstallDependencies(Adb, Configuration);
-            }
-            else if (Configuration.Dependencies == DependencyHandling.InstallIfMissing)
-            {
-                dependencyInstaller.InstallDependenciesIfMissing(Adb, Activity, Configuration);
+                case DependencyHandling.AlwaysInstall:
+                    dependencyInstaller.InstallDependencies(Adb, _configuration.DependenciesDirectory);
+                    break;
+                case DependencyHandling.InstallIfMissing:
+                    dependencyInstaller.InstallDependenciesIfMissing(Adb, Activity, _configuration.DependenciesDirectory);
+                    break;
             }
         }
     }

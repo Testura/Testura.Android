@@ -9,21 +9,21 @@ namespace Testura.Android.Tests.Util.Exceptions
     public class UiNodeNotFoundExceptionTests
     {
         [Test]
-        public void Constructor_WhenCreatingExceptionWithASingleWith_ShouldGetCorrectErrorMessage()
+        public void Constructor_WhenCreatingExceptionWithASingleWhere_ShouldGetCorrectErrorMessage()
         {
-            Assert.AreEqual("Could not find node where resource id equals \"test\"", new UiNodeNotFoundException(new List<With> { With.ResourceId("test")}).Message);
+            Assert.AreEqual("Could not find node where resource id equals \"test\"", new UiNodeNotFoundException(new List<Where> { Where.ResourceId("test")}).Message);
         }
 
         [Test]
-        public void Constructor_WhenCreatingExceptionWithTwoWiths_ShouldGetCorrectErrorMessage()
+        public void Constructor_WhenCreatingExceptionWithTwoWheres_ShouldGetCorrectErrorMessage()
         {
-            Assert.AreEqual("Could not find node where resource id equals \"test\" and package equals \"myPackage\"", new UiNodeNotFoundException(new List<With> { With.ResourceId("test"), With.Package("myPackage") }).Message);
+            Assert.AreEqual("Could not find node where resource id equals \"test\" and package equals \"myPackage\"", new UiNodeNotFoundException(new List<Where> { Where.ResourceId("test"), Where.Package("myPackage") }).Message);
         }
 
         [Test]
-        public void Constructor_WhenCreatingExceptionWithThreeWiths_ShouldGetCorrectErrorMessage()
+        public void Constructor_WhenCreatingExceptionWithThreeWheres_ShouldGetCorrectErrorMessage()
         {
-            Assert.AreEqual("Could not find node where resource id equals \"test\", package equals \"myPackage\" and index equals 2", new UiNodeNotFoundException(new List<With> { With.ResourceId("test"), With.Package("myPackage"), With.Index(2) }).Message);
+            Assert.AreEqual("Could not find node where resource id equals \"test\", package equals \"myPackage\" and index equals 2", new UiNodeNotFoundException(new List<Where> { Where.ResourceId("test"), Where.Package("myPackage"), Where.Index("2") }).Message);
         }
     }
 }

@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testura.Android", "src\Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testura.Android.Tests", "src\Testura.Android.Tests\Testura.Android.Tests.csproj", "{2A3D8906-EDF1-4215-8DF9-5BCACF69DC55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testura.Android.PageObject", "src\Testura.Android.PageObject\Testura.Android.PageObject.csproj", "{8FADCEA7-D70C-49D6-B017-EBBAB5A709E4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +21,11 @@ Global
 		{2A3D8906-EDF1-4215-8DF9-5BCACF69DC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A3D8906-EDF1-4215-8DF9-5BCACF69DC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A3D8906-EDF1-4215-8DF9-5BCACF69DC55}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8FADCEA7-D70C-49D6-B017-EBBAB5A709E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FADCEA7-D70C-49D6-B017-EBBAB5A709E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8FADCEA7-D70C-49D6-B017-EBBAB5A709E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FADCEA7-D70C-49D6-B017-EBBAB5A709E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D2167462-5F35-455B-A92F-B8174F7AF848}
 	EndGlobalSection
 EndGlobal

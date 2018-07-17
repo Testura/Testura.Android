@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Testura.Android.Device;
-using Testura.Android.Device.Services.Default;
+using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Walker.Cases.Stop;
@@ -17,6 +17,7 @@ namespace Testura.Android.Util.Walker
     /// </summary>
     public class AppWalker
     {
+        private const int ForceMaxTries = 20;
         private readonly IList<IAppWalkerInput> _inputs;
         private readonly AppWalkerConfiguration _appWalkerConfiguration;
         private readonly Random _rnd;
@@ -28,13 +29,8 @@ namespace Testura.Android.Util.Walker
         /// <param name="inputs">A set of allowed inputs.</param>
         public AppWalker(AppWalkerConfiguration appWalkerConfiguration, IList<IAppWalkerInput> inputs)
         {
-            if (appWalkerConfiguration == null)
-            {
-                throw new ArgumentNullException(nameof(appWalkerConfiguration));
-            }
-
             _inputs = inputs ?? new List<IAppWalkerInput> { new TapAppWalkerInput(true) };
-            _appWalkerConfiguration = appWalkerConfiguration;
+            _appWalkerConfiguration = appWalkerConfiguration ?? throw new ArgumentNullException(nameof(appWalkerConfiguration));
             _rnd = new Random();
         }
 
@@ -95,7 +91,7 @@ namespace Testura.Android.Util.Walker
 
             var currentPackageAndActivity = device.Activity.GetCurrent();
             var numberOfTimesOnPackageAndAcivity = 0;
-            var uiService = device.Ui as UiService;
+            var uiService = device.Ui;
             var start = DateTime.Now;
 
             while (true)
@@ -134,7 +130,7 @@ namespace Testura.Android.Util.Walker
                     numberOfTimesOnPackageAndAcivity++;
                     if (numberOfTimesOnPackageAndAcivity == _appWalkerConfiguration.MaxInputBeforeGoingBack)
                     {
-                        device.Interaction.InputKeyEvent(KeyEvents.Back);
+                        device.Interaction.InputKeyEvent(KeyEvent.Back);
                         numberOfTimesOnPackageAndAcivity = 0;
                     }
                 }
@@ -166,20 +162,18 @@ namespace Testura.Android.Util.Walker
         /// </summary>
         /// <param name="uiService">The ui service on the current device</param>
         /// <returns>All nodes on the screen</returns>
-        private IList<Node> ForceGetAllNodes(UiService uiService)
+        private IList<Node> ForceGetAllNodes(INodeFinderService uiService)
         {
-            var maxTries = 20;
             var tries = 0;
             while (true)
             {
                 try
                 {
-                    uiService.UpdateCachedNodes();
-                    return uiService.CachedNodes;
+                    return uiService.AllNodes();
                 }
                 catch (UiNodeNotFoundException)
                 {
-                    if (tries >= maxTries)
+                    if (tries >= ForceMaxTries)
                     {
                         throw;
                     }

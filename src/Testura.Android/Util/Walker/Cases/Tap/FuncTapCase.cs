@@ -16,10 +16,10 @@ namespace Testura.Android.Util.Walker.Cases.Tap
         /// <summary>
         /// Initializes a new instance of the <see cref="FuncTapCase"/> class.
         /// </summary>
-        /// <param name="withs">Withs to find the node in our case</param>
+        /// <param name="wheres">"Wheres" used to find our node</param>
         /// <param name="case">A func which take the current device, currently selected node and returns if we still should tap on node.</param>
-        public FuncTapCase(IList<With> withs, Func<IAndroidDevice, Node, bool> @case)
-            : base(withs)
+        public FuncTapCase(IList<Where> wheres, Func<IAndroidDevice, Node, bool> @case)
+            : base(wheres)
         {
             _case = @case;
         }

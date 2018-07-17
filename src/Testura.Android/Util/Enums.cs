@@ -25,7 +25,7 @@ namespace Testura.Android.Util
     /// <summary>
     /// Defines all attribute tags that we can use to find a node.
     /// </summary>
-    public enum AttributeTags
+    public enum AttributeTag
     {
         /// <summary>
         /// Node that contains text.
@@ -66,7 +66,7 @@ namespace Testura.Android.Util
     /// <summary>
     /// Defines all swipe direction
     /// </summary>
-    public enum SwipeDirections
+    public enum SwipeDirection
     {
         /// <summary>
         /// Swipe left.
@@ -108,7 +108,7 @@ namespace Testura.Android.Util
     /// <summary>
     /// Defines all different key events that can be sent to a device.
     /// </summary>
-    public enum KeyEvents
+    public enum KeyEvent
     {
         Unknown,
         Menu,

@@ -7,29 +7,29 @@ namespace Testura.Android.Util
 {
     internal static class WithErrorMessageBuilder
     {
-        internal static string BuildWithErrorMessage(IList<With> withs)
+        internal static string BuildByErrorMessage(IList<Where> wheres)
         {
-            if (withs == null || !withs.Any())
+            if (wheres == null || !wheres.Any())
             {
-                return "Could not find node";
+                return "Could not map node (did not provide any \"wheres\"?";
             }
 
             var errorMessage = new StringBuilder();
             errorMessage.Append("Could not find node where ");
-            if (withs.Count == 1)
+            if (wheres.Count == 1)
             {
-                errorMessage.Append(withs.First().ErrorMessage);
+                errorMessage.Append(wheres.First().ErrorMessage);
             }
             else
             {
-                for (int n = 0; n < withs.Count; n++)
+                for (var n = 0; n < wheres.Count; n++)
                 {
-                    errorMessage.Append($"{withs[n].ErrorMessage}");
-                    if (n < withs.Count - 2)
+                    errorMessage.Append($"{wheres[n].ErrorMessage}");
+                    if (n < wheres.Count - 2)
                     {
                         errorMessage.Append(", ");
                     }
-                    else if (n == withs.Count - 2)
+                    else if (n == wheres.Count - 2)
                     {
                         errorMessage.Append(" and ");
                     }

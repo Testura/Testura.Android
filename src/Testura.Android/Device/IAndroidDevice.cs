@@ -1,41 +1,23 @@
-﻿using Testura.Android.Device.Configurations;
-using Testura.Android.Device.Services;
-
-namespace Testura.Android.Device
+﻿namespace Testura.Android.Device
 {
     /// <summary>
-    /// Defines methods to interact with an android device through multiple services.
+    /// Defines an interface to control the android device.
     /// </summary>
-    public interface IAndroidDevice
+    public interface IAndroidDevice : IAndroidUiMapper, IAndroidServiceProvider, IAdbCommandExecutorProvider
     {
         /// <summary>
-        /// Gets the current device Configuration.
+        /// Gets the serial of the device
         /// </summary>
-        DeviceConfiguration Configuration { get; }
+        string Serial { get; }
 
         /// <summary>
-        /// Gets the adb service of an android device.
+        /// Start the ui server
         /// </summary>
-        IAdbService Adb { get; }
+        void StartServer();
 
         /// <summary>
-        /// Gets the ui service of an android device.
+        /// Stop the ui server
         /// </summary>
-        IUiService Ui { get; }
-
-        /// <summary>
-        /// Gets the settings service of an android device.
-        /// </summary>
-        ISettingsService Settings { get;  }
-
-        /// <summary>
-        /// Gets the activity service of an android device.
-        /// </summary>
-        IActivityService Activity { get; }
-
-        /// <summary>
-        /// Gets the interaction service of an android device.
-        /// </summary>
-        IInteractionService Interaction { get; }
+        void StopServer();
     }
 }

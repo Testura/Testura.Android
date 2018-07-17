@@ -17,12 +17,7 @@ namespace Testura.Android.Device.Ui.Nodes.Data
         /// <param name="parent">Node parent to this node</param>
         public Node(XElement element, Node parent)
         {
-            if (element == null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
-
-            Element = element;
+            Element = element ?? throw new ArgumentNullException(nameof(element));
             Parent = parent;
             Children = new List<Node>();
             Index = element.Attribute("index")?.Value;
@@ -159,11 +154,17 @@ namespace Testura.Android.Device.Ui.Nodes.Data
             var bounds = Element.Attribute("bounds");
 
             // Could we use regexp? Yes, but this is more hardcore.
+            if (bounds == null)
+            {
+                return new List<Coordinate>();
+            }
+
             var values = bounds.Value
                 .Replace("][", ",")
                 .Replace("[", string.Empty)
                 .Replace("]", string.Empty)
                 .Split(',');
+
             return new List<Coordinate>
             {
                 new Coordinate(int.Parse(values[0]), int.Parse(values[1])),
@@ -173,8 +174,7 @@ namespace Testura.Android.Device.Ui.Nodes.Data
 
         private bool ParseAttribute(string name)
         {
-            bool value;
-            bool.TryParse(Element.Attribute(name)?.Value, out value);
+            bool.TryParse(Element.Attribute(name)?.Value, out var value);
             return value;
         }
     }

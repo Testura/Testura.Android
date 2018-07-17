@@ -16,8 +16,8 @@ namespace Testura.Android.Util.Helpers
         /// <summary>
         /// Wait for any ui object to be visible or hidden.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
         /// <param name="invokeMethods">Methods on different uiObjects to invoke (for example Visible or Hidden)</param>
+        /// <param name="timeout">Timeout</param>
         /// <returns>The first uiObject to be visible or hidden</returns>
         /// <example>This example show how to call the method with two uiObjects and wait for the
         /// first one to be visible or the second one to be hidden.
@@ -26,7 +26,7 @@ namespace Testura.Android.Util.Helpers
         /// UiWait.ForAny(10, uiObjectOne.Visible, uiObjectTwo.Hidden)
         /// </code>
         /// <exception cref="UiNodeNotFoundException">Thrown If no ui objects are visible/hidden</exception>
-        public static UiObject ForAny(int timeout, params Func<int, bool>[] invokeMethods)
+        public static UiObject ForAny(Func<TimeSpan, bool>[] invokeMethods, TimeSpan timeout)
         {
             if (invokeMethods == null)
             {
@@ -62,8 +62,8 @@ namespace Testura.Android.Util.Helpers
         /// <summary>
         /// Wait for all ui object to be visible or hidden.
         /// </summary>
-        /// <param name="timeout">Timeout in seconds</param>
         /// <param name="invokeMethods">Methods on different uiObjects to invoke (for example Visible or Hidden)</param>
+        /// <param name="timeout">Timeout</param>
         /// <example>This example show how to call the method with two uiObjects and wait for the
         /// first one to be visible or the second one to be hidden.
         /// </example>
@@ -71,7 +71,7 @@ namespace Testura.Android.Util.Helpers
         /// UiWait.ForAll(10, uiObjectOne.Visible, uiObjectTwo.Hidden)
         /// </code>
         /// <exception cref="UiNodeNotFoundException">Thrown If not all ui objects are visible/hidden</exception>
-        public static void ForAll(int timeout, params Func<int, bool>[] invokeMethods)
+        public static void ForAll(Func<TimeSpan, bool>[] invokeMethods, TimeSpan timeout)
         {
             if (invokeMethods == null)
             {
@@ -83,7 +83,7 @@ namespace Testura.Android.Util.Helpers
                 throw new ArgumentException("Argument is empty collection", nameof(invokeMethods));
             }
 
-            var invokeMethodByTask = new Dictionary<Task<bool>, Func<int, bool>>();
+            var invokeMethodByTask = new Dictionary<Task<bool>, Func<TimeSpan, bool>>();
 
             foreach (var invokeMethod in invokeMethods)
             {
@@ -110,15 +110,14 @@ namespace Testura.Android.Util.Helpers
             }
         }
 
-        private static void BuildError(Dictionary<Task<bool>, Func<int, bool>> invokeMethodByTask, IEnumerable<Task<bool>> failedTasks)
+        private static void BuildError(IReadOnlyDictionary<Task<bool>, Func<TimeSpan, bool>> invokeMethodByTask, IEnumerable<Task<bool>> failedTasks)
         {
             var errorMessage = new StringBuilder();
             foreach (var notCompletedTask in failedTasks)
             {
-                var uiObject = invokeMethodByTask[notCompletedTask].Target as UiObject;
-                if (uiObject != null)
+                if (invokeMethodByTask[notCompletedTask].Target is UiObject uiObject)
                 {
-                    errorMessage.Append($"{WithErrorMessageBuilder.BuildWithErrorMessage(uiObject.Withs).Replace("Could not find node where", "Node where")} \r\n");
+                    errorMessage.Append($"{WithErrorMessageBuilder.BuildByErrorMessage(uiObject.Wheres).Replace("Could not find node where", "Node where")} \r\n");
                 }
             }
 
