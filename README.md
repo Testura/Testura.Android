@@ -39,12 +39,12 @@ namespace Testura.Android.Tests.Device
 {
     public class ExampleView : View
     {
-		// All UiObjects with the "MapUiObject" attribute will be automatically initialized as long as your class 
-		// inherit from the "View" class or if you call on "ViewFactory.MapUiNodes(..)"
-	    [MapUiObject(ResourceId = "usernameTextbox")]
+	// All UiObjects with the "MapUiObject" attribute will be automatically initialized as long as your class 
+	// inherit from the "View" class or if you call on "ViewFactory.MapUiNodes(..)"
+	[MapUiObject(ResourceId = "usernameTextbox")]
         private readonly UiObject _usernameTextbox;
 		
-		[MapUiObject(ContentDesc = "passwordTextbox"]
+	[MapUiObject(ContentDesc = "passwordTextbox"]
         private readonly UiObject _passwordTextbox;
 		
         private readonly UiObject _logInButton;
