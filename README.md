@@ -51,7 +51,7 @@ namespace Testura.Android.Tests.Device
 
         public ExampleView(IAndroidDevice device) : base(device)
         {
-		    // It is also possible to skip the attribute and initialize the object from the constructor (this is also required for the "lambda" mapping)
+	    // It is also possible to skip the attribute and initialize the object from the constructor (this is also required for the "lambda" mapping)
             _logInButton = device.MapUiObject(Where.Lambda(node => node.Text == "Login"));
         }
 
