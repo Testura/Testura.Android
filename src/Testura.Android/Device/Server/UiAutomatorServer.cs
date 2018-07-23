@@ -184,6 +184,7 @@ namespace Testura.Android.Device.Server
         /// <returns>True if we successfully tapped, otherwise false.</returns>
         public bool Tap(int x, int y)
         {
+            DeviceLogger.Log($"Sending tap request ( x: {x}, y: {y}", DeviceLogger.LogLevel.Info);
             return SendInteractionRequest($"{TapUrl}?x={x}&y={y}", TimeSpan.FromMilliseconds(3000));
         }
 
@@ -198,6 +199,7 @@ namespace Testura.Android.Device.Server
         /// <returns>True if we successfully swiped, otherwise false.</returns>
         public bool Swipe(int fromX, int fromY, int toX, int toY, int duration)
         {
+            DeviceLogger.Log($"Sending swipe request ( fromX: {fromX}, fromY: {fromY}, toX: {toX}, toY: {toY}, duration: {duration})", DeviceLogger.LogLevel.Info);
             return SendInteractionRequest(
                 $"{SwipeUrl}?startX={fromX}&startY={fromY}&endX={toX}&endY={toY}&step={duration / 25}",
                 TimeSpan.FromMilliseconds(3000 + duration));
@@ -210,6 +212,7 @@ namespace Testura.Android.Device.Server
         /// <returns>True if we successfully input key event, otherwise false.</returns>
         public bool InputKeyEvent(KeyEvent keyEvent)
         {
+            DeviceLogger.Log($"Sending keyevent request ({keyEvent.ToString()})", DeviceLogger.LogLevel.Info);
             return SendInteractionRequest($"{InputKeyEventUrl}?keyEvent={(int)keyEvent}", TimeSpan.FromMilliseconds(3000));
         }
 
@@ -220,6 +223,7 @@ namespace Testura.Android.Device.Server
         /// <returns>True if we successfully input text, otherwise false.</returns>
         public bool InputText(string text)
         {
+            DeviceLogger.Log($"Sending text request (\"{text}\")", DeviceLogger.LogLevel.Info);
             text = HttpUtility.UrlEncode(text);
             return SendInteractionRequest($"{InputTextUrl}?text={text}", TimeSpan.FromMilliseconds(3000));
         }
