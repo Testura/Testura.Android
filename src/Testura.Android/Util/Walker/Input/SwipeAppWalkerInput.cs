@@ -12,14 +12,14 @@ namespace Testura.Android.Util.Walker.Input
     {
         private readonly Random _rnd;
         private readonly IList<SwipeDirection> _swipeDirectionses;
-        private readonly int _duration;
+        private readonly TimeSpan _duration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SwipeAppWalkerInput"/> class.
         /// </summary>
         /// <param name="swipeDirectionses">A set of possible swipe directions.</param>
-        /// <param name="duration">The swipe duration in milliseconds.</param>
-        public SwipeAppWalkerInput(IList<SwipeDirection> swipeDirectionses, int duration)
+        /// <param name="duration">The swipe duration.</param>
+        public SwipeAppWalkerInput(IList<SwipeDirection> swipeDirectionses, TimeSpan duration)
         {
             _rnd = new Random();
             _swipeDirectionses = swipeDirectionses;
@@ -30,7 +30,7 @@ namespace Testura.Android.Util.Walker.Input
         /// Initializes a new instance of the <see cref="SwipeAppWalkerInput"/> class.
         /// </summary>
         /// <param name="duration">The swipe duration in milliseconds.</param>
-        public SwipeAppWalkerInput(int duration)
+        public SwipeAppWalkerInput(TimeSpan duration)
         {
             _duration = duration;
             _rnd = new Random();

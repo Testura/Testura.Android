@@ -37,7 +37,7 @@ namespace Testura.Android.Device.Services
         /// <param name="toX">Final x position on screen</param>
         /// <param name="toY">Final y position on screen</param>
         /// <param name="duration">Duration of the swipe in milliseconds</param>
-        public void Swipe(int fromX, int fromY, int toX, int toY, int duration)
+        public void Swipe(int fromX, int fromY, int toX, int toY, TimeSpan duration)
         {
             _interactionServer.Swipe(fromX, fromY, toX, toY, duration);
         }
@@ -47,7 +47,7 @@ namespace Testura.Android.Device.Services
         /// </summary>
         /// <param name="swipeDirection">Direction to swipe</param>
         /// <param name="duration">Duration of the swipe in milliseconds</param>
-        public void Swipe(SwipeDirection swipeDirection, int duration)
+        public void Swipe(SwipeDirection swipeDirection, TimeSpan duration)
         {
             if (_screenBounds == null)
             {

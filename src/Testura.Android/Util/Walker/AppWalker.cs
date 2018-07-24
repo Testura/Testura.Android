@@ -96,6 +96,11 @@ namespace Testura.Android.Util.Walker
 
             while (true)
             {
+                foreach (var timeCase in timeCases)
+                {
+                    timeCase.CheckTimer();
+                }
+
                 if (_appWalkerConfiguration.WalkDuration > 0)
                 {
                     if ((DateTime.Now - start).Minutes > _appWalkerConfiguration.WalkDuration)

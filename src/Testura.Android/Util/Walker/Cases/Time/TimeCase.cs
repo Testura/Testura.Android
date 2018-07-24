@@ -9,7 +9,8 @@ namespace Testura.Android.Util.Walker.Cases.Time
     /// </summary>
     public abstract class TimeCase
     {
-        private readonly Timer _timer;
+        private readonly TimeSpan _interval;
+        private DateTime _start;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeCase"/> class.
@@ -17,7 +18,7 @@ namespace Testura.Android.Util.Walker.Cases.Time
         /// <param name="interval">Time between time action</param>
         protected TimeCase(TimeSpan interval)
         {
-            _timer = new Timer(interval.TotalMilliseconds);
+            _interval = interval;
         }
 
         /// <summary>
@@ -31,8 +32,7 @@ namespace Testura.Android.Util.Walker.Cases.Time
         /// <param name="device">The current device.</param>
         public void StartTimer(IAndroidDevice device)
         {
-            _timer.Start();
-            _timer.Elapsed += TimerOnElapsed;
+            _start = DateTime.Now;
             Device = device;
         }
 
@@ -42,13 +42,15 @@ namespace Testura.Android.Util.Walker.Cases.Time
         protected abstract void Execute();
 
         /// <summary>
-        /// Perform time case action.
+        /// Check timer
         /// </summary>
-        private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
+        public void CheckTimer()
         {
-            Execute();
-            _timer.Stop();
-            _timer.Start();
+            if ((DateTime.Now - _start).TotalMinutes > _interval.TotalMinutes)
+            {
+                Execute();
+                _start = DateTime.Now;
+            }
         }
     }
 }
