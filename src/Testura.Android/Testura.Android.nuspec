@@ -11,9 +11,10 @@
     <iconUrl>http://testura.net/Content/Images/logo128-new.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Testura.Android is a lightweight test automation framework for Android built in C#. It contains tools and help classes to test, validate and interact with your Android device or emulator.</description>
-    <releaseNotes>Release 2.0.1
-	- Improved logging when sending interaction requests and made last UI dump public (inside UIService)
-	
+    <releaseNotes>Release 2.0.2
+	- Fixed minor documentation issues in walker code. 
+	- Changed TimeCase so they don't run in parallel
+	- Changed all swipe so they use timespan´	
 	</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Android Test Automation Ui</tags>

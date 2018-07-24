@@ -1,4 +1,5 @@
-﻿using Testura.Android.Util;
+﻿using System;
+using Testura.Android.Util;
 
 namespace Testura.Android.Device.Server
 {
@@ -24,7 +25,7 @@ namespace Testura.Android.Device.Server
         /// <param name="toY">Swipe to this y coordinate</param>
         /// <param name="duration">Swipe duration in miliseconds</param>
         /// <returns>True if we successfully swiped, otherwise false.</returns>
-        bool Swipe(int fromX, int fromY, int toX, int toY, int duration);
+        bool Swipe(int fromX, int fromY, int toX, int toY, TimeSpan duration);
 
         /// <summary>
         /// Send a key event request to the ui automator server on the android device.

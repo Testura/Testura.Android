@@ -15,7 +15,7 @@ namespace Testura.Android.Util.Walker.Cases.Stop
         /// <summary>
         /// Initializes a new instance of the <see cref="StopCase"/> class.
         /// </summary>
-        /// <param name="wheres">A set of withs to find specific node.</param>
+        /// <param name="wheres">A set of wheres to find specific node.</param>
         protected StopCase(IList<Where> wheres)
         {
             Wheres = wheres;

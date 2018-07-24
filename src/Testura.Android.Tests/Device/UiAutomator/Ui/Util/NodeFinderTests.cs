@@ -33,9 +33,9 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
 
 
         [Test]
-        public void NodeChecker_WhenGettingNodeThatDontExist_ShouldThrowException()
+        public void NodeChecker_WhenGettingNodeThatDontExist_ShouldReturnEmptyList()
         {
-            Assert.Throws<UiNodeNotFoundException>(() => _nodeFinder.FindNodes(_nodes, new[] { Where.Text("fdsfsdf") }));
+            Assert.IsEmpty(_nodeFinder.FindNodes(_nodes, new[] { Where.Text("fdsfsdf") }));
         }
 
         [Test]
