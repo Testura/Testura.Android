@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <title>$title$</title>
     <authors>Mille Bostrom</authors>
     <owners>Mille Bostrom</owners>
@@ -11,29 +11,8 @@
     <iconUrl>http://testura.net/Content/Images/logo128-new.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Testura.Android is a lightweight test automation framework for Android built in C#. It contains tools and help classes to test, validate and interact with your Android device or emulator.</description>
-    <releaseNotes>Release 2.0.0
-	The framework rebuilt with multiple breaking changes. List of changes: 
-	
-	- Testura.Android.PageObject nuget removed and all classes moved into Testura.Android 
-	- CreateUiObject(s) moved from UiService to IAndroidDevice and renamed MapUiObject
-	- With renamed to Where
-	- All searches done with Where are now incasesensitive
-	- Added wildcard support for Where
-	- Removed all "InCache" methods on UiObject
-	- UiObjects removed and UiObject handles both single and multiple nodes
-	- Changed all timeouts from seconds(int) to timespan
-	- ITerminal removed and Terminal is renamed to AdbCommandExecutor
-	- Interfaces for all services classes removed 
-	- New class (AndroidDeviceFactory) added to handle one or multiple devices (used when running many devices in parallel)
-	- Multiple consts and properties removed from DeviceConfiguration
-	- Rewrite of UiAutomatorServer to be more robust. 
-	- More logging throught DeviceLogger and added multiple logging levels. 
-	- Fixed corrupt recordings when using the RecordScreen method in AdbService
-	- Added logging of the last xml dump when failing to find node.
-	- Start/Stop server is now on the IAndroidDevice interface instead of IUiService
-	- KeyEvents enum renamed KeyEvent
-	- AttributeTags enum renamed AttributeTag
-	- SwipeDirections enum renamed SwipeDirection
+    <releaseNotes>Release 2.0.1
+	- Improved logging when sending interaction requests and made last UI dump public (inside UIService)
 	
 	</releaseNotes>
     <copyright>Copyright 2016</copyright>
