@@ -58,11 +58,6 @@ namespace Testura.Android.Device.Ui.Nodes
                 }
             }
 
-            if (!approvedNodes.Any())
-            {
-                throw new UiNodeNotFoundException(wheres);
-            }
-
             return approvedNodes;
         }
     }

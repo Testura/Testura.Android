@@ -66,27 +66,26 @@ namespace Testura.Android.Device.Services.Ui
             var startTime = DateTime.Now;
             while (true)
             {
-                try
+                var nodes = AllNodes();
+                foreach (var uiExtension in Extensions)
                 {
-                    var nodes = AllNodes();
-                    foreach (var uiExtension in Extensions)
+                    if (uiExtension.CheckNodes(nodes))
                     {
-                        if (uiExtension.CheckNodes(nodes))
-                        {
-                            startTime = DateTime.Now;
-                        }
+                        startTime = DateTime.Now;
                     }
-
-                    return _nodeFinder.FindNodes(nodes, wheres, wildcard);
                 }
-                catch (UiNodeNotFoundException)
+
+                var approvedNodes = _nodeFinder.FindNodes(nodes, wheres, wildcard);
+                if (approvedNodes.Any())
                 {
-                    if ((DateTime.Now - startTime).TotalMilliseconds > timeout.TotalMilliseconds)
-                    {
-                        DeviceLogger.Log("Failed to find node, last xml dump: ", DeviceLogger.LogLevel.Warning);
-                        DeviceLogger.Log(LastScreenDump?.Replace(Environment.NewLine, string.Empty), DeviceLogger.LogLevel.Warning);
-                        throw;
-                    }
+                    return approvedNodes;
+                }
+
+                if ((DateTime.Now - startTime).TotalMilliseconds > timeout.TotalMilliseconds)
+                {
+                    DeviceLogger.Log("Failed to find node, last xml dump: ", DeviceLogger.LogLevel.Warning);
+                    DeviceLogger.Log(LastScreenDump?.Replace(Environment.NewLine, string.Empty), DeviceLogger.LogLevel.Warning);
+                    throw new UiNodeNotFoundException(wheres);
                 }
             }
         }

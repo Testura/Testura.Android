@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System;
+using System.Timers;
 using Testura.Android.Device;
 
 namespace Testura.Android.Util.Walker.Cases.Time
@@ -13,10 +14,10 @@ namespace Testura.Android.Util.Walker.Cases.Time
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeCase"/> class.
         /// </summary>
-        /// <param name="interval">Time between time action in milliseconds.</param>
-        protected TimeCase(double interval)
+        /// <param name="interval">Time between time action</param>
+        protected TimeCase(TimeSpan interval)
         {
-            _timer = new Timer(interval);
+            _timer = new Timer(interval.TotalMilliseconds);
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace Testura.Android.Util.Walker.Cases.Tap
         /// <summary>
         /// Initializes a new instance of the <see cref="TapCase"/> class.
         /// </summary>
-        /// <param name="wheres">A set of special case withs</param>
+        /// <param name="wheres">A set of special case wheres</param>
         protected TapCase(IList<Where> wheres)
         {
             Wheres = wheres;
