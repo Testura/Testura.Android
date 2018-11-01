@@ -44,7 +44,7 @@ namespace Testura.Android.Tests.Device
 	[MapUiObject(ResourceId = "usernameTextbox")]
         private readonly UiObject _usernameTextbox;
 		
-	[MapUiObject(ContentDesc = "passwordTextbox"]
+	[MapUiObject(ContentDesc = "passwordTextbox")]
         private readonly UiObject _passwordTextbox;
 		
         private readonly UiObject _logInButton;
