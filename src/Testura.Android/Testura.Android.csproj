@@ -5,8 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>3.0.0</PackageVersion>
-        <Version>3.0.0</Version>
+        <PackageVersion>4.0.0</PackageVersion>
+        <Version>4.0.0</Version>
         <Authors>Mille Bostrom</Authors>
         <Copyright>Copyright 2021</Copyright>
         <Title>Testura.Android</Title>
@@ -16,18 +16,19 @@
         <PackageIconUrl>https://i.ibb.co/nnSPd11/logo128-new.png</PackageIconUrl>
         <PackageIcon>logo.png</PackageIcon>
         <RepositoryUrl>https://github.com/Testura/Testura.Code</RepositoryUrl>
-        <PackageReleaseNotes>Release 3.0.0
+        <PackageReleaseNotes>Release 4.0.0
 
-- Updated project to .NET 6</PackageReleaseNotes>
+            - Updated project to .NET 6
+            - Changed so we load APK:s from embedded resources instead of copy from nuget</PackageReleaseNotes>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <None Include="logo.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MedallionShell" Version="1.6.2" />
+        <PackageReference Include="MedallionShell" Version="1.6.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -35,12 +36,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Dependecies\Testura.Android.Server-UiAutomator.apk">
-          <LogicalName>Testura.Android.Server-UiAutomator.apk</LogicalName>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Dependecies\Testura.Android.Server.apk">
-          <LogicalName>Testura.Android.Server.apk</LogicalName>
-      </EmbeddedResource>
+        <EmbeddedResource Include="Dependecies\Testura.Android.Server-UiAutomator.apk">
+            <LogicalName>Testura.Android.Server-UiAutomator.apk</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Dependecies\Testura.Android.Server.apk">
+            <LogicalName>Testura.Android.Server.apk</LogicalName>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>
