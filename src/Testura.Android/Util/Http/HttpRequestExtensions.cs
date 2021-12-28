@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http;
-
-namespace Testura.Android.Util.Http
+﻿namespace Testura.Android.Util.Http
 {
     internal static class HttpRequestExtensions
     {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Testura.Android.Device.Services;
+﻿using Testura.Android.Device.Services;
 using Testura.Android.Device.Services.Ui;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
@@ -191,7 +188,7 @@ namespace Testura.Android.Device.Ui.Objects
         /// <returns>A node object with all values of this node.</returns>
         public List<Node> All(TimeSpan timeout)
         {
-            return TryFindNode(timeout).ToList();
+            return TryFindNode(timeout)?.ToList();
         }
 
         /// <summary>

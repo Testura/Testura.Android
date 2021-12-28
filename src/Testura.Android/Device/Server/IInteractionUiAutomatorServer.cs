@@ -1,5 +1,4 @@
-﻿using System;
-using Testura.Android.Util;
+﻿using Testura.Android.Util;
 
 namespace Testura.Android.Device.Server
 {

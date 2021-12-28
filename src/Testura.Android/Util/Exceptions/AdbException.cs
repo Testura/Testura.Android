@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Testura.Android.Util.Exceptions
+﻿namespace Testura.Android.Util.Exceptions
 {
     /// <summary>
     /// Represent an exception thrown when having problem with ADB

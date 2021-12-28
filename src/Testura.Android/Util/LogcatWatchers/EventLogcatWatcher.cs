@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Testura.Android.Device;
+﻿using Testura.Android.Device;
 
 namespace Testura.Android.Util.LogcatWatchers
 {

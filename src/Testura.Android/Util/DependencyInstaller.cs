@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.Reflection;
 using Testura.Android.Device.Services.Activity;
 using Testura.Android.Device.Services.Adb;
 using Testura.Android.Util.Logging;
@@ -25,6 +24,7 @@ namespace Testura.Android.Util
 
         public void InstallDependencies(IAdbInstallService adbInstallService, string dependenciesDirectory)
         {
+            CheckForApks();
             DeviceLogger.Log("Installing all dependencies..", DeviceLogger.LogLevel.Info);
             adbInstallService.InstallApp(Path.Combine(dependenciesDirectory, ServerApkName));
             adbInstallService.InstallApp(Path.Combine(dependenciesDirectory, ServerUiAutomatorApkName));
@@ -48,6 +48,32 @@ namespace Testura.Android.Util
                     InstallDependencies(adbInstallService, dependenciesDirectory);
                 }
             }
+        }
+
+        private void CheckForApks()
+        {
+            DeviceLogger.Log("Looking for APKs..", DeviceLogger.LogLevel.Info);
+
+            if (!File.Exists(ServerApkName))
+            {
+                DeviceLogger.Log($"Could not find {ServerApkName}, extracting from dll.", DeviceLogger.LogLevel.Info);
+                ExtractApkFromDll(ServerApkName);
+            }
+
+            if (!File.Exists(ServerUiAutomatorApkName))
+            {
+                DeviceLogger.Log($"Could not find {ServerUiAutomatorApkName}, extracting from dll.", DeviceLogger.LogLevel.Info);
+                ExtractApkFromDll(ServerUiAutomatorApkName);
+            }
+
+            DeviceLogger.Log("..APKs OK", DeviceLogger.LogLevel.Info);
+        }
+
+        private void ExtractApkFromDll(string name)
+        {
+            using var resource = typeof(DependencyInstaller).GetTypeInfo().Assembly.GetManifestResourceStream(name);
+            using var file = new FileStream(name, FileMode.Create, FileAccess.Write);
+            resource.CopyTo(file);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Testura.Android.Util.Exceptions
+﻿namespace Testura.Android.Util.Exceptions
 {
     /// <summary>
     /// Represent an exception thrown when having problems in the android device factory

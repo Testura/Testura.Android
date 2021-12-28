@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Testura.Android.Device.Ui.Nodes.Data;
+﻿using Testura.Android.Device.Ui.Nodes.Data;
 
 namespace Testura.Android.Device.Extensions
 {

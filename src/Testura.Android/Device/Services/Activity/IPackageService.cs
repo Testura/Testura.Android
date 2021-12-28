@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Testura.Android.Device.Services.Activity
+﻿namespace Testura.Android.Device.Services.Activity
 {
     /// <summary>
     /// Defines method(s) to get handle package on device

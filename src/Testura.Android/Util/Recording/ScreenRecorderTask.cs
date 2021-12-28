@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Testura.Android.Device.Services.Adb;
+﻿using Testura.Android.Device.Services.Adb;
 using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Util.Recording

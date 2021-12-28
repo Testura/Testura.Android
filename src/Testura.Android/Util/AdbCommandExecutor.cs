@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Medallion.Shell;
 using Testura.Android.Util.Exceptions;
 using Testura.Android.Util.Logging;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Testura.Android.Util.Recording
+﻿namespace Testura.Android.Util.Recording
 {
     /// <summary>
     /// Contains all available configurations for a recording

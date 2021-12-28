@@ -1,9 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Testura.Android.Util.Http
+﻿namespace Testura.Android.Util.Http
 {
     internal class TimeoutHandler : DelegatingHandler
     {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Testura.Android.Device.Ui.Nodes.Data;
 
 namespace Testura.Android.Device.Ui.Nodes

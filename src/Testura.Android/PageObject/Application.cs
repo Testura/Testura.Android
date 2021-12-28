@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Testura.Android.PageObject
+﻿namespace Testura.Android.PageObject
 {
     /// <summary>
     /// Represent the base class for an application under test

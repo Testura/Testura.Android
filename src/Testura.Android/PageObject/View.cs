@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Testura.Android.Device;
+﻿using Testura.Android.Device;
 
 namespace Testura.Android.PageObject
 {
