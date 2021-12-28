@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Testura.Android.Device.Ui.Nodes.Data;
+﻿using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.Util.Helpers

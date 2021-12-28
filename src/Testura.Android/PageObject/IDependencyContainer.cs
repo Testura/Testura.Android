@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Testura.Android.PageObject
+﻿namespace Testura.Android.PageObject
 {
     /// <summary>
     /// Defines an interface that to resolve and register types. Used to wrap
@@ -31,6 +29,7 @@ namespace Testura.Android.PageObject
         /// <summary>
         /// RegisterType an instance with the container.
         /// </summary>
+        /// <typeparam name="T">The type to register.</typeparam>
         void RegisterType<T>();
     }
 }

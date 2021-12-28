@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Testura.Android.Device.Ui.Nodes.Data;
+﻿using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Search;
-using Testura.Android.Util.Exceptions;
 
 namespace Testura.Android.Device.Ui.Nodes
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using Testura.Android.Device;
+﻿using Testura.Android.Device;
 
 namespace Testura.Android.Util.Walker.Cases.Time
 {

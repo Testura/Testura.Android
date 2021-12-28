@@ -24,10 +24,10 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
         [Test]
         public void WaitForValue_WhenWaitingForValueAndValuesMatch_ShouldReturnTrue()
         {
-            var uiObject = _testHelper.CreateUiObject(new[] {Where.Class("testClass")}, 0);
+            var uiObject = _testHelper.CreateUiObject(new[] { Where.Class("testClass") }, 0);
 
             _testHelper.NodeFinderService.Setup(u => u.FindNodes(It.IsAny<Where[]>(), It.IsAny<TimeSpan>(), It.IsAny<string>()))
-                .Returns(new List<Node>() { new Node(new XElement("node", new XAttribute("clickable", "true")), null)});
+                .Returns(new List<Node>() { new Node(new XElement("node", new XAttribute("clickable", "true")), null) });
 
             Assert.IsTrue(uiObject.WaitUntil(n => n.Clickable));
         }
@@ -46,7 +46,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
         [Test]
         public void WaitForValue_WhenWaitingForValueAndValueChangeAfter2Second_ShouldReturnTrue()
         {
-            var uiObject = _testHelper.CreateUiObject(new[] {Where.Class("testClass")}, 0);
+            var uiObject = _testHelper.CreateUiObject(new[] { Where.Class("testClass") }, 0);
 
             _testHelper.NodeFinderService.Setup(u => u.FindNodes(It.IsAny<Where[]>(), It.IsAny<TimeSpan>(), It.IsAny<string>()))
                 .Returns(new List<Node>() { new Node(new XElement("node", new XAttribute("clickable", "false")), null) });
@@ -60,6 +60,5 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Objects
 
             Assert.IsTrue(uiObject.WaitUntil(n => n.Clickable));
         }
-
     }
 }

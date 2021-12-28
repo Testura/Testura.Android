@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Testura.Android.Util.Logging
+﻿namespace Testura.Android.Util.Logging
 {
     /// <summary>
     /// A simple console log listener that write log messages

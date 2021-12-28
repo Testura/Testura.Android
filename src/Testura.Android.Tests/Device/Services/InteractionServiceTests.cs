@@ -10,7 +10,6 @@ namespace Testura.Android.Tests.Device.Services
     [TestFixture]
     public class InteractionServiceTests
     {
-        
         private InteractionService _interactionService;
         private Mock<IAdbShellService> _adbServiceMock;
 

@@ -38,6 +38,7 @@ namespace Testura.Android.Tests
                    .Callback(() => Thread.Sleep(delayInMiliSec))
                    .Returns(new List<Node> { new Node(new XElement("mm"), null) });
             }
+
             return new UiObject(null, NodeFinderService.Object, where, null);
         }
     }

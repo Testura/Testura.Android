@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Reflection;
+﻿using System.Reflection;
 using Testura.Android.Util;
 using Testura.Android.Util.Extensions;
 
@@ -18,7 +17,7 @@ namespace Testura.Android.Device.Configurations
             AdbPath = string.Empty;
             Serial = string.Empty;
             Dependencies = DependencyHandling.InstallIfMissing;
-            DependenciesDirectory = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "Dependencies");
+            DependenciesDirectory = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath());
             Port = 9008;
         }
 

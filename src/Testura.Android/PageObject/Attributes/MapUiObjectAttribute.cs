@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Testura.Android.Device.Ui.Objects;
+﻿using Testura.Android.Device.Ui.Objects;
 using Testura.Android.Device.Ui.Search;
 
 namespace Testura.Android.PageObject.Attributes

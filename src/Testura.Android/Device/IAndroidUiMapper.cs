@@ -1,5 +1,4 @@
-﻿using System;
-using Testura.Android.Device.Ui.Nodes.Data;
+﻿using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Device.Ui.Objects;
 using Testura.Android.Device.Ui.Search;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Timers;
-using Testura.Android.Device;
+﻿using Testura.Android.Device;
 
 namespace Testura.Android.Util.Walker.Cases.Time
 {
@@ -37,11 +35,6 @@ namespace Testura.Android.Util.Walker.Cases.Time
         }
 
         /// <summary>
-        /// Execute the case.
-        /// </summary>
-        protected abstract void Execute();
-
-        /// <summary>
         /// Check timer
         /// </summary>
         public void CheckTimer()
@@ -52,5 +45,10 @@ namespace Testura.Android.Util.Walker.Cases.Time
                 _start = DateTime.Now;
             }
         }
+
+        /// <summary>
+        /// Execute the case.
+        /// </summary>
+        protected abstract void Execute();
     }
 }

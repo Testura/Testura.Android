@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Testura.Android.Device.Configurations;
+﻿using Testura.Android.Device.Configurations;
 using Testura.Android.Device.Server;
 using Testura.Android.Device.Services;
 using Testura.Android.Device.Services.Activity;

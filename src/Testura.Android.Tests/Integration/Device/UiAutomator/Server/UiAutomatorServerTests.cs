@@ -17,6 +17,12 @@ namespace Testura.Android.Tests.Integration.Device.UiAutomator.Server
             _server = new UiAutomatorServer(new AdbCommandExecutor(), 9008);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _server.Stop();
+        }
+
         [Test]
         public void UiAutomatorServer_WhenStartingServer_ShouldNotThrowException()
         {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Testura.Android.Device;
 using Testura.Android.Device.Ui.Objects;
 using Testura.Android.PageObject.Attributes;

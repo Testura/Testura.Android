@@ -1,147 +1,46 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3B7023C4-A593-4F29-AB0C-EA07992FE1BC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Testura.Android</RootNamespace>
-    <AssemblyName>Testura.Android</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>Settings\Testura.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Debug\Testura.Android.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="MedallionShell, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MedallionShell.1.5.1\lib\net45\MedallionShell.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Device\AndroidDevice.cs" />
-    <Compile Include="Device\AndroidDeviceFactory.cs" />
-    <Compile Include="Device\Extensions\IUiExtension.cs" />
-    <Compile Include="Device\IAdbCommandExecutorProvider.cs" />
-    <Compile Include="Device\IAndroidDevice.cs" />
-    <Compile Include="Device\IAndroidServiceProvider.cs" />
-    <Compile Include="Device\IAndroidUiMapper.cs" />
-    <Compile Include="Device\Services\Activity\ActivityService.cs" />
-    <Compile Include="Device\Services\Activity\IPackageService.cs" />
-    <Compile Include="Device\Services\Adb\IAdbInstallService.cs" />
-    <Compile Include="Device\Services\Adb\IAdbShellService.cs" />
-    <Compile Include="Device\Services\InteractionService.cs" />
-    <Compile Include="Device\Configurations\DeviceConfiguration.cs" />
-    <Compile Include="Device\Services\Ui\INodeFinderService.cs" />
-    <Compile Include="Device\Ui\Nodes\Data\NodeBounds.cs" />
-    <Compile Include="Device\Ui\Objects\UiObject.cs" />
-    <Compile Include="Device\Ui\Nodes\INodeFinder.cs" />
-    <Compile Include="Device\Ui\Nodes\NodeFinder.cs" />
-    <Compile Include="Device\Server\IInteractionUiAutomatorServer.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="PageObject\Application.cs" />
-    <Compile Include="PageObject\Attributes\MapUiObjectAttribute.cs" />
-    <Compile Include="PageObject\IAndroidViewValidation.cs" />
-    <Compile Include="PageObject\IDependencyContainer.cs" />
-    <Compile Include="PageObject\View.cs" />
-    <Compile Include="PageObject\ViewFactory.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Device\Services\Adb\AdbService.cs" />
-    <Compile Include="Device\Services\Ui\UiService.cs" />
-    <Compile Include="Device\Services\SettingsService.cs" />
-    <Compile Include="Device\Ui\Nodes\INodeParser.cs" />
-    <Compile Include="Device\Ui\Search\Where.cs" />
-    <Compile Include="Device\Server\IUiAutomatorServer.cs" />
-    <Compile Include="Device\Ui\Nodes\NodeParser.cs" />
-    <Compile Include="Device\Server\UiAutomatorServer.cs" />
-    <Compile Include="Device\Ui\Nodes\Data\Node.cs" />
-    <Compile Include="Util\Coordinate.cs" />
-    <Compile Include="Util\DependencyInstaller.cs" />
-    <Compile Include="Util\Enums.cs" />
-    <Compile Include="Util\Exceptions\AdbException.cs" />
-    <Compile Include="Util\Exceptions\AndroidDeviceFactoryException.cs" />
-    <Compile Include="Util\Exceptions\MapUiObjectException.cs" />
-    <Compile Include="Util\Exceptions\UiAutomatorServerException.cs" />
-    <Compile Include="Util\Exceptions\UiNodeNotFoundException.cs" />
-    <Compile Include="Util\Extensions\AssemblyExtensions.cs" />
-    <Compile Include="Util\Helpers\UiFind.cs" />
-    <Compile Include="Util\Helpers\UiWait.cs" />
-    <Compile Include="Util\Http\HttpRequestExtensions.cs" />
-    <Compile Include="Util\Http\TimeoutHandler.cs" />
-    <Compile Include="Util\Logging\ConsoleLogListener.cs" />
-    <Compile Include="Util\Logging\ILogListener.cs" />
-    <Compile Include="Util\Logging\DeviceLogger.cs" />
-    <Compile Include="Util\LogcatWatchers\EventLogcatWatcher.cs" />
-    <Compile Include="Util\LogcatWatchers\LogcatWatcher.cs" />
-    <Compile Include="Util\Logging\ListLogListener.cs" />
-    <Compile Include="Util\Recording\ScreenRecorderTask.cs" />
-    <Compile Include="Util\Recording\ScreenRecordConfiguration.cs" />
-    <Compile Include="Util\Walker\AppWalkerConfiguration.cs" />
-    <Compile Include="Util\Walker\Cases\Stop\StopCase.cs" />
-    <Compile Include="Util\Walker\Cases\Stop\FuncStopCase.cs" />
-    <Compile Include="Util\Walker\Cases\Tap\FuncTapCase.cs" />
-    <Compile Include="Util\Walker\Cases\Time\ActionTimeCase.cs" />
-    <Compile Include="Util\Walker\Cases\Time\TimeCase.cs" />
-    <Compile Include="Util\Walker\Input\IAppWalkerInput.cs" />
-    <Compile Include="Util\Walker\Input\SwipeAppWalkerInput.cs" />
-    <Compile Include="Util\Walker\Input\TapAppWalkerInput.cs" />
-    <Compile Include="Util\Walker\Cases\Tap\TapCase.cs" />
-    <Compile Include="Util\AdbCommandExecutor.cs" />
-    <Compile Include="Util\Walker\AppWalker.cs" />
-    <Compile Include="Util\WithErrorMessageBuilder.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dependencies\Testura.Android.Server.apk">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Dependencies\Testura.Android.Server-UiAutomator.apk">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>true</IsPackable>
+        <PackageVersion>3.0.0</PackageVersion>
+        <Version>3.0.0</Version>
+        <Authors>Mille Bostrom</Authors>
+        <Copyright>Copyright 2021</Copyright>
+        <Title>Testura.Android</Title>
+        <Description>Testura.Android is a lightweight test automation framework for Android built in C#. It contains tools and help classes to test, validate and interact with your Android device or emulator.</Description>
+        <PackageProjectUrl>https://github.com/Testura/Testura.Android</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIconUrl>https://i.ibb.co/nnSPd11/logo128-new.png</PackageIconUrl>
+        <PackageIcon>logo.png</PackageIcon>
+        <RepositoryUrl>https://github.com/Testura/Testura.Code</RepositoryUrl>
+        <PackageReleaseNotes>Release 3.0.0
+
+- Updated project to .NET 6</PackageReleaseNotes>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="logo.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MedallionShell" Version="1.6.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Dependecies\Testura.Android.Server-UiAutomator.apk">
+          <LogicalName>Testura.Android.Server-UiAutomator.apk</LogicalName>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Dependecies\Testura.Android.Server.apk">
+          <LogicalName>Testura.Android.Server.apk</LogicalName>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

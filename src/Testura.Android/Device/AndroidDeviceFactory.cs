@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Testura.Android.Device.Configurations;
+﻿using Testura.Android.Device.Configurations;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
 

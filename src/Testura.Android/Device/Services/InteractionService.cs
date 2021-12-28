@@ -1,5 +1,4 @@
-﻿using System;
-using Testura.Android.Device.Server;
+﻿using Testura.Android.Device.Server;
 using Testura.Android.Device.Services.Adb;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Util;

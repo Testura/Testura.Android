@@ -20,7 +20,7 @@ namespace Testura.Android.Tests.Device.UiAutomator.Ui.Util
         public void ParseNodes_WhenParsingXDocument_ShouldGetNodes()
         {
             var xDocument = new XDocument(new XElement("node"));
-            var nodes =_nodeParser.ParseNodes(xDocument);
+            var nodes = _nodeParser.ParseNodes(xDocument);
             Assert.AreEqual(1, nodes.Count);
         }
 

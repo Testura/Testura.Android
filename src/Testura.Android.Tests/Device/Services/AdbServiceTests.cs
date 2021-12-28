@@ -51,6 +51,5 @@ namespace Testura.Android.Tests.Device.Services
         {
             Assert.Throws<ArgumentException>(() => _adbService.InstallApp(null));
         }
-
     }
 }

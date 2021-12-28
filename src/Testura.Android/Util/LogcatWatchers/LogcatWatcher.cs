@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Testura.Android.Device;
+﻿using Testura.Android.Device;
 using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Util.LogcatWatchers
@@ -76,29 +72,28 @@ namespace Testura.Android.Util.LogcatWatchers
                 () =>
                 {
                     process.StandardOutput.BaseStream.ReadTimeout = 500;
-
-                        while (true)
+                    while (true)
+                    {
+                        try
                         {
-                            try
+                            var output = process.StandardOutput.ReadLine();
+                            if (!string.IsNullOrEmpty(output))
                             {
-                                var output = process.StandardOutput.ReadLine();
-                                if (!string.IsNullOrEmpty(output))
-                                {
-                                    NewOutput(output);
-                                }
-                            }
-                            catch (TimeoutException)
-                            {
-                            }
-
-                            if (_cancellationTokenSource.IsCancellationRequested)
-                            {
-                                DeviceLogger.Log("Logcat watcher cancellation requested, stopping task.", DeviceLogger.LogLevel.Info);
-                                process.Kill();
-                                return;
+                                NewOutput(output);
                             }
                         }
-                    },
+                        catch (TimeoutException)
+                        {
+                        }
+
+                        if (_cancellationTokenSource.IsCancellationRequested)
+                        {
+                            DeviceLogger.Log("Logcat watcher cancellation requested, stopping task.", DeviceLogger.LogLevel.Info);
+                            process.Kill();
+                            return;
+                        }
+                    }
+                },
                 cancellationToken);
         }
 

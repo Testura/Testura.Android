@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
+﻿using System.Net;
 using System.Web;
 using Medallion.Shell;
 using Testura.Android.Util;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Testura.Android.Device.Ui.Search;
+﻿using Testura.Android.Device.Ui.Search;
 #pragma warning disable 1591
 
 namespace Testura.Android.Util.Exceptions

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Testura.Android.Util.Logging
+﻿namespace Testura.Android.Util.Logging
 {
     /// <summary>
     /// Provides functionality to save all logs into a in-memory list.

@@ -11,7 +11,7 @@ namespace Testura.Android.Tests.Util.Exceptions
         [Test]
         public void Constructor_WhenCreatingExceptionWithASingleWhere_ShouldGetCorrectErrorMessage()
         {
-            Assert.AreEqual("Could not find node where resource id equals \"test\"", new UiNodeNotFoundException(new List<Where> { Where.ResourceId("test")}).Message);
+            Assert.AreEqual("Could not find node where resource id equals \"test\"", new UiNodeNotFoundException(new List<Where> { Where.ResourceId("test") }).Message);
         }
 
         [Test]

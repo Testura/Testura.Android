@@ -15,21 +15,6 @@ namespace Testura.Android.Tests.PageObject
     {
         private ExampleClass _exampleClass;
 
-        private class ExampleClass
-        {
-            [MapUiObject(Text = "test")]
-            private UiObject _fieldObject;
-
-            [MapUiObject(Class = "hej")]
-            public UiObject PropertyObject { get; private set; }
-
-            [MapUiObject(Index = "0", Class = "class")]
-            public UiObject PropertyObjectWithMultiple { get; private set; }
-
-            [MapUiObject(Class = "test")]
-            internal UiObject InternalProperty { get; private set; }
-        }
-
         [SetUp]
         public void SetUp()
         {
@@ -59,12 +44,26 @@ namespace Testura.Android.Tests.PageObject
             Assert.AreEqual(1, field.Wheres.Count);
         }
 
-
         [Test]
         public void InitializeUiObjects_WhenHavingClassWithPropertyThatUseMultipleAttributes_ShouldInitializeUiObjects()
         {
             Assert.IsNotNull(_exampleClass.PropertyObjectWithMultiple);
             Assert.AreEqual(2, _exampleClass.PropertyObjectWithMultiple.Wheres.Count);
+        }
+
+        private class ExampleClass
+        {
+            [MapUiObject(Text = "test")]
+            private UiObject _fieldObject;
+
+            [MapUiObject(Class = "hej")]
+            public UiObject PropertyObject { get; private set; }
+
+            [MapUiObject(Index = "0", Class = "class")]
+            public UiObject PropertyObjectWithMultiple { get; private set; }
+
+            [MapUiObject(Class = "test")]
+            internal UiObject InternalProperty { get; private set; }
         }
     }
 }
