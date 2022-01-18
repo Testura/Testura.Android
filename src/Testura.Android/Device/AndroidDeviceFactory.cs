@@ -9,13 +9,14 @@ namespace Testura.Android.Device
     /// </summary>
     public class AndroidDeviceFactory
     {
-        private static readonly IList<DeviceConfiguration> BusyDevices;
+        private static readonly IList<(DeviceConfiguration configuration, DateTime initialized)> BusyDevices;
         private readonly TimeSpan _maxWaitTime;
         private readonly TimeSpan _timeBetweenChecks;
+        private readonly TimeSpan? _releaseDeviceAfter;
 
         static AndroidDeviceFactory()
         {
-            BusyDevices = new List<DeviceConfiguration>();
+            BusyDevices = new List<(DeviceConfiguration configuration, DateTime initialized)>();
         }
 
         /// <summary>
@@ -25,6 +26,7 @@ namespace Testura.Android.Device
         {
             _maxWaitTime = TimeSpan.FromMinutes(360);
             _timeBetweenChecks = TimeSpan.FromSeconds(20);
+            _releaseDeviceAfter = null;
         }
 
         /// <summary>
@@ -32,10 +34,12 @@ namespace Testura.Android.Device
         /// </summary>
         /// <param name="maxWaitTime">Max time to wait until a device get available</param>
         /// <param name="timeBetweenChecks">How long we should wait before check if a device is available again</param>
-        public AndroidDeviceFactory(TimeSpan maxWaitTime, TimeSpan timeBetweenChecks)
+        /// <param name="releaseDeviceAfter">If we should release device if x time has passed</param>
+        public AndroidDeviceFactory(TimeSpan maxWaitTime, TimeSpan timeBetweenChecks, TimeSpan? releaseDeviceAfter = null)
         {
             _maxWaitTime = maxWaitTime;
             _timeBetweenChecks = timeBetweenChecks;
+            _releaseDeviceAfter = releaseDeviceAfter;
         }
 
         /// <summary>
@@ -100,10 +104,9 @@ namespace Testura.Android.Device
             lock (BusyDevices)
             {
                 device.StopServer();
-                var config = BusyDevices.FirstOrDefault(b => b.Serial == device.Serial);
-                if (config != null)
+                if (BusyDevices.Any(b => b.configuration.Serial == device.Serial))
                 {
-                    BusyDevices.Remove(config);
+                    BusyDevices.Remove(BusyDevices.First(b => b.configuration.Serial == device.Serial));
                 }
             }
         }
@@ -116,12 +119,14 @@ namespace Testura.Android.Device
             {
                 lock (BusyDevices)
                 {
+                    ReleaseTimedOutDevices();
+
                     if (!possibleDevices.Any())
                     {
                         if (IsDeviceAvailable(string.Empty))
                         {
                             var configuration = new DeviceConfiguration();
-                            BusyDevices.Add(configuration);
+                            BusyDevices.Add((configuration, DateTime.Now));
                             return configuration;
                         }
                     }
@@ -129,7 +134,7 @@ namespace Testura.Android.Device
                     var availableDevice = possibleDevices.FirstOrDefault(p => IsDeviceAvailable(p.Serial));
                     if (availableDevice != null)
                     {
-                        BusyDevices.Add(availableDevice);
+                        BusyDevices.Add((availableDevice, DateTime.Now));
                         return availableDevice;
                     }
                 }
@@ -140,9 +145,32 @@ namespace Testura.Android.Device
             throw new AndroidDeviceFactoryException($"Could not find any available devices after {_maxWaitTime} minutes.");
         }
 
+        private void ReleaseTimedOutDevices()
+        {
+            if (_releaseDeviceAfter == null)
+            {
+                return;
+            }
+
+            lock (BusyDevices)
+            {
+                var devices = BusyDevices
+                    .Where(b => b.initialized.Add(_releaseDeviceAfter.Value) > DateTime.Now)
+                    .ToList();
+
+                foreach (var device in devices)
+                {
+                    lock (BusyDevices)
+                    {
+                        BusyDevices.Remove(device);
+                    }
+                }
+            }
+        }
+
         private bool IsDeviceAvailable(string serial)
         {
-            return BusyDevices.All(b => b.Serial != serial);
+            return BusyDevices.All(b => b.configuration.Serial != serial);
         }
 
         private int GetPort(ICollection<DeviceConfiguration> possibleDevices, DeviceConfiguration configuration)
