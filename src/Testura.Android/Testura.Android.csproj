@@ -5,8 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>4.0.0</PackageVersion>
-        <Version>4.0.0</Version>
+        <PackageVersion>4.1.0</PackageVersion>
+        <Version>4.1.0</Version>
         <Authors>Mille Bostrom</Authors>
         <Copyright>Copyright 2021</Copyright>
         <Title>Testura.Android</Title>
@@ -15,11 +15,10 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIconUrl>https://i.ibb.co/nnSPd11/logo128-new.png</PackageIconUrl>
         <PackageIcon>logo.png</PackageIcon>
-        <RepositoryUrl>https://github.com/Testura/Testura.Code</RepositoryUrl>
-        <PackageReleaseNotes>Release 4.0.0
+        <RepositoryUrl>https://github.com/Testura/Testura.Android</RepositoryUrl>
+        <PackageReleaseNotes>Release 4.1.0
 
-            - Updated project to .NET 6
-            - Changed so we load APK:s from embedded resources instead of copy from nuget</PackageReleaseNotes>
+            - Added releaseDeviceAfter to AndroidDeviceFactory</PackageReleaseNotes>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 
