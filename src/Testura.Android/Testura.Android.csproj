@@ -5,8 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>4.1.0</PackageVersion>
-        <Version>4.1.0</Version>
+        <PackageVersion>4.1.1</PackageVersion>
+        <Version>4.1.1</Version>
         <Authors>Mille Bostrom</Authors>
         <Copyright>Copyright 2021</Copyright>
         <Title>Testura.Android</Title>
@@ -16,9 +16,9 @@
         <PackageIconUrl>https://i.ibb.co/nnSPd11/logo128-new.png</PackageIconUrl>
         <PackageIcon>logo.png</PackageIcon>
         <RepositoryUrl>https://github.com/Testura/Testura.Android</RepositoryUrl>
-        <PackageReleaseNotes>Release 4.1.0
+        <PackageReleaseNotes>Release 4.1.1
 
-            - Added releaseDeviceAfter to AndroidDeviceFactory</PackageReleaseNotes>
+            - Fixed check of released devices in AndroidDeviceFactory </PackageReleaseNotes>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 
