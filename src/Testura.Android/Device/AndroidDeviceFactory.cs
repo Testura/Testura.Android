@@ -155,7 +155,7 @@ namespace Testura.Android.Device
             lock (BusyDevices)
             {
                 var devices = BusyDevices
-                    .Where(b => b.initialized.Add(_releaseDeviceAfter.Value) > DateTime.Now)
+                    .Where(b => DateTime.Now > b.initialized.Add(_releaseDeviceAfter.Value))
                     .ToList();
 
                 foreach (var device in devices)
