@@ -1,6 +1,7 @@
 ﻿using Testura.Android.Device.Configurations;
 using Testura.Android.Util;
 using Testura.Android.Util.Exceptions;
+using Testura.Android.Util.Logging;
 
 namespace Testura.Android.Device
 {
@@ -103,6 +104,7 @@ namespace Testura.Android.Device
         {
             lock (BusyDevices)
             {
+                DeviceLogger.Log($"[ANDROIDDEVICEFACTORY]Disposing device {device.Serial}", DeviceLogger.LogLevel.Info);
                 device.StopServer();
                 if (BusyDevices.Any(b => b.configuration.Serial == device.Serial))
                 {
@@ -134,6 +136,7 @@ namespace Testura.Android.Device
                     var availableDevice = possibleDevices.FirstOrDefault(p => IsDeviceAvailable(p.Serial));
                     if (availableDevice != null)
                     {
+                        DeviceLogger.Log($"[ANDROIDDEVICEFACTORY] Device available: {availableDevice.Serial}", DeviceLogger.LogLevel.Info);
                         BusyDevices.Add((availableDevice, DateTime.Now));
                         return availableDevice;
                     }
@@ -142,7 +145,7 @@ namespace Testura.Android.Device
                 Thread.Sleep(_timeBetweenChecks);
             }
 
-            throw new AndroidDeviceFactoryException($"Could not find any available devices after {_maxWaitTime} minutes.");
+            throw new AndroidDeviceFactoryException($"[ANDROIDDEVICEFACTORY] Could not find any available devices after {_maxWaitTime} minutes.");
         }
 
         private void ReleaseTimedOutDevices()
@@ -162,6 +165,7 @@ namespace Testura.Android.Device
                 {
                     lock (BusyDevices)
                     {
+                        DeviceLogger.Log($"[ANDROIDDEVICEFACTORY] Releasing device {device.configuration.Serial}", DeviceLogger.LogLevel.Info);
                         BusyDevices.Remove(device);
                     }
                 }
