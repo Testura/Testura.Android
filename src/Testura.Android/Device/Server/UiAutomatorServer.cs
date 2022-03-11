@@ -233,8 +233,8 @@ namespace Testura.Android.Device.Server
         /// <returns>True if we managed to perform interaction, otherwise false.</returns>
         private bool SendInteractionRequest(string url, TimeSpan timeout)
         {
-            var tries = 0;
-            while (tries < RequestTries)
+            var tries = RequestTries;
+            while (tries > 0)
             {
                 DeviceLogger.Log("Sending interaction request", DeviceLogger.LogLevel.Debug);
                 var response = SendServerRequest(url, timeout);
