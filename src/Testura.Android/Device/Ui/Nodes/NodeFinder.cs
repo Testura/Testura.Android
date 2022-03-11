@@ -44,6 +44,12 @@ namespace Testura.Android.Device.Ui.Nodes
             {
                 var foundNodes = nodes.Where(n => where.NodeMatch(n, wildcard)).ToList();
 
+                // If we don't find any nodes with any of the where conditions, we return an empty list
+                if (!foundNodes.Any())
+                {
+                    return new List<Node>();
+                }
+
                 if (!approvedNodes.Any())
                 {
                     approvedNodes = foundNodes;

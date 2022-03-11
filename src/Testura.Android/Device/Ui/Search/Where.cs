@@ -130,7 +130,7 @@ namespace Testura.Android.Device.Ui.Search
                     var searchValue = @class.Replace(Wildcard, wildcard);
                     return node.Class != null && node.Class.Equals(searchValue, StringComparison.OrdinalIgnoreCase);
                 },
-                $"content desc equals \"{@class}\"");
+                $"class equals \"{@class}\"");
         }
 
         /// <summary>
